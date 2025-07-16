@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Playlist Maker</string>
+    <string name="title_hello">Hello, practicum</string>
+    <string name="btn_text_search">Search</string>
+    <string name="btn_text_media">Media</string>
+    <string name="btn_text_setting">Settings</string>
+    <string name="setting_mnu_theme">Dark theme</string>
+    <string name="setting_mnu_shared">Share the app</string>
+    <string name="setting_mnu_support">Write to support</string>
+    <string name="setting_mnu_agree">User Agreement</string>
+    <string name="setting_title">Settings</string>
+</resources>
