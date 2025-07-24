@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.R
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val btnMediaListener: View.OnClickListener = View.OnClickListener {
-            val mediaIntent = Intent(this, SearchActivity::class.java)
+            val mediaIntent = Intent(this, MediaActivity::class.java)
             startActivity(mediaIntent)
         }
 

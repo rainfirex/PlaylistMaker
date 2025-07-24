@@ -5,22 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background_main_activity">
+    android:background="?attr/colorSecondaryVariant">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:layout_marginBottom="24dp">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="14dp"
-            android:text="@string/app_name"
-            android:textColor="@color/color_app_title"
-            android:textSize="22sp"
-            android:layout_gravity="center_vertical"/>
+            style="@style/TextViewTitle"
+            android:text="@string/app_name"/>
     </LinearLayout>
 
     <LinearLayout
@@ -29,56 +22,20 @@
         android:orientation="vertical"
         android:paddingHorizontal="16dp">
         <Button
+            style="@style/ButtonMenu"
             android:id="@+id/btnSearch"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:backgroundTint="@color/background_btn"
-            android:textColor="@color/color_btn"
-            android:layout_weight="1"
-            android:layout_marginBottom="@dimen/margin_bottom_btn"
             android:text="@string/btn_text_search"
-            android:textSize="@dimen/text_size_btn"
-
-            app:icon="@drawable/ic_search_24"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/color_btn"
-            app:cornerRadius="@dimen/radius_btn"
-            android:foreground="?attr/selectableItemBackground"/>
+            app:icon="@drawable/ic_search_24"/>
         <Button
+            style="@style/ButtonMenu"
             android:id="@+id/btnMedia"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:backgroundTint="@color/background_btn"
-            android:textColor="@color/color_btn"
-            android:layout_weight="1"
-            android:layout_marginBottom="@dimen/margin_bottom_btn"
             android:text="@string/btn_text_media"
-            android:textSize="@dimen/text_size_btn"
-            app:icon="@drawable/ic_media_24"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/color_btn"
-            app:cornerRadius="@dimen/radius_btn"
-            android:foreground="?attr/selectableItemBackground"/>
+            app:icon="@drawable/ic_media_24"/>
         <Button
+            style="@style/ButtonMenu"
             android:id="@+id/btnSetting"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:backgroundTint="@color/background_btn"
-            android:textColor="@color/color_btn"
-            android:layout_weight="1"
             android:layout_marginBottom="18dp"
             android:text="@string/btn_text_setting"
-            android:textSize="@dimen/text_size_btn"
-            app:icon="@drawable/ic_setting_24"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/icon_padding"
-            app:iconTint="@color/color_btn"
-            app:cornerRadius="@dimen/radius_btn"
-            android:foreground="?attr/selectableItemBackground"/>
+            app:icon="@drawable/ic_setting_24"/>
     </LinearLayout>
 </LinearLayout>

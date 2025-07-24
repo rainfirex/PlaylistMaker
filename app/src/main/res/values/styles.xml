@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextViewTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:textColor">@color/color_app_title</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:fontWeight">500</item>
+    </style>
+
+    <style name="ButtonMenu" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:backgroundTint">@color/background_btn</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_btn</item>
+        <item name="iconPadding">@dimen/icon_padding</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">?attr/colorOnSecondary</item>
+        <item name="cornerRadius">@dimen/radius_btn</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:fontWeight">500</item>
+    </style>
+
+    <style name="ButtonBackActivity">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginVertical">4dp</item>
+<!--        <item name="android:src">@drawable/ic_arrow_back_24</item>-->
+        <item name="android:scaleType">center</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="SettingItemFrameLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SettingItemTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:textSize">@dimen/setting_mnu_size</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:layout_marginStart">@dimen/setting_mnu_text_margin_start</item>
+        <item name="android:layout_marginVertical">@dimen/setting_mnu_text_margin_vertical</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="SettingItemImageView">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:layout_marginStart">@dimen/setting_mnu_ico_margin_start</item>
+        <item name="android:layout_marginEnd">@dimen/setting_mnu_ico_margin_end</item>
+        <item name="android:layout_marginTop">@dimen/setting_mnu_ico_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/setting_mnu_ico_margin_bottom</item>
+    </style>
+
+    <style name="SearchImageView">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:padding">10dp</item>
+    </style>
+</resources>
