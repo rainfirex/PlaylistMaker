@@ -9,6 +9,7 @@ import com.practicum.playlistmaker.R
 import androidx.core.net.toUri
 
 class SettingsActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -20,11 +21,9 @@ class SettingsActivity : AppCompatActivity() {
 
         val itemMenuShared = findViewById<FrameLayout>(R.id.itemMenuShared)
         itemMenuShared.setOnClickListener{
-            val url = "https://practicum.yandex.ru/android-developer"
-
             val intentShared = Intent(Intent.ACTION_SEND)
             intentShared.setType("text/plain")
-            intentShared.putExtra(Intent.EXTRA_TEXT, url)
+            intentShared.putExtra(Intent.EXTRA_TEXT, getString(R.string.url_android_dev))
 
             startActivity(Intent.createChooser(intentShared, getString(R.string.shared_title)))
         }
@@ -44,8 +43,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val itemMenuAgree = findViewById<FrameLayout>(R.id.itemMenuAgree)
         itemMenuAgree.setOnClickListener{
-            val url = "https://yandex.ru/legal/practicum_offer"
-            startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+            startActivity(Intent(Intent.ACTION_VIEW, getString(R.string.url_offer).toUri()))
         }
     }
 }
