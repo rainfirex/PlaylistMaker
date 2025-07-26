@@ -13,4 +13,5 @@
     <dimen name="setting_mnu_ico_margin_end">18dp</dimen>
     <dimen name="setting_mnu_ico_margin_top">19dp</dimen>
     <dimen name="setting_mnu_ico_margin_bottom">18dp</dimen>
+    <dimen name="search_edittext_size">16sp</dimen>
 </resources>

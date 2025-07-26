@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/MainLayout"
+    style="@style/SearchActivity"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:titleTextAppearance="@style/MaterialTitleColor"
+        app:title="@string/search_title"
+        app:navigationIcon="@drawable/ic_arrow_back_24"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <EditText
+            android:id="@+id/EditTextSearch"
+            style="@style/SearchEditTextColor"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:hint="@string/hint_edit_search"/>
+
+        <ImageView
+            android:id="@+id/ButtonClearSearch"
+            style="@style/SearchClearImageView"
+            android:contentDescription="@string/image_description"/>
+    </FrameLayout>
+</LinearLayout>
