@@ -4,11 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import com.practicum.playlistmaker.R
 
 class SearchActivity: AppCompatActivity() {
@@ -22,13 +27,20 @@ class SearchActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_search)
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.MainLayout)) { view, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(top = statusBar.top)
+            insets
+        }
+
         editTxtSearch = findViewById(R.id.EditTextSearch)
-        val btnBack = findViewById<ImageView>(R.id.btnBack)
+        val btnBack = findViewById<Toolbar>(R.id.toolbar)
         val btnClearSearch = findViewById<ImageView>(R.id.ButtonClearSearch)
 
-        btnBack.setOnClickListener{ finish() }
+        btnBack.setNavigationOnClickListener { finish() }
 
         btnClearSearch.setOnClickListener{
             editTxtSearch?.text?.clear()
@@ -42,13 +54,8 @@ class SearchActivity: AppCompatActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (!p0.isNullOrEmpty()){
-                    btnClearSearch.visibility = View.VISIBLE
-                    textSearch = p0.toString()
-                }
-                else{
-                    btnClearSearch.visibility = View.GONE
-                }
+                btnClearSearch.isVisible = ! p0.isNullOrEmpty()
+                textSearch = p0.toString()
             }
 
             override fun afterTextChanged(p0: Editable?) {

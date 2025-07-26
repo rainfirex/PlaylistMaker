@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SearchEditText">
+        <item name="android:drawableStart">@drawable/ic_search_16</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_gravity">start|center</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/search_edittext_size</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">28dp</item>
+        <item name="android:background">@drawable/edit_search_radius</item>
+    </style>
+
+    <style name="SearchEditTextColor" parent="SearchEditText">
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:textColor">@color/gray</item>
+
+    </style>
+
+    <style name="SearchClearImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_gravity">end|center</item>
+        <item name="android:src">@drawable/ic_clear_16</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:visibility">gone</item>
+    </style>
+</resources>

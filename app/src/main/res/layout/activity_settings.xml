@@ -1,92 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/MainLayout"
+    style="@style/SettingActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/colorPrimaryVariant">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
-        <ImageView
-            style="@style/ButtonBackActivity"
-            android:id="@+id/btnBack"
-            android:src="@drawable/ic_arrow_back_24"
-            android:contentDescription="@string/setting_title"/>
-        <FrameLayout
-            android:layout_width="208dp"
-            android:layout_height="48dp"
-            android:layout_marginVertical="4dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"
-                android:text="@string/setting_title"
-                android:textSize="22sp"
-                android:textColor="?attr/colorOnPrimary"
-                android:fontFamily="@font/ys_display_medium"
-                android:layout_gravity="center_vertical"/>
-        </FrameLayout>
+        android:layout_height="56dp"
+        app:titleTextAppearance="@style/MaterialTitleColor"
+        app:title="@string/setting_title"
+        app:navigationIcon="@drawable/ic_arrow_back_24"/>
 
-    </LinearLayout>
-    
-    <FrameLayout style="@style/SettingItemFrameLayout">
-        <TextView
-            style="@style/SettingItemTextView"
-            android:text="@string/setting_mnu_theme"/>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        style="@style/ItemSwitchMaterialColor"
+        android:text="@string/setting_mnu_theme"/>
 
-        <Switch
-            android:layout_width="56dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="11dp"
-            android:layout_marginEnd="6dp"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
-    </FrameLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemMenuShared"
+        style="@style/ItemMaterialTextViewColor"
+        android:drawableEnd="@drawable/ic_share_24"
+        android:text="@string/setting_mnu_shared"/>
 
-    <FrameLayout
-        style="@style/SettingItemFrameLayout"
-        android:id="@+id/itemMenuShared">
-        <TextView
-            style="@style/SettingItemTextView"
-            android:text="@string/setting_mnu_shared"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemMenuSupport"
+        style="@style/ItemMaterialTextViewColor"
+        android:drawableEnd="@drawable/ic_support_24"
+        android:text="@string/setting_mnu_support"/>
 
-        <ImageView
-            style="@style/SettingItemImageView"
-            android:contentDescription="@string/setting_mnu_shared"
-            android:src="@drawable/ic_share_24"
-            />
-    </FrameLayout>
-
-    <FrameLayout
-        style="@style/SettingItemFrameLayout"
-        android:id="@+id/itemMenuSupport">
-        <TextView
-            style="@style/SettingItemTextView"
-            android:text="@string/setting_mnu_support"/>
-
-        <ImageView
-            style="@style/SettingItemImageView"
-            android:contentDescription="@string/setting_mnu_support"
-            android:src="@drawable/ic_support_24"/>
-    </FrameLayout>
-
-    <FrameLayout
-        style="@style/SettingItemFrameLayout"
-        android:id="@+id/itemMenuAgree">
-        <TextView
-            style="@style/SettingItemTextView"
-            android:text="@string/setting_mnu_agree"/>
-
-        <ImageView
-            style="@style/SettingItemImageView"
-            android:contentDescription="@string/setting_mnu_agree"
-            android:src="@drawable/ic_arrow_forward_24"
-            />
-    </FrameLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemMenuAgree"
+        style="@style/ItemMaterialTextViewColor"
+        android:drawableEnd="@drawable/ic_arrow_forward_24"
+        android:text="@string/setting_mnu_agree"/>
 </LinearLayout>

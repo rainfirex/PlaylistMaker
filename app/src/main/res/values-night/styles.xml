@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="MainActivity">
-        <item name="android:background">@color/blue</item>
+        <item name="android:background">@color/dark</item>
     </style>
     <style name="SearchActivity">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/dark</item>
     </style>
     <style name="SettingActivity">
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/dark</item>
     </style>
 
     <style name="MaterialTitle">
@@ -16,7 +16,6 @@
     </style>
 
     <style name="MaterialTitleColor" parent="MaterialTitle">
-        <item name="android:textColor">@color/dark</item>
+        <item name="android:textColor">@color/white</item>
     </style>
-
 </resources>

@@ -2,24 +2,33 @@ package com.practicum.playlistmaker.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.practicum.playlistmaker.R
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+import com.google.android.material.textview.MaterialTextView
 
 class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
 
-        val btnBack = findViewById<ImageView>(R.id.btnBack)
-        btnBack.setOnClickListener{
-            finish()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.MainLayout)) { view, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(top = statusBar.top)
+            insets
         }
 
-        val itemMenuShared = findViewById<FrameLayout>(R.id.itemMenuShared)
+        val btnBack = findViewById<Toolbar>(R.id.toolbar)
+        btnBack.setNavigationOnClickListener{ finish() }
+
+        val itemMenuShared = findViewById<MaterialTextView>(R.id.itemMenuShared)
         itemMenuShared.setOnClickListener{
             val intentShared = Intent(Intent.ACTION_SEND)
             intentShared.setType("text/plain")
@@ -28,7 +37,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(intentShared, getString(R.string.shared_title)))
         }
 
-        val itemMenuSupport = findViewById<FrameLayout>(R.id.itemMenuSupport)
+        val itemMenuSupport = findViewById<MaterialTextView>(R.id.itemMenuSupport)
         itemMenuSupport.setOnClickListener{
             val subject = getString(R.string.support_subject)
             val message = getString(R.string.support_message)
@@ -41,7 +50,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intentSupport)
         }
 
-        val itemMenuAgree = findViewById<FrameLayout>(R.id.itemMenuAgree)
+        val itemMenuAgree = findViewById<MaterialTextView>(R.id.itemMenuAgree)
         itemMenuAgree.setOnClickListener{
             startActivity(Intent(Intent.ACTION_VIEW, getString(R.string.url_offer).toUri()))
         }
