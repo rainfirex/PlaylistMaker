@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/MainLayout"
     style="@style/SearchActivity"
     android:orientation="vertical"
@@ -10,16 +11,17 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/dp_56"
         app:titleTextAppearance="@style/MaterialTitleColor"
         app:title="@string/search_title"
         app:navigationIcon="@drawable/ic_arrow_back_24"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:layout_height="@dimen/dp_52"
+        android:paddingHorizontal="@dimen/dp_16"
+        android:paddingVertical="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_16">
 
         <EditText
             android:id="@+id/EditTextSearch"
@@ -33,4 +35,14 @@
             style="@style/SearchClearImageView"
             android:contentDescription="@string/image_description"/>
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTrack"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        tools:context="com.practicum.playlistmaker.activities.SearchActivity"
+        tools:orientation="vertical"
+        tools:listitem="@layout/item_search_track"
+        tools:itemCount="7"/>
 </LinearLayout>

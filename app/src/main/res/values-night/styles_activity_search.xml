@@ -4,4 +4,16 @@
         <item name="android:textColorHint">@color/dark</item>
         <item name="android:textColor">@color/dark</item>
     </style>
+
+    <style name="TextViewTrackColor" parent="TextViewTrack">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextViewInfoArtistColor" parent="TextViewInfoArtist">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextViewInfoTimeColor" parent="TextViewInfoTime">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

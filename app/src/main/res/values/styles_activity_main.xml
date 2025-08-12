@@ -3,20 +3,20 @@
     <style name="ButtonMenu" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:backgroundTint">@color/white</item>
-        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_height">@dimen/dp_0</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/text_size_btn</item>
-        <item name="iconPadding">@dimen/icon_padding</item>
+        <item name="android:textSize">@dimen/sp_22</item>
+        <item name="iconPadding">@dimen/dp_8</item>
         <item name="iconGravity">textStart</item>
         <item name="iconTint">?attr/colorOnSecondary</item>
-        <item name="cornerRadius">@dimen/radius_btn</item>
+        <item name="cornerRadius">@dimen/dp_16</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
-        <item name="android:layout_marginHorizontal">16dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginHorizontal">@dimen/dp_16</item>
+        <item name="android:layout_marginBottom">@dimen/dp_16</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:fontWeight">500</item>
-        <item name="android:elevation">0dp</item>
+        <item name="android:elevation">@dimen/dp_0</item>
     </style>
 </resources>
