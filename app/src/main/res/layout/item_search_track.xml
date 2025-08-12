@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        style="@style/SearchImageCover"
+        android:id="@+id/ImageCover"
+        android:contentDescription="@string/image_description"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            style="@style/TextViewTrackColor"
+            android:id="@+id/TextViewTrack"
+            tools:text="Yesterday (Remastered 2009)"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dp_1">
+            <TextView
+                style="@style/TextViewInfoArtistColor"
+                android:id="@+id/TextViewInfoArtist"
+                tools:text="The Beatles"/>
+            <ImageView
+                style="@style/SearchImageDelimiter"
+                android:contentDescription="@string/image_description"/>
+            <TextView
+                style="@style/TextViewInfoTimeColor"
+                android:id="@+id/TextViewInfoTime"
+                tools:text="2:02"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        style="@style/SearchImageForward"
+        android:id="@+id/ImageForward"
+        android:contentDescription="@string/image_description"/>
+</LinearLayout>

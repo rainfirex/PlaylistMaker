@@ -10,7 +10,7 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/dp_56"
         app:titleTextAppearance="@style/MaterialTitleColor"
         app:title="@string/setting_title"
         app:navigationIcon="@drawable/ic_arrow_back_24"/>

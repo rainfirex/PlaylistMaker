@@ -10,8 +10,8 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="@dimen/dp_56"
+        android:layout_marginBottom="@dimen/dp_24"
         app:titleTextAppearance="@style/MaterialTitleColor"
         app:titleTextColor="@color/white"
         app:title="@string/app_name"/>
@@ -29,7 +29,7 @@
     <Button
         style="@style/ButtonMenu"
         android:id="@+id/btnSetting"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="@dimen/dp_18"
         android:text="@string/btn_text_setting"
         app:icon="@drawable/ic_setting_24"/>
 </LinearLayout>
