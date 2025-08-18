@@ -17,4 +17,7 @@
     <!--SearchActivity-->
     <string name="hint_edit_search">Поиск</string>
     <string name="image_description">Иконка</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="no_internet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="btn_update">Обновить</string>
 </resources>

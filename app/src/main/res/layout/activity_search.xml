@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/MainLayout"
@@ -28,7 +29,9 @@
             style="@style/SearchEditTextColor"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:hint="@string/hint_edit_search"/>
+            android:hint="@string/hint_edit_search"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageView
             android:id="@+id/ButtonClearSearch"
@@ -44,5 +47,30 @@
         tools:context="com.practicum.playlistmaker.activities.SearchActivity"
         tools:orientation="vertical"
         tools:listitem="@layout/item_search_track"
-        tools:itemCount="7"/>
+        tools:itemCount="7"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/layoutFail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imgSearchFail"
+            style="@style/SearchFailImageView"
+            android:contentDescription="@string/image_description"/>
+
+        <TextView
+            android:id="@+id/txtViewSearchFailMessage"
+            style="@style/TextViewFailColor"
+            android:text="@string/nothing_found"/>
+
+        <Button
+            style="@style/ButtonFailUpdateColor"
+            android:id="@+id/btnSearchFailUpdate"
+            android:text="@string/btn_update"/>
+    </LinearLayout>
 </LinearLayout>
