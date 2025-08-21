@@ -35,10 +35,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity: AppCompatActivity() {
-    companion object{
-        private const val BASE_URL = "https://itunes.apple.com"
-        const val TEXT_SEARCH_KEY = "SEARCH_KEY"
-    }
 
     private var editTxtSearch: EditText? = null
     private var textSearch: String? = null
@@ -55,7 +51,7 @@ class SearchActivity: AppCompatActivity() {
 
     private val serviceSearch = retrofit.create(TrackSearchApi::class.java)
 
-    private val tracks = ArrayList<Track>()
+    private val tracks = mutableListOf<Track>()
 
     private val adaptor = SearchTrackAdaptor()
 
@@ -151,9 +147,10 @@ class SearchActivity: AppCompatActivity() {
                 override fun onResponse(call: Call<TrackSearchResponse>, response: Response<TrackSearchResponse>) {
                     tracks.clear()
 
-                    if(response.code() == 200){
-                        if(response.body()?.results?.isNotEmpty() == true){
-                            tracks.addAll(response.body()?.results!!)
+                    if(response.isSuccessful){
+                        val data = response.body()?.results
+                        if(data?.isNotEmpty() == true){
+                            tracks.addAll(data)
                             rvTrack.isVisible = true
                         }
                         else{
@@ -186,5 +183,10 @@ class SearchActivity: AppCompatActivity() {
 
         rvTrack.isVisible = false
         layoutFail.isVisible = true
+    }
+
+    companion object{
+        private const val BASE_URL = "https://itunes.apple.com"
+        const val TEXT_SEARCH_KEY = "SEARCH_KEY"
     }
 }

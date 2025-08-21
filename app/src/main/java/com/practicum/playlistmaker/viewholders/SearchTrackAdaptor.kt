@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.models.Track
 
 class SearchTrackAdaptor : RecyclerView.Adapter<SearchTrackViewHolder>(){
 
-    var data = ArrayList<Track>()
+    var data = mutableListOf<Track>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTrackViewHolder {
         return SearchTrackViewHolder(parent)
