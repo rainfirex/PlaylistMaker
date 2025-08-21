@@ -12,6 +12,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.utils.Helper
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class SearchTrackViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -29,9 +31,12 @@ class SearchTrackViewHolder(view: View): RecyclerView.ViewHolder(view) {
     )
 
     fun bind(track: Track){
-        tvTrack.text = track.trackName
-        tvInfoArtist.text = track.artistName
-        tvInfoTime.text = track.trackTime
+        if (track.trackName.isNullOrEmpty() || track.artistName.isNullOrEmpty()) return
+
+        tvTrack.text = track.trackName.trim()
+        tvInfoArtist.text = track.artistName.trim()
+        tvInfoTime.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
         Glide.with(layout)
             .load(track.artworkUrl100)
@@ -39,6 +44,7 @@ class SearchTrackViewHolder(view: View): RecyclerView.ViewHolder(view) {
             .transform(RoundedCorners(roundedCorner))
             .placeholder(R.drawable.ic_track_placeholder_45)
             .into(imgCover)
+
     }
 
 }

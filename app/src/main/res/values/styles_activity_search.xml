@@ -50,7 +50,7 @@
     </style>
 
     <style name="TextViewInfoArtist">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">@dimen/sp_11</item>
@@ -69,10 +69,11 @@
     </style>
 
     <style name="TextViewInfoTime">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/dp_1</item>
         <item name="android:textSize">@dimen/sp_11</item>
+        <item name="android:singleLine">true</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
 
@@ -87,5 +88,42 @@
         <item name="android:layout_marginEnd">@dimen/dp_12</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:src">@drawable/ic_arrow_forward_24</item>
+    </style>
+
+    <style name="SearchFailImageView">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:layout_marginTop">102dp</item>
+        <item name="android:src">@drawable/ic_nothing_found_120</item>
+    </style>
+
+    <style name="TextViewFail">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/dp_16</item>
+        <item name="android:layout_marginHorizontal">@dimen/dp_24</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/sp_19</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="TextViewFailColor" parent="TextViewFail">
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="ButtonFailUpdate" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/dp_24</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:text">@string/btn_update</item>
+        <item name="cornerRadius">@dimen/dp_54</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ButtonFailUpdateColor" parent="ButtonFailUpdate">
+        <item name="android:backgroundTint">#1A1B22</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 </resources>
