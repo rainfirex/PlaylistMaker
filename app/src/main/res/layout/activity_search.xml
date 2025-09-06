@@ -73,4 +73,33 @@
             android:id="@+id/btnSearchFailUpdate"
             android:text="@string/btn_update"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            style="@style/TextViewYourSearchColor"
+            android:text="@string/text_view_your_search"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:fillViewport="true">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </ScrollView>
+
+        <Button
+            style="@style/ButtonClearHistoryColor"
+            android:id="@+id/btnClearHistory"
+            android:text="@string/btn_clear_search_history"/>
+    </LinearLayout>
+
 </LinearLayout>

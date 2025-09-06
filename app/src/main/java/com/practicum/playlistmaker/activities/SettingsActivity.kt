@@ -10,13 +10,22 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
+import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.CONFIG
+import com.practicum.playlistmaker.THEME
+import androidx.core.content.edit
 
 class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+
+        val sharedPrefs = getSharedPreferences(CONFIG, MODE_PRIVATE)
+
         setContentView(R.layout.activity_settings)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.MainLayout)) { view, insets ->
@@ -53,6 +62,13 @@ class SettingsActivity : AppCompatActivity() {
         val itemMenuAgree = findViewById<MaterialTextView>(R.id.itemMenuAgree)
         itemMenuAgree.setOnClickListener{
             startActivity(Intent(Intent.ACTION_VIEW, getString(R.string.url_offer).toUri()))
+        }
+
+        val itemThemeSwitcher = findViewById<SwitchMaterial>(R.id.itemThemeSwitcher)
+        itemThemeSwitcher.isChecked = sharedPrefs.getBoolean(THEME, false)
+        itemThemeSwitcher.setOnCheckedChangeListener{ _, isChecked ->
+            (applicationContext as App).switchTheme(isChecked)
+            sharedPrefs.edit() { putBoolean(THEME, isChecked) }
         }
     }
 }
