@@ -16,14 +16,14 @@ class Helper {
 
         fun visibleKeyboard(v: View, isShow: Boolean){
             val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            if(imm != null){
-                if(isShow)
-                {
-                    imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT)
-                }
-                else{
-                    imm.hideSoftInputFromWindow(v.windowToken, 0)
-                }
+                ?: return
+
+            if(isShow)
+            {
+                imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT)
+            }
+            else{
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
             }
         }
     }

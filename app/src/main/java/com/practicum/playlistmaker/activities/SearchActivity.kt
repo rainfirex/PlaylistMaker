@@ -2,9 +2,6 @@ package com.practicum.playlistmaker.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
@@ -20,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -37,8 +35,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity: AppCompatActivity() {
-    private var editTxtSearch: EditText? = null
-    private var textSearch: String? = null
+    private lateinit var editTxtSearch: EditText
+    private lateinit var textSearch: String
     private lateinit var rvTrack: RecyclerView
     private lateinit var rvHistory: RecyclerView
     private lateinit var imgSearchFail: ImageView
@@ -73,7 +71,7 @@ class SearchActivity: AppCompatActivity() {
             insets
         }
 
-        historyService = SearchHistoryService(this)
+        historyService = SearchHistoryService(applicationContext)
 
         searchAdaptor.data = tracks
 
@@ -94,7 +92,7 @@ class SearchActivity: AppCompatActivity() {
 
         btnClearSearch.setOnClickListener{
             Helper.visibleKeyboard(btnClearSearch, false)
-            editTxtSearch?.text?.clear()
+            editTxtSearch.text?.clear()
             tracks.clear()
             searchAdaptor.notifyDataSetChanged()
 
@@ -111,39 +109,30 @@ class SearchActivity: AppCompatActivity() {
             layoutHistory.isVisible = false
         }
 
-        val searchWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                btnClearSearch.isVisible = !p0.isNullOrEmpty()
-
-                layoutHistory.isVisible = p0.isNullOrEmpty()
-
-                textSearch = p0.toString()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        }
-
         btnSearchFailUpdate.setOnClickListener{
-            if (textSearch != null)
-                searchTracks(textSearch!!)
+            textSearch.let { searchTracks(it) }
         }
 
-        editTxtSearch?.addTextChangedListener(searchWatcher)
-        editTxtSearch?.setOnEditorActionListener { _, actionId, _ ->
+        editTxtSearch.doOnTextChanged{ p0: CharSequence?, p1: Int, p2: Int, p3: Int ->
+            btnClearSearch.isVisible = !p0.isNullOrEmpty()
+
+            layoutHistory.isVisible = p0.isNullOrEmpty()
+
+            textSearch = p0.toString()
+        }
+        editTxtSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val txt = editTxtSearch!!.text.trim().toString()
+                val txt = editTxtSearch.text.trim().toString()
                 searchTracks(txt)
             }
             false
         }
-        editTxtSearch?.setOnFocusChangeListener{ view, hasFocus ->
+        editTxtSearch.setOnFocusChangeListener{ view, hasFocus ->
             layoutHistory.isVisible = (hasFocus && (view as EditText).text.isNullOrEmpty())
         }
-        editTxtSearch?.requestFocus()
-        editTxtSearch?.postDelayed({
-            Helper.visibleKeyboard(editTxtSearch as View, true)
+        editTxtSearch.requestFocus()
+        editTxtSearch.postDelayed({
+            Helper.visibleKeyboard(editTxtSearch, true)
         }, 100)
 
         rvTrack.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -160,7 +149,7 @@ class SearchActivity: AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        if (!textSearch.isNullOrEmpty()){
+        if (textSearch.isNullOrEmpty()){
             outState.putString(TEXT_SEARCH_KEY, textSearch)
         }
     }
@@ -170,7 +159,7 @@ class SearchActivity: AppCompatActivity() {
 
         val value = savedInstanceState.getString(TEXT_SEARCH_KEY)
         if (!value.isNullOrEmpty()){
-            editTxtSearch?.setText(value)
+            editTxtSearch.setText(value)
         }
     }
 
