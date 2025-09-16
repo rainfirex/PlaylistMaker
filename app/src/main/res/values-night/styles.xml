@@ -9,7 +9,9 @@
     <style name="SettingActivity">
         <item name="android:background">@color/dark</item>
     </style>
-
+    <style name="AudioPlayerActivity">
+        <item name="android:background">@color/dark</item>
+    </style>
     <style name="MaterialTitle">
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>

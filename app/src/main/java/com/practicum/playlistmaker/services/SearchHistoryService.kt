@@ -9,10 +9,10 @@ import com.practicum.playlistmaker.models.Track
 import androidx.core.content.edit
 import com.practicum.playlistmaker.viewholders.SearchTrackAdaptor
 
-class SearchHistoryService(ctx: Context) {
+class SearchHistoryService(ctx: Context, val onItemClick: ( (Int, Track) -> Unit)? = null) {
     private var sharedPrefs: SharedPreferences = ctx.getSharedPreferences(HISTORY_DATA_FILE, MODE_PRIVATE)
     private val gson = Gson()
-    private val historyAdaptor = SearchTrackAdaptor()
+    private val historyAdaptor = SearchTrackAdaptor(onItemClick)
     private val tracks = load()
 
     init {

@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -8,7 +9,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +21,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.api.TrackSearchApi
 import com.practicum.playlistmaker.models.Track
@@ -36,7 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity: AppCompatActivity() {
     private lateinit var editTxtSearch: EditText
-    private lateinit var textSearch: String
+    private var textSearch: String = ""
     private lateinit var rvTrack: RecyclerView
     private lateinit var rvHistory: RecyclerView
     private lateinit var imgSearchFail: ImageView
@@ -57,7 +58,7 @@ class SearchActivity: AppCompatActivity() {
 
     private val searchAdaptor = SearchTrackAdaptor(onItemClick = { position, track ->
         historyService.add(track, position)
-        Toast.makeText(this, track.trackName, Toast.LENGTH_SHORT).show()
+        showAudioPlayer(track)
     })
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +72,9 @@ class SearchActivity: AppCompatActivity() {
             insets
         }
 
-        historyService = SearchHistoryService(applicationContext)
+        historyService = SearchHistoryService(applicationContext, onItemClick = { _, track ->
+            showAudioPlayer(track)
+        })
 
         searchAdaptor.data = tracks
 
@@ -149,7 +152,7 @@ class SearchActivity: AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        if (textSearch.isNullOrEmpty()){
+        if (textSearch.isNotEmpty()){
             outState.putString(TEXT_SEARCH_KEY, textSearch)
         }
     }
@@ -214,6 +217,14 @@ class SearchActivity: AppCompatActivity() {
 
         rvTrack.isVisible = false
         layoutFail.isVisible = true
+    }
+
+    private fun showAudioPlayer(track: Track){
+        val gson = Gson()
+
+        val intent = Intent(this, AudioPlayerActivity::class.java)
+        intent.putExtra(AudioPlayerActivity.TRACK_KEY, gson.toJson(track))
+        startActivity(intent)
     }
 
     companion object{
