@@ -1,12 +1,9 @@
 package com.practicum.playlistmaker.activities
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -20,13 +17,17 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.api.TrackSearchApi
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.responses.TrackSearchResponse
+import com.practicum.playlistmaker.services.SearchHistoryService
+import com.practicum.playlistmaker.utils.Helper
 import com.practicum.playlistmaker.viewholders.SearchTrackAdaptor
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,25 +36,30 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity: AppCompatActivity() {
-
-    private var editTxtSearch: EditText? = null
-    private var textSearch: String? = null
+    private lateinit var editTxtSearch: EditText
+    private var textSearch: String = ""
     private lateinit var rvTrack: RecyclerView
+    private lateinit var rvHistory: RecyclerView
     private lateinit var imgSearchFail: ImageView
     private lateinit var txtViewSearchFailMessage: TextView
     private lateinit var btnSearchFailUpdate: Button
     private lateinit var layoutFail: LinearLayout
+    private lateinit var layoutHistory: LinearLayout
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val serviceSearch = retrofit.create(TrackSearchApi::class.java)
+    private val serviceSearchApi = retrofit.create(TrackSearchApi::class.java)
+    private lateinit var historyService: SearchHistoryService
 
     private val tracks = mutableListOf<Track>()
 
-    private val adaptor = SearchTrackAdaptor()
+    private val searchAdaptor = SearchTrackAdaptor(onItemClick = { position, track ->
+        historyService.add(track, position)
+        showAudioPlayer(track)
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,66 +72,87 @@ class SearchActivity: AppCompatActivity() {
             insets
         }
 
-        adaptor.data = tracks
+        historyService = SearchHistoryService(applicationContext, onItemClick = { _, track ->
+            showAudioPlayer(track)
+        })
+
+        searchAdaptor.data = tracks
 
         layoutFail = findViewById(R.id.layoutFail)
+        layoutHistory = findViewById(R.id.layoutHistory)
         btnSearchFailUpdate = findViewById(R.id.btnSearchFailUpdate)
         txtViewSearchFailMessage = findViewById(R.id.txtViewSearchFailMessage)
         imgSearchFail = findViewById(R.id.imgSearchFail)
         editTxtSearch = findViewById(R.id.EditTextSearch)
+        rvTrack = findViewById(R.id.rvTrack)
+        rvHistory = findViewById(R.id.rvHistory)
+
         val btnBack = findViewById<Toolbar>(R.id.toolbar)
         val btnClearSearch = findViewById<ImageView>(R.id.ButtonClearSearch)
+        val btnClearHistory = findViewById<Button>(R.id.btnClearHistory)
 
         btnBack.setNavigationOnClickListener { finish() }
 
         btnClearSearch.setOnClickListener{
-            editTxtSearch?.text?.clear()
-
+            Helper.visibleKeyboard(btnClearSearch, false)
+            editTxtSearch.text?.clear()
             tracks.clear()
-            adaptor.notifyDataSetChanged()
+            searchAdaptor.notifyDataSetChanged()
 
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(btnClearSearch.windowToken, 0)
-        }
+            layoutFail.isVisible = false
+            rvTrack.isVisible = false
 
-        val searchWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                btnClearSearch.isVisible = ! p0.isNullOrEmpty()
-                textSearch = p0.toString()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
+            if(historyService.countItems() > 0){
+                layoutHistory.isVisible = true
             }
         }
 
+        btnClearHistory.setOnClickListener{
+            historyService.clear()
+            layoutHistory.isVisible = false
+        }
 
         btnSearchFailUpdate.setOnClickListener{
-            if (textSearch != null)
-                searchTracks(textSearch!!)
+            textSearch.let { searchTracks(it) }
         }
 
-        editTxtSearch?.addTextChangedListener(searchWatcher)
-        editTxtSearch?.setOnEditorActionListener { _, actionId, _ ->
+        editTxtSearch.doOnTextChanged{ p0: CharSequence?, p1: Int, p2: Int, p3: Int ->
+            btnClearSearch.isVisible = !p0.isNullOrEmpty()
+
+            layoutHistory.isVisible = p0.isNullOrEmpty()
+
+            textSearch = p0.toString()
+        }
+        editTxtSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val txt = editTxtSearch!!.text.trim().toString()
+                val txt = editTxtSearch.text.trim().toString()
                 searchTracks(txt)
-                true
             }
             false
         }
+        editTxtSearch.setOnFocusChangeListener{ view, hasFocus ->
+            layoutHistory.isVisible = (hasFocus && (view as EditText).text.isNullOrEmpty())
+        }
+        editTxtSearch.requestFocus()
+        editTxtSearch.postDelayed({
+            Helper.visibleKeyboard(editTxtSearch, true)
+        }, 100)
 
-        rvTrack = findViewById(R.id.rvTrack)
         rvTrack.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rvTrack.adapter = adaptor
+        rvTrack.adapter = searchAdaptor
+
+        rvHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rvHistory.adapter = historyService.getAdaptor()
+
+        if(historyService.countItems() == 0){
+            layoutHistory.isVisible = false
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        if (!textSearch.isNullOrEmpty()){
+        if (textSearch.isNotEmpty()){
             outState.putString(TEXT_SEARCH_KEY, textSearch)
         }
     }
@@ -135,12 +162,19 @@ class SearchActivity: AppCompatActivity() {
 
         val value = savedInstanceState.getString(TEXT_SEARCH_KEY)
         if (!value.isNullOrEmpty()){
-            editTxtSearch?.setText(value)
+            editTxtSearch.setText(value)
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        historyService.save()
+    }
+
     private fun searchTracks(text: String){
-        serviceSearch.getTracks(text)
+        if(text.isEmpty()) return
+
+        serviceSearchApi.getTracks(text)
             .enqueue(object : Callback<TrackSearchResponse>{
 
                 @SuppressLint("NotifyDataSetChanged")
@@ -160,13 +194,13 @@ class SearchActivity: AppCompatActivity() {
                     else{
                         responseFailShow(R.string.no_internet, R.drawable.ic_no_internet_120)
                     }
-                    adaptor.notifyDataSetChanged()
+                    searchAdaptor.notifyDataSetChanged()
                 }
 
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
                     tracks.clear()
-                    adaptor.notifyDataSetChanged()
+                    searchAdaptor.notifyDataSetChanged()
                     responseFailShow(R.string.no_internet, R.drawable.ic_no_internet_120)
                 }
             })
@@ -183,6 +217,14 @@ class SearchActivity: AppCompatActivity() {
 
         rvTrack.isVisible = false
         layoutFail.isVisible = true
+    }
+
+    private fun showAudioPlayer(track: Track){
+        val gson = Gson()
+
+        val intent = Intent(this, AudioPlayerActivity::class.java)
+        intent.putExtra(AudioPlayerActivity.TRACK_KEY, gson.toJson(track))
+        startActivity(intent)
     }
 
     companion object{
