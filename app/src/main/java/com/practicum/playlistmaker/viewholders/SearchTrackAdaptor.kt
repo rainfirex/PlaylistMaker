@@ -1,10 +1,11 @@
 package com.practicum.playlistmaker.viewholders
 
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.models.Track
 
-class SearchTrackAdaptor(private val onItemClick: ( (Int, Track) -> Unit)? = null) : RecyclerView.Adapter<SearchTrackViewHolder>(){
+class SearchTrackAdaptor : RecyclerView.Adapter<SearchTrackViewHolder>(){
 
     var data = mutableListOf<Track>()
 
@@ -19,7 +20,7 @@ class SearchTrackAdaptor(private val onItemClick: ( (Int, Track) -> Unit)? = nul
     override fun onBindViewHolder(holder: SearchTrackViewHolder, position: Int) {
         holder.bind(data[position])
         holder.itemView.setOnClickListener{
-            onItemClick?.invoke(position, data[position])
+            Toast.makeText(holder.itemView.context, data[position].trackName, Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -16,7 +16,6 @@
         app:navigationIcon="@drawable/ic_arrow_back_24"/>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/itemThemeSwitcher"
         style="@style/ItemSwitchMaterialColor"
         android:text="@string/setting_mnu_theme"/>
 
