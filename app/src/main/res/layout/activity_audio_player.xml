@@ -135,10 +135,11 @@
     <TextView
         android:id="@+id/textViewTrackAlbumNameValue"
         style="@style/TextViewTrackAlbumNameValueColor"
+        app:layout_constraintStart_toEndOf="@id/textViewTrackAlbumName"
         app:layout_constraintTop_toBottomOf="@id/textViewTrackDurationValue"
         app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
         app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackAlbumName"
-        tools:text="Yesterday (Remastered)"/>
+        tools:text="Yesterday (Remastered) long title, long title, long title, long title, long title, long title, long title, "/>
     <TextView
         android:id="@+id/textViewTrackReleaseDateValue"
         style="@style/TextViewTrackReleaseDateValueColor"

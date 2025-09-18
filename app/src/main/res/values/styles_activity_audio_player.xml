@@ -76,73 +76,81 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="TextViewTrackBase">
+    <style name="TextViewTrackBaseProperty">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/sp_13</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
 
-    <style name="TextViewTrackDuration" parent="TextViewTrackBase">
+    <style name="TextViewTrackBaseValue" parent="TextViewTrackBaseProperty">
+        <item name="android:gravity">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginStart">@dimen/dp_16</item>
+    </style>
+
+    <style name="TextViewTrackDuration" parent="TextViewTrackBaseProperty">
         <item name="android:layout_marginTop">@dimen/dp_30</item>
     </style>
     <style name="TextViewTrackDurationColor" parent="TextViewTrackDuration">
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="TextViewTrackAlbumName" parent="TextViewTrackBase">
+    <style name="TextViewTrackAlbumName" parent="TextViewTrackBaseProperty">
         <item name="android:layout_marginTop">@dimen/dp_17</item>
     </style>
     <style name="TextViewTrackAlbumNameColor" parent="TextViewTrackAlbumName">
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="TextViewTrackReleaseDate" parent="TextViewTrackBase">
+    <style name="TextViewTrackReleaseDate" parent="TextViewTrackBaseProperty">
         <item name="android:layout_marginTop">@dimen/dp_17</item>
     </style>
     <style name="TextViewTrackReleaseDateColor" parent="TextViewTrackReleaseDate">
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="TextViewTrackGenre" parent="TextViewTrackBase">
+    <style name="TextViewTrackGenre" parent="TextViewTrackBaseProperty">
         <item name="android:layout_marginTop">@dimen/dp_17</item>
     </style>
     <style name="TextViewTrackGenreColor" parent="TextViewTrackGenre">
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="TextViewTrackCountry" parent="TextViewTrackBase">
+    <style name="TextViewTrackCountry" parent="TextViewTrackBaseProperty">
         <item name="android:layout_marginTop">@dimen/dp_17</item>
     </style>
     <style name="TextViewTrackCountryColor" parent="TextViewTrackCountry">
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="TextViewTrackDurationValue" parent="TextViewTrackBase">
+    <style name="TextViewTrackDurationValue" parent="TextViewTrackBaseProperty">
     </style>
     <style name="TextViewTrackDurationValueColor" parent="TextViewTrackDurationValue">
         <item name="android:textColor">@color/dark</item>
     </style>
 
-    <style name="TextViewTrackAlbumNameValue" parent="TextViewTrackBase">
+    <style name="TextViewTrackAlbumNameValue" parent="TextViewTrackBaseValue">
+        <item name="android:layout_width">@dimen/dp_0</item>
     </style>
     <style name="TextViewTrackAlbumNameValueColor" parent="TextViewTrackAlbumNameValue">
         <item name="android:textColor">@color/dark</item>
     </style>
 
-    <style name="TextViewTrackReleaseDateValue" parent="TextViewTrackBase">
+    <style name="TextViewTrackReleaseDateValue" parent="TextViewTrackBaseProperty">
     </style>
     <style name="TextViewTrackReleaseDateValueColor" parent="TextViewTrackReleaseDateValue">
         <item name="android:textColor">@color/dark</item>
     </style>
 
-    <style name="TextViewTrackGenreValue" parent="TextViewTrackBase">
+    <style name="TextViewTrackGenreValue" parent="TextViewTrackBaseProperty">
     </style>
     <style name="TextViewTrackGenreValueColor" parent="TextViewTrackGenreValue">
         <item name="android:textColor">@color/dark</item>
     </style>
 
-    <style name="TextViewTrackCountryValue" parent="TextViewTrackBase">
+    <style name="TextViewTrackCountryValue" parent="TextViewTrackBaseProperty">
     </style>
     <style name="TextViewTrackCountryValueColor" parent="TextViewTrackCountryValue">
         <item name="android:textColor">@color/dark</item>
