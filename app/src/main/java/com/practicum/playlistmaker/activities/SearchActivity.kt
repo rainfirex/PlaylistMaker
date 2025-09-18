@@ -220,10 +220,11 @@ class SearchActivity: AppCompatActivity() {
     }
 
     private fun showAudioPlayer(track: Track){
-        val gson = Gson()
+        //val gson = Gson()
 
         val intent = Intent(this, AudioPlayerActivity::class.java)
-        intent.putExtra(AudioPlayerActivity.TRACK_KEY, gson.toJson(track))
+        intent.putExtra(AudioPlayerActivity.TRACK_KEY, track)
+            //intent.putExtra(AudioPlayerActivity.TRACK_KEY, gson.toJson(track))
         startActivity(intent)
     }
 

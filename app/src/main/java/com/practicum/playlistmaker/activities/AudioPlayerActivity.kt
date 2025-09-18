@@ -12,15 +12,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.models.Track
+import com.practicum.playlistmaker.utils.Helper
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity: AppCompatActivity() {
-
-    private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -34,8 +34,10 @@ class AudioPlayerActivity: AppCompatActivity() {
         }
 
         val intent: Intent = intent
-        val strTrack = intent.getStringExtra(TRACK_KEY)
-        val track = gson.fromJson(strTrack, Track::class.java)
+        val track = intent.getParcelableExtra<Track>(TRACK_KEY) as Track
+//        val strTrack = intent.getStringExtra(TRACK_KEY)
+//        val gson = Gson()
+//        val track = gson.fromJson(strTrack, Track::class.java)
 
         val btnBack = findViewById<Toolbar>(R.id.toolbar)
         btnBack.setNavigationOnClickListener { finish() }
@@ -57,9 +59,12 @@ class AudioPlayerActivity: AppCompatActivity() {
         artistName.text = track.artistName
         trackTimer.text = SimpleDateFormat("m:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
+        val roundedCorner = Helper.dpToPx(8f, applicationContext)
+
         Glide.with(applicationContext)
             .load(track.getCoverArtwork())
             .centerCrop()
+            .transform(RoundedCorners(roundedCorner))
             .placeholder(R.drawable.ic_album_image_placeholder_312)
             .into(imageTrack)
 
