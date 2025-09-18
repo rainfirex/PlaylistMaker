@@ -22,4 +22,9 @@
     <string name="nothing_found">Nothing was found</string>
     <string name="text_view_your_search">You were looking</string>
     <string name="btn_clear_search_history">Clear the history</string>
+    <string name="duration">Duration</string>
+    <string name="album">Album</string>
+    <string name="year">Year</string>
+    <string name="genre">Genre</string>
+    <string name="country">Country</string>
 </resources>

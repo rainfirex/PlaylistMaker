@@ -22,4 +22,10 @@
     <string name="btn_update">Обновить</string>
     <string name="text_view_your_search">Вы искали</string>
     <string name="btn_clear_search_history">Очистить историю</string>
+    <!--AudioPlayerActivity-->
+    <string name="duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
 </resources>
