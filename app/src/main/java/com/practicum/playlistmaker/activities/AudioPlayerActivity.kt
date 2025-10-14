@@ -17,6 +17,7 @@ import androidx.core.view.updatePadding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.enums.StateMediaPlayer
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.utils.Helper
 import java.text.SimpleDateFormat
@@ -24,7 +25,7 @@ import java.util.Locale
 
 class AudioPlayerActivity: AppCompatActivity() {
 
-    private var playerState = STATE_DEFAULT
+    private var playerState = StateMediaPlayer.STATE_DEFAULT
 
     private var mediaPlayer = MediaPlayer()
 
@@ -122,40 +123,43 @@ class AudioPlayerActivity: AppCompatActivity() {
     }
 
     private fun preparePlayer(url: String) {
+        val defaultTime = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
+
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
             btnPlay.isEnabled = true
-            playerState = STATE_PREPARED
-            trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
+            playerState = StateMediaPlayer.STATE_PREPARED
+            trackTimer.text = defaultTime
         }
         mediaPlayer.setOnCompletionListener {
             btnPlay.setImageResource(R.drawable.ic_play_83)
-            playerState = STATE_PREPARED
+            playerState = StateMediaPlayer.STATE_PREPARED
 
             handler.removeCallbacks( timerTaskRunnable )
-            trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
+            trackTimer.text = defaultTime
         }
     }
 
     private fun playbackControl() {
         when(playerState) {
-            STATE_PLAYING -> pausePlayer()
-            STATE_PREPARED, STATE_PAUSED -> startPlayer()
+            StateMediaPlayer.STATE_PLAYING -> pausePlayer()
+            StateMediaPlayer.STATE_PREPARED, StateMediaPlayer.STATE_PAUSED -> startPlayer()
+            StateMediaPlayer.STATE_DEFAULT -> {}
         }
     }
 
     private fun startPlayer() {
         mediaPlayer.start()
         btnPlay.setImageResource(R.drawable.ic_pause_83)
-        playerState = STATE_PLAYING
+        playerState = StateMediaPlayer.STATE_PLAYING
         handler.post(timerTaskRunnable)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         btnPlay.setImageResource(R.drawable.ic_play_83)
-        playerState = STATE_PAUSED
+        playerState = StateMediaPlayer.STATE_PAUSED
         handler.removeCallbacks( timerTaskRunnable )
     }
 
@@ -172,10 +176,6 @@ class AudioPlayerActivity: AppCompatActivity() {
 
     companion object{
         const val TRACK_KEY = "track"
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         private const val DELAY = 500L
     }
 }
