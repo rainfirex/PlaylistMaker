@@ -3,11 +3,14 @@ package com.practicum.playlistmaker.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
@@ -21,7 +24,6 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.api.TrackSearchApi
 import com.practicum.playlistmaker.models.Track
@@ -45,6 +47,7 @@ class SearchActivity: AppCompatActivity() {
     private lateinit var btnSearchFailUpdate: Button
     private lateinit var layoutFail: LinearLayout
     private lateinit var layoutHistory: LinearLayout
+    private lateinit var progressBar: ProgressBar
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -57,9 +60,17 @@ class SearchActivity: AppCompatActivity() {
     private val tracks = mutableListOf<Track>()
 
     private val searchAdaptor = SearchTrackAdaptor(onItemClick = { position, track ->
-        historyService.add(track, position)
-        showAudioPlayer(track)
+        if(clickItemDebounce()){
+            historyService.add(track, position)
+            showAudioPlayer(track)
+        }
     })
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private var searchTracksRunnable = Runnable { searchTracks() }
+
+    private var isClickAllow: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +84,9 @@ class SearchActivity: AppCompatActivity() {
         }
 
         historyService = SearchHistoryService(applicationContext, onItemClick = { _, track ->
-            showAudioPlayer(track)
+            if(clickItemDebounce()){
+                showAudioPlayer(track)
+            }
         })
 
         searchAdaptor.data = tracks
@@ -86,6 +99,7 @@ class SearchActivity: AppCompatActivity() {
         editTxtSearch = findViewById(R.id.EditTextSearch)
         rvTrack = findViewById(R.id.rvTrack)
         rvHistory = findViewById(R.id.rvHistory)
+        progressBar = findViewById(R.id.progressBar)
 
         val btnBack = findViewById<Toolbar>(R.id.toolbar)
         val btnClearSearch = findViewById<ImageView>(R.id.ButtonClearSearch)
@@ -113,7 +127,7 @@ class SearchActivity: AppCompatActivity() {
         }
 
         btnSearchFailUpdate.setOnClickListener{
-            textSearch.let { searchTracks(it) }
+            searchTracks()
         }
 
         editTxtSearch.doOnTextChanged{ p0: CharSequence?, p1: Int, p2: Int, p3: Int ->
@@ -121,12 +135,13 @@ class SearchActivity: AppCompatActivity() {
 
             layoutHistory.isVisible = p0.isNullOrEmpty()
 
-            textSearch = p0.toString()
+            textSearch = p0.toString().trim()
+
+            searchTracksDebounce()
         }
         editTxtSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val txt = editTxtSearch.text.trim().toString()
-                searchTracks(txt)
+                searchTracks()
             }
             false
         }
@@ -171,10 +186,13 @@ class SearchActivity: AppCompatActivity() {
         historyService.save()
     }
 
-    private fun searchTracks(text: String){
-        if(text.isEmpty()) return
+    private fun searchTracks(){
+        if(textSearch.isEmpty()) return
 
-        serviceSearchApi.getTracks(text)
+        rvTrack.isVisible = false
+        progressBar.isVisible = true
+
+        serviceSearchApi.getTracks(textSearch)
             .enqueue(object : Callback<TrackSearchResponse>{
 
                 @SuppressLint("NotifyDataSetChanged")
@@ -194,12 +212,15 @@ class SearchActivity: AppCompatActivity() {
                     else{
                         responseFailShow(R.string.no_internet, R.drawable.ic_no_internet_120)
                     }
+                    progressBar.isVisible = false
+                    rvTrack.isVisible = true
                     searchAdaptor.notifyDataSetChanged()
                 }
 
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
                     tracks.clear()
+                    progressBar.isVisible = false
                     searchAdaptor.notifyDataSetChanged()
                     responseFailShow(R.string.no_internet, R.drawable.ic_no_internet_120)
                 }
@@ -228,8 +249,24 @@ class SearchActivity: AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun searchTracksDebounce(){
+        handler.removeCallbacks(searchTracksRunnable)
+        handler.postDelayed(searchTracksRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickItemDebounce(): Boolean{
+        val currentState = isClickAllow
+        if(isClickAllow){
+            isClickAllow = false
+            handler.postDelayed({ isClickAllow = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return currentState
+    }
+
     companion object{
         private const val BASE_URL = "https://itunes.apple.com"
         const val TEXT_SEARCH_KEY = "SEARCH_KEY"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
