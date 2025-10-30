@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        tools:context="com.practicum.playlistmaker.activities.SearchActivity"
+        tools:context="com.practicum.playlistmaker.ui.search.SearchActivity"
         tools:orientation="vertical"
         tools:listitem="@layout/item_search_track"
         tools:itemCount="7"
