@@ -10,7 +10,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/btn_back"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_56"
         app:titleTextAppearance="@style/MaterialTitleColor"
@@ -25,7 +25,7 @@
         android:layout_marginBottom="@dimen/dp_16">
 
         <EditText
-            android:id="@+id/EditTextSearch"
+            android:id="@+id/editTextSearch"
             style="@style/SearchEditTextColor"
             android:importantForAutofill="no"
             android:inputType="text"
@@ -34,7 +34,7 @@
             android:singleLine="true"/>
 
         <ImageView
-            android:id="@+id/ButtonClearSearch"
+            android:id="@+id/button_clear_search"
             style="@style/SearchClearImageView"
             android:contentDescription="@string/image_description"/>
     </FrameLayout>
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        tools:context="com.practicum.playlistmaker.ui.search.SearchActivity"
+        tools:context="com.practicum.playlistmaker.ui.search.activity.SearchActivity"
         tools:orientation="vertical"
         tools:listitem="@layout/item_search_track"
         tools:itemCount="7"

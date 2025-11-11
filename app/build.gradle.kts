@@ -34,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -50,4 +53,7 @@ dependencies {
     implementation (libs.retrofit)
     implementation (libs.gson)
     implementation (libs.converter.gson)
+    implementation (libs.lifecycle.livedata.ktx )
+    implementation (libs.lifecycle.viewmodel.ktx)
+    implementation (libs.activity.ktx)
 }

@@ -8,7 +8,7 @@
     style="@style/AudioPlayerActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/btn_back"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_56"
         app:titleTextAppearance="@style/MaterialTitleColor"
@@ -29,21 +29,21 @@
         android:id="@+id/imageTrack"
         style="@style/ImageTrack"
         android:contentDescription="@string/image_description"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/btn_back"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"/>
 
     <TextView
-        android:id="@+id/textViewTrackName"
+        android:id="@+id/trackName"
         style="@style/TextViewTrackNameColor"
         app:layout_constraintTop_toBottomOf="@id/imageTrack"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         tools:text="Yesterday (2009)"/>
     <TextView
-        android:id="@+id/textViewArtistName"
+        android:id="@+id/artistName"
         style="@style/TextViewArtistNameColor"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackName"
+        app:layout_constraintTop_toBottomOf="@id/trackName"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         tools:text="The Beatles"/>
@@ -52,14 +52,14 @@
         android:id="@+id/imageAdd"
         style="@style/ImageAdd"
         android:contentDescription="@string/image_description"
-        app:layout_constraintTop_toBottomOf="@id/textViewArtistName"
+        app:layout_constraintTop_toBottomOf="@id/artistName"
         app:layout_constraintStart_toStartOf="@id/leftBorder"/>
     <ImageView
-        android:id="@+id/imagePlay"
+        android:id="@+id/btn_play"
         style="@style/ImagePlay"
         android:contentDescription="@string/image_description"
         android:enabled="false"
-        app:layout_constraintTop_toBottomOf="@id/textViewArtistName"
+        app:layout_constraintTop_toBottomOf="@id/artistName"
         app:layout_constraintBottom_toBottomOf="@id/imageAdd"
         app:layout_constraintEnd_toStartOf="@id/imageFavourite"
         app:layout_constraintStart_toEndOf="@id/imageAdd" />
@@ -71,10 +71,10 @@
         app:layout_constraintEnd_toEndOf="@id/rightBorder"/>
 
     <TextView
-        android:id="@+id/textViewTrackTimer"
+        android:id="@+id/track_timer"
         style="@style/TextViewTrackTimerColor"
         app:layout_constraintTag="textViewTrackTimer"
-        app:layout_constraintTop_toBottomOf="@id/imagePlay"
+        app:layout_constraintTop_toBottomOf="@id/btn_play"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         tools:text="0:30"/>
@@ -103,7 +103,7 @@
         app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
         app:layout_constraintTop_toBottomOf="@id/textViewTrackDuration"/>
     <TextView
-        android:id="@+id/textViewTrackReleaseDate"
+        android:id="@+id/track_release_date"
         style="@style/TextViewTrackReleaseDateColor"
         android:text="@string/year"
         app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
@@ -113,7 +113,7 @@
         style="@style/TextViewTrackGenreColor"
         android:text="@string/genre"
         app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackReleaseDate"/>
+        app:layout_constraintTop_toBottomOf="@id/track_release_date"/>
     <TextView
         android:id="@+id/textViewTrackCountry"
         style="@style/TextViewTrackCountryColor"
@@ -127,38 +127,38 @@
         app:layout_constraintGuide_end="@dimen/dp_16" />
 
     <TextView
-        android:id="@+id/textViewTrackDurationValue"
+        android:id="@+id/trackDuration"
         style="@style/TextViewTrackDurationValueColor"
         app:layout_constraintTop_toBottomOf="@id/barrier"
         app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
         app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackDuration"
         tools:text="5:35"/>
     <TextView
-        android:id="@+id/textViewTrackAlbumNameValue"
+        android:id="@+id/trackAlbum"
         style="@style/TextViewTrackAlbumNameValueColor"
         app:layout_constraintStart_toEndOf="@id/textViewTrackAlbumName"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackDurationValue"
+        app:layout_constraintTop_toBottomOf="@id/trackDuration"
         app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
         app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackAlbumName"
         tools:text="Yesterday (Remastered) long title, long title, long title, long title, long title, long title, long title, "/>
     <TextView
-        android:id="@+id/textViewTrackReleaseDateValue"
+        android:id="@+id/trackReleaseDateValue"
         style="@style/TextViewTrackReleaseDateValueColor"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackAlbumNameValue"
+        app:layout_constraintTop_toBottomOf="@id/trackAlbum"
         app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
-        app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackReleaseDate"
+        app:layout_constraintBaseline_toBaselineOf="@id/track_release_date"
         tools:text="2009"/>
     <TextView
-        android:id="@+id/textViewTrackGenreValue"
+        android:id="@+id/trackGenre"
         style="@style/TextViewTrackGenreValueColor"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackReleaseDateValue"
+        app:layout_constraintTop_toBottomOf="@id/trackReleaseDateValue"
         app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
         app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackGenre"
         tools:text="Rock"/>
     <TextView
-        android:id="@+id/textViewTrackCountryValue"
+        android:id="@+id/trackCountry"
         style="@style/TextViewTrackCountryValueColor"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackGenreValue"
+        app:layout_constraintTop_toBottomOf="@id/trackGenre"
         app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
         app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackCountry"
         tools:text="USA"/>
