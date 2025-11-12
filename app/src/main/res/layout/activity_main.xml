@@ -16,19 +16,19 @@
         app:titleTextColor="@color/white"
         app:title="@string/app_name"/>
 
-    <Button
+
+    <Button android:id="@+id/btnSearch"
         style="@style/ButtonMenu"
-        android:id="@+id/btnSearch"
         android:text="@string/btn_text_search"
         app:icon="@drawable/ic_search_24"/>
-    <Button
+
+    <Button android:id="@+id/btnMedia"
         style="@style/ButtonMenu"
-        android:id="@+id/btnMedia"
         android:text="@string/btn_text_media"
         app:icon="@drawable/ic_media_24"/>
-    <Button
+
+    <Button android:id="@+id/btnSetting"
         style="@style/ButtonMenu"
-        android:id="@+id/btnSetting"
         android:layout_marginBottom="@dimen/dp_18"
         android:text="@string/btn_text_setting"
         app:icon="@drawable/ic_setting_24"/>

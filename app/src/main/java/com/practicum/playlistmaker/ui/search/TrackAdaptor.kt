@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.domain.models.Track
 
-class TrackAdaptor(private val onItemClick: ( (Int, Track, Int) -> Unit)? = null) : RecyclerView.Adapter<SearchTrackViewHolder>(){
+class TrackAdaptor(private val onItemClick: ( (Int, Track) -> Unit)? = null) : RecyclerView.Adapter<SearchTrackViewHolder>(){
 
     var data = mutableListOf<Track>()
 
@@ -19,7 +19,7 @@ class TrackAdaptor(private val onItemClick: ( (Int, Track, Int) -> Unit)? = null
     override fun onBindViewHolder(holder: SearchTrackViewHolder, position: Int) {
         holder.bind(data[position])
         holder.itemView.setOnClickListener{
-            onItemClick?.invoke(position, data[position], data.size)
+            onItemClick?.invoke(position, data[position])
         }
     }
 }
