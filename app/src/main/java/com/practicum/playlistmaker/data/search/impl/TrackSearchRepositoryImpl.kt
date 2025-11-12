@@ -8,7 +8,7 @@ import com.practicum.playlistmaker.domain.models.Track
 
 class TrackSearchRepositoryImpl(private val networkClient: NetworkClient) : TracksSearchRepository {
 
-    override fun searchTracks(expression: String): MutableList<Track> {
+    override fun searchTracks(expression: String): List<Track> {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
 
         return (if(response.resultCode == 200){
@@ -19,7 +19,7 @@ class TrackSearchRepositoryImpl(private val networkClient: NetworkClient) : Trac
             }
         }
         else{
-            mutableListOf()
-        }) as MutableList<Track>
+            listOf()
+        }) as List<Track>
     }
 }

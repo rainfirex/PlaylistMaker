@@ -13,7 +13,7 @@ class SharingRepositoryImpl(private val navigator: SharingNavigator): SharingRep
         navigator.openLink(string)
     }
 
-    override fun openEmail(dto: EmailDataDto) {
-        navigator.openEmail(dto)
+    override fun openEmail(subject: String, message: String) {
+        navigator.openEmail(EmailDataDto(subject, message))
     }
 }

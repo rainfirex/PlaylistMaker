@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.domain.search
 
 import com.practicum.playlistmaker.domain.models.Track
 
-interface TracksHistoryInter {
+interface TracksHistoryInteractor {
     fun addTrack(track: Track, i: Int)
     fun loadTracks(): MutableList<Track>
     fun save()

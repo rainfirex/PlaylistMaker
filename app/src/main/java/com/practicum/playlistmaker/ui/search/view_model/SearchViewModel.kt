@@ -11,13 +11,12 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.domain.search.TracksHistoryInter
-import com.practicum.playlistmaker.domain.search.TracksSearchInter
-import com.practicum.playlistmaker.domain.search.consumer.ConsumerData
-import com.practicum.playlistmaker.domain.search.consumer.TrackSearchConsumer
+import com.practicum.playlistmaker.domain.search.TracksHistoryInteractor
+import com.practicum.playlistmaker.domain.search.TracksSearchInteractor
+import com.practicum.playlistmaker.domain.search.consumer.TrackSearchResult
 import com.practicum.playlistmaker.ui.search.models.SearchState
 
-class SearchViewModel(private val searchProvider: TracksSearchInter, private val historyProvider: TracksHistoryInter) : ViewModel() {
+class SearchViewModel(private val searchProvider: TracksSearchInteractor, private val historyProvider: TracksHistoryInteractor) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -50,25 +49,27 @@ class SearchViewModel(private val searchProvider: TracksSearchInter, private val
 
         renderState(SearchState.Loading)
 
-        searchProvider.searchTracks(searchText!!, object : TrackSearchConsumer<MutableList<Track>> {
-            override fun consume(data: ConsumerData<MutableList<Track>>) {
+        searchProvider.searchTracks(searchText!!, object : TrackSearchResult<List<Track>>{
+            override fun consume(data: Result<List<Track>>) {
                 handler.post {
-                    when(data){
-                        is ConsumerData.Data -> {
-                            val tracks = data.value
-
-                            if(tracks.isNotEmpty() == true){
+                    when{
+                        data.isSuccess -> {
+                            val tracks = data.getOrNull()
+                            if(tracks?.isNotEmpty() == true){
                                 renderState(
                                     SearchState.SearchResult(tracks)
                                 )
                             }
                             else{
                                 renderState(
-                                    SearchState.Error(R.string.nothing_found, R.drawable.ic_nothing_found_120)
+                                    SearchState.Error(
+                                        R.string.nothing_found,
+                                        R.drawable.ic_nothing_found_120
+                                    )
                                 )
                             }
                         }
-                        is ConsumerData.Error -> {
+                        data.isFailure-> {
                             renderState(
                                 SearchState.Error(R.string.no_internet, R.drawable.ic_no_internet_120)
                             )
@@ -76,6 +77,7 @@ class SearchViewModel(private val searchProvider: TracksSearchInter, private val
                     }
                 }
             }
+
         })
     }
 

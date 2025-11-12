@@ -65,7 +65,7 @@ class SearchActivity: AppCompatActivity() {
         binding.progressBar.isVisible = true
     }
 
-    private fun stateData(tracks: MutableList<Track>){
+    private fun stateData(tracks: List<Track>){
         searchAdaptor.data.clear()
         searchAdaptor.data.addAll(tracks)
         searchAdaptor.notifyDataSetChanged()
@@ -78,12 +78,12 @@ class SearchActivity: AppCompatActivity() {
         binding.progressBar.isVisible = false
     }
 
-    private fun stateHistory(tracks: MutableList<Track>){
+    private fun stateHistory(tracks: List<Track>){
         if(tracks.isEmpty()){
             binding.layoutHistory.isVisible = false
         }
         else{
-            historyAdaptor.data = tracks
+            historyAdaptor.data = tracks.toMutableList()
             historyAdaptor.notifyDataSetChanged()
         }
     }

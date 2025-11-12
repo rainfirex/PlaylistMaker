@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.domain.config
 
-interface ConfigInter {
+interface ConfigInteractor {
     fun getTheme(): Boolean
     fun setTheme(value: Boolean)
 }

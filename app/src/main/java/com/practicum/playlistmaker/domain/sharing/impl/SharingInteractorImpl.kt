@@ -1,10 +1,9 @@
 package com.practicum.playlistmaker.domain.sharing.impl
 
-import com.practicum.playlistmaker.data.sharing.dto.EmailDataDto
 import com.practicum.playlistmaker.domain.sharing.SharingRepository
-import com.practicum.playlistmaker.domain.sharing.SharingInter
+import com.practicum.playlistmaker.domain.sharing.SharingInteractor
 
-class SharingInterImpl(private val externalNavigator: SharingRepository): SharingInter {
+class SharingInteractorImpl(private val externalNavigator: SharingRepository): SharingInteractor {
 
     override fun shareApp(url: String) {
         externalNavigator.shareLink(url)
@@ -15,6 +14,6 @@ class SharingInterImpl(private val externalNavigator: SharingRepository): Sharin
     }
 
     override fun openSupport(subject: String, message: String) {
-        externalNavigator.openEmail(EmailDataDto(subject, message))
+        externalNavigator.openEmail(subject, message)
     }
 }

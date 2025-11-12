@@ -9,18 +9,18 @@ import com.practicum.playlistmaker.data.search.db.TracksHistoryDataStorage
 import com.practicum.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.data.sharing.impl.SharingRepositoryImpl
 import com.practicum.playlistmaker.data.sharing.navigator.ExternalSharingNavigator
-import com.practicum.playlistmaker.domain.config.ConfigInter
+import com.practicum.playlistmaker.domain.config.ConfigInteractor
 import com.practicum.playlistmaker.domain.config.ConfigRepository
-import com.practicum.playlistmaker.domain.search.TracksHistoryInter
+import com.practicum.playlistmaker.domain.search.TracksHistoryInteractor
 import com.practicum.playlistmaker.domain.search.TracksHistoryRepository
-import com.practicum.playlistmaker.domain.search.TracksSearchInter
+import com.practicum.playlistmaker.domain.search.TracksSearchInteractor
 import com.practicum.playlistmaker.domain.search.TracksSearchRepository
 import com.practicum.playlistmaker.domain.config.impl.ConfigInterImpl
-import com.practicum.playlistmaker.domain.search.impl.TracksHistoryInterImpl
-import com.practicum.playlistmaker.domain.search.impl.TracksSearchInterImpl
-import com.practicum.playlistmaker.domain.sharing.SharingInter
+import com.practicum.playlistmaker.domain.search.impl.TracksHistoryInteractorImpl
+import com.practicum.playlistmaker.domain.search.impl.TracksSearchInteractorImpl
+import com.practicum.playlistmaker.domain.sharing.SharingInteractor
 import com.practicum.playlistmaker.domain.sharing.SharingRepository
-import com.practicum.playlistmaker.domain.sharing.impl.SharingInterImpl
+import com.practicum.playlistmaker.domain.sharing.impl.SharingInteractorImpl
 
 object Creator {
 
@@ -34,23 +34,23 @@ object Creator {
         return TrackSearchRepositoryImpl(RetrofitNetworkClient())
     }
 
-    fun providerTracksSearchInter(): TracksSearchInter {
-        return TracksSearchInterImpl(tracksSearchRepository())
+    fun providerTracksSearchInter(): TracksSearchInteractor {
+        return TracksSearchInteractorImpl(tracksSearchRepository())
     }
 
     private fun tracksHistoryRepository(): TracksHistoryRepository {
         return TracksHistoryRepositoryImpl(TracksHistoryDataStorage(application.applicationContext))
     }
 
-    fun providerTracksHistoryInter(): TracksHistoryInter {
-        return TracksHistoryInterImpl(tracksHistoryRepository())
+    fun providerTracksHistoryInter(): TracksHistoryInteractor {
+        return TracksHistoryInteractorImpl(tracksHistoryRepository())
     }
 
     private fun configRepository(): ConfigRepository {
         return ConfigRepositoryImpl(ConfigDataStorage(application.applicationContext))
     }
 
-    fun providerConfig(): ConfigInter {
+    fun providerConfig(): ConfigInteractor {
         return ConfigInterImpl(configRepository())
     }
 
@@ -58,7 +58,7 @@ object Creator {
         return SharingRepositoryImpl(ExternalSharingNavigator(application.applicationContext))
     }
 
-    fun providerSharingInter(): SharingInter{
-        return SharingInterImpl(sharingRepository())
+    fun providerSharingInter(): SharingInteractor{
+        return SharingInteractorImpl(sharingRepository())
     }
 }
