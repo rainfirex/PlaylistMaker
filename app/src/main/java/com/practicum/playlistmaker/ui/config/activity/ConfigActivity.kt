@@ -6,17 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityConfigBinding
 import com.practicum.playlistmaker.ui.config.view_model.ConfigViewModel
+import com.practicum.playlistmaker.utils.ThemeLoader
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConfigActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityConfigBinding
-//    private lateinit var viewModel: ConfigViewModel
 
     private val viewModel: ConfigViewModel  by viewModel()
 
@@ -31,9 +29,6 @@ class ConfigActivity : AppCompatActivity() {
             view.updatePadding(top = statusBar.top)
             insets
         }
-
-//        viewModel = ViewModelProvider(this, ConfigViewModel.getFactory())
-//            .get(ConfigViewModel::class.java)
 
         viewModel.loadTheme()
 
@@ -56,7 +51,7 @@ class ConfigActivity : AppCompatActivity() {
         }
 
         binding.itemThemeSwitcher.setOnCheckedChangeListener{ _, isChecked ->
-            (applicationContext as App).switchTheme(isChecked)
+            ThemeLoader.switch(isChecked)
             viewModel.setTheme(isChecked)
         }
 

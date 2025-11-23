@@ -1,8 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
-import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.utils.ThemeLoader
 import com.practicum.playlistmaker.di.dataModule
 import com.practicum.playlistmaker.di.domainModule
 import com.practicum.playlistmaker.di.viewModelModule
@@ -13,25 +12,11 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Creator.initApp(this)
-        val config = Creator.providerConfig()
-
-        switchTheme(config.getTheme())
+        ThemeLoader.load(this@App)
 
         startKoin{
             androidContext(this@App)
             modules(dataModule, domainModule, viewModelModule)
         }
-    }
-
-    fun switchTheme(darkThemeEnabled: Boolean){
-        AppCompatDelegate.setDefaultNightMode(
-            if(darkThemeEnabled){
-                AppCompatDelegate.MODE_NIGHT_YES
-            }
-            else{
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
-        )
     }
 }

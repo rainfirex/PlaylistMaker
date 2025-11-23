@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
@@ -25,7 +24,6 @@ import java.util.Locale
 class AudioPlayerActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityAudioPlayerBinding
-//    private lateinit var viewModel: PlayerViewModel
 
     private lateinit var url: String
     private var trackTimeMillis: Int = 0
@@ -33,7 +31,6 @@ class AudioPlayerActivity: AppCompatActivity() {
     private val viewModel: PlayerViewModel by viewModel{
         parametersOf(url, trackTimeMillis)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -52,9 +49,6 @@ class AudioPlayerActivity: AppCompatActivity() {
 
         url = track.previewUrl.toString()
         trackTimeMillis = track.trackTimeMillis
-
-//        viewModel = ViewModelProvider(this, PlayerViewModel.getFactory(track.previewUrl.toString(), track.trackTimeMillis))
-//            .get(PlayerViewModel::class.java)
 
         viewModel.observePlayerState().observe(this) {
             when(it){

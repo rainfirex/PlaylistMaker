@@ -6,9 +6,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -85,13 +82,5 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int)
 
     companion object{
         private const val DELAY = 500L
-
-        fun getFactory(url: String, trackTimeMillis: Int) : ViewModelProvider.Factory{
-            return viewModelFactory{
-                initializer {
-                    PlayerViewModel(url, trackTimeMillis)
-                }
-            }
-        }
     }
 }
