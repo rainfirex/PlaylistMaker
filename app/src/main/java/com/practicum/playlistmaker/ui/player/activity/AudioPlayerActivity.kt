@@ -50,8 +50,9 @@ class AudioPlayerActivity: AppCompatActivity() {
         url = track.previewUrl.toString()
         trackTimeMillis = track.trackTimeMillis
 
-        viewModel.observePlayerState().observe(this) {
-            when(it){
+        viewModel.observeStateMediaPlayer().observe(this) {
+            binding.trackTimer.text = it.timerTrack
+            when(it.state){
                 StateMediaPlayer.STATE_PREPARED -> {
                     binding.apply {
                         btnPlay.isEnabled = true
@@ -71,9 +72,6 @@ class AudioPlayerActivity: AppCompatActivity() {
                     }
                 }
             }
-        }
-        viewModel.observeTimerTrack().observe(this){
-            binding.trackTimer.text = it
         }
 
         initTrack(track)

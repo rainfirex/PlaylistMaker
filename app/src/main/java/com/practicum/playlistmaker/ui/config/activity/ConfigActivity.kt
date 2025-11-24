@@ -9,7 +9,6 @@ import androidx.core.view.updatePadding
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityConfigBinding
 import com.practicum.playlistmaker.ui.config.view_model.ConfigViewModel
-import com.practicum.playlistmaker.utils.ThemeLoader
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConfigActivity : AppCompatActivity() {
@@ -51,7 +50,6 @@ class ConfigActivity : AppCompatActivity() {
         }
 
         binding.itemThemeSwitcher.setOnCheckedChangeListener{ _, isChecked ->
-            ThemeLoader.switch(isChecked)
             viewModel.setTheme(isChecked)
         }
 

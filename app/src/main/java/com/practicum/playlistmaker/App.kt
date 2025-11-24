@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker
 
 import android.app.Application
-import com.practicum.playlistmaker.utils.ThemeLoader
 import com.practicum.playlistmaker.di.dataModule
 import com.practicum.playlistmaker.di.domainModule
 import com.practicum.playlistmaker.di.viewModelModule
@@ -11,8 +10,6 @@ import org.koin.core.context.startKoin
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-
-        ThemeLoader.load(this@App)
 
         startKoin{
             androidContext(this@App)
