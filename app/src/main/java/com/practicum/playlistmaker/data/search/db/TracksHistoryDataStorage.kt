@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.data.search.db
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
@@ -8,12 +7,7 @@ import com.google.gson.reflect.TypeToken
 import com.practicum.playlistmaker.data.search.dto.TrackDto
 import com.practicum.playlistmaker.data.search.DataStorage
 
-class TracksHistoryDataStorage(ctx: Context): DataStorage {
-
-    private var sharedPrefs: SharedPreferences = ctx.getSharedPreferences(HISTORY_DATA_FILE,
-        Context.MODE_PRIVATE
-    )
-    private val gson = Gson()
+class TracksHistoryDataStorage(private var sharedPrefs: SharedPreferences, private val gson: Gson): DataStorage {
 
     override fun save(tracks: MutableList<TrackDto>) {
         val data = gson.toJson(tracks)
@@ -32,7 +26,6 @@ class TracksHistoryDataStorage(ctx: Context): DataStorage {
     }
 
     companion object{
-        private const val HISTORY_DATA_FILE = "history_data"
         private const val HISTORY_LIST = "history_list"
     }
 }

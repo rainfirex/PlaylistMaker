@@ -6,26 +6,18 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
+import com.practicum.playlistmaker.ui.player.models.DataStateMediaPlayer
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val url: String, private val trackTimeMillis: Int): ViewModel() {
+class PlayerViewModel(private val url: String, private val trackTimeMillis: Int, private var mediaPlayer: MediaPlayer): ViewModel() {
 
-    private var playerState = MutableLiveData<StateMediaPlayer>(StateMediaPlayer.STATE_DEFAULT)
-    fun observePlayerState(): LiveData<StateMediaPlayer> = playerState
-
-    private var timerTrack = MutableLiveData<String>()
-    fun observeTimerTrack(): LiveData<String> = timerTrack
-
-    private var mediaPlayer = MediaPlayer()
+    private var stateMediaPlayer = MutableLiveData<DataStateMediaPlayer>( DataStateMediaPlayer(StateMediaPlayer.STATE_DEFAULT) )
+    fun observeStateMediaPlayer(): LiveData<DataStateMediaPlayer> = stateMediaPlayer
 
     private val handler = Handler(Looper.getMainLooper())
     private val timerTaskRunnable = timerTask()
-
 
     init {
         preparePlayer(url)
@@ -37,28 +29,32 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int)
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            playerState.postValue(StateMediaPlayer.STATE_PREPARED)
-            timerTrack.postValue(defaultTime)
+            stateMediaPlayer.postValue(DataStateMediaPlayer(StateMediaPlayer.STATE_PREPARED, defaultTime))
         }
         mediaPlayer.setOnCompletionListener {
-            playerState.postValue(StateMediaPlayer.STATE_PREPARED)
-
             handler.removeCallbacks(timerTaskRunnable)
-            timerTrack.postValue(defaultTime)
+            stateMediaPlayer.postValue(DataStateMediaPlayer(StateMediaPlayer.STATE_PREPARED, defaultTime))
         }
     }
 
     private fun timerTask(): Runnable {
         return object: Runnable{
             override fun run(){
-                timerTrack.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+                val currentPosition = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                val currentState = stateMediaPlayer.value?.state
+                if(currentState != null){
+                    stateMediaPlayer.postValue(
+                        DataStateMediaPlayer(currentState, currentPosition)
+                    )
+                }
+
                 handler.postDelayed(this, DELAY)
             }
         }
     }
 
     fun playbackControl() {
-        when(playerState.value) {
+        when(stateMediaPlayer.value?.state){
             StateMediaPlayer.STATE_PLAYING -> pausePlayer()
             StateMediaPlayer.STATE_PREPARED, StateMediaPlayer.STATE_PAUSED -> startPlayer()
             StateMediaPlayer.STATE_DEFAULT, null -> {}
@@ -67,13 +63,22 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int)
 
     private fun startPlayer() {
         mediaPlayer.start()
-        playerState.postValue(StateMediaPlayer.STATE_PLAYING)
+        stateMediaPlayer.postValue(DataStateMediaPlayer(StateMediaPlayer.STATE_PLAYING))
+
         handler.post(timerTaskRunnable)
     }
 
     fun pausePlayer() {
         mediaPlayer.pause()
-        playerState.postValue(StateMediaPlayer.STATE_PAUSED)
+
+        val currentTime = stateMediaPlayer.value?.timerTrack ?: ""
+        stateMediaPlayer.postValue(
+            DataStateMediaPlayer(
+                StateMediaPlayer.STATE_PAUSED,
+                currentTime
+            )
+        )
+
         handler.removeCallbacks(timerTaskRunnable)
     }
 
@@ -85,13 +90,5 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int)
 
     companion object{
         private const val DELAY = 500L
-
-        fun getFactory(url: String, trackTimeMillis: Int) : ViewModelProvider.Factory{
-            return viewModelFactory{
-                initializer {
-                    PlayerViewModel(url, trackTimeMillis)
-                }
-            }
-        }
     }
 }

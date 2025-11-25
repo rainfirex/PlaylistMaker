@@ -6,18 +6,16 @@ import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.domain.search.TracksHistoryRepository
 
 class TracksHistoryRepositoryImpl(private val dataStorage: DataStorage): TracksHistoryRepository {
+
     override fun load(): MutableList<Track> {
         val tracksDto = dataStorage.load()
-
-       val tracks = tracksDto.map {
-                dto ->
+        val tracks = tracksDto.map {dto ->
             Track(
                 dto.trackId, dto.trackName, dto.artistName, dto.trackTimeMillis,
                 dto.artworkUrl100, dto.collectionName, dto.releaseDate,
                 dto.primaryGenreName, dto.country, dto.previewUrl
             )
         } as MutableList<Track>
-
         return tracks
     }
 

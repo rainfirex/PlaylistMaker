@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
@@ -26,11 +25,13 @@ import com.practicum.playlistmaker.ui.search.TrackAdaptor
 import com.practicum.playlistmaker.ui.search.models.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.utils.Helper
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
+
+    private val viewModel: SearchViewModel by viewModel()
 
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllow: Boolean = true
@@ -100,7 +101,6 @@ class SearchActivity: AppCompatActivity() {
             insets
         }
 
-        viewModel = ViewModelProvider(this, SearchViewModel.getFactory()).get(SearchViewModel::class.java)
         viewModel.observeState().observe(this){
             renderSearchState(it)
         }

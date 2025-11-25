@@ -20,6 +20,6 @@ class TrackSearchRepositoryImpl(private val networkClient: NetworkClient) : Trac
         }
         else{
             listOf()
-        }) as List<Track>
+        })
     }
 }

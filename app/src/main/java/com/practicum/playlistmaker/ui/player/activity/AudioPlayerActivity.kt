@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
@@ -17,13 +16,21 @@ import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.practicum.playlistmaker.ui.utils.Helper
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityAudioPlayerBinding
-    private lateinit var viewModel: PlayerViewModel
+
+    private lateinit var url: String
+    private var trackTimeMillis: Int = 0
+
+    private val viewModel: PlayerViewModel by viewModel{
+        parametersOf(url, trackTimeMillis)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -40,11 +47,12 @@ class AudioPlayerActivity: AppCompatActivity() {
         val intent: Intent = intent
         val track = intent.getParcelableExtra<Track>(TRACK_KEY) as Track
 
-        viewModel = ViewModelProvider(this, PlayerViewModel.getFactory(track.previewUrl.toString(), track.trackTimeMillis))
-            .get(PlayerViewModel::class.java)
+        url = track.previewUrl.toString()
+        trackTimeMillis = track.trackTimeMillis
 
-        viewModel.observePlayerState().observe(this) {
-            when(it){
+        viewModel.observeStateMediaPlayer().observe(this) {
+            binding.trackTimer.text = it.timerTrack
+            when(it.state){
                 StateMediaPlayer.STATE_PREPARED -> {
                     binding.apply {
                         btnPlay.isEnabled = true
@@ -64,9 +72,6 @@ class AudioPlayerActivity: AppCompatActivity() {
                     }
                 }
             }
-        }
-        viewModel.observeTimerTrack().observe(this){
-            binding.trackTimer.text = it
         }
 
         initTrack(track)
