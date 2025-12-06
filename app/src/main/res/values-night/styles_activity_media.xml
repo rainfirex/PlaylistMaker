@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TabLayoutWithColor" parent="TabLayout">
+        <item name="tabTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabRippleColor">@color/blue</item>
+    </style>
+    <style name="ButtonNewPlaylistWithColor" parent="ButtonNewPlaylist">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+    <style name="TextViewNoDataWithColor" parent="TextViewNoData">
+        <item name="android:textColor">@color/white</item>
+    </style>
+</resources>

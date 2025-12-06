@@ -11,6 +11,7 @@
     <string name="setting_mnu_agree">User Agreement</string>
     <string name="setting_title">Settings</string>
     <string name="search_title">Search</string>
+    <string name="media_title">Media</string>
     <string name="support_subject">Message to the developers and developers of the Playlist Maker app</string>
     <string name="support_message">Thanks to the developers and developers for the cool app!</string>
     <string name="hint_edit_search">Search</string>
@@ -28,4 +29,10 @@
     <string name="genre">Genre</string>
     <string name="country">Country</string>
     <string name="loading">Loading</string>
+    <!--MediaActivity-->
+    <string name="tab_favorite">Favorite tracks</string>
+    <string name="tab_playlist">Playlists</string>
+    <string name="btn_new_playlist">New playlist</string>
+    <string name="text_view_no_data_media">Your media is empty</string>
+    <string name="text_view_no_data_playlist">You no create playlist</string>
 </resources>
