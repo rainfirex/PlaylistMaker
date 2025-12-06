@@ -28,15 +28,7 @@ class PlaylistFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-
     companion object {
-        private const val POSTER_URL = "poster_url"
-
         fun newInstance() = PlaylistFragment()
-//            .apply {
-//            arguments = Bundle().apply {
-//                putString(POSTER_URL, posterUrl)
-//            }
-//        }
     }
 }

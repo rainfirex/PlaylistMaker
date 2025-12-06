@@ -10,6 +10,7 @@ import com.practicum.playlistmaker.ui.media.view_model.FavoriteFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment: Fragment() {
+
     private lateinit var binding: FragmentFavoriteBinding
 
     private val viewModel: FavoriteFragmentViewModel by viewModel()
@@ -28,13 +29,6 @@ class FavoriteFragment: Fragment() {
     }
 
     companion object {
-        private const val POSTER_URL = "poster_url"
-
         fun newInstance() = FavoriteFragment()
-//            .apply {
-//            arguments = Bundle().apply {
-//                putString(POSTER_URL, posterUrl)
-//            }
-//        }
     }
 }
