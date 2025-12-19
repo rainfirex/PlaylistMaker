@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.root
+package com.practicum.playlistmaker.ui.root.activity
 
 import android.os.Bundle
 import android.view.View
@@ -7,15 +7,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityRootBinding
-import com.practicum.playlistmaker.ui.main.view_model.MainViewModel
+import com.practicum.playlistmaker.ui.root.view_model.RootViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.getValue
 
 class RootActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityRootBinding
 
-    private val viewModel: MainViewModel  by viewModel()
+    private val viewModel: RootViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)

@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.ui.player.activity.AudioPlayerActivity
 import com.practicum.playlistmaker.ui.player.fragments.AudioPlayerFragment
 import com.practicum.playlistmaker.ui.search.TrackAdaptor
 import com.practicum.playlistmaker.ui.search.models.SearchState

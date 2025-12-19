@@ -1,9 +1,9 @@
-package com.practicum.playlistmaker.ui.main.view_model
+package com.practicum.playlistmaker.ui.root.view_model
 
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.domain.config.ConfigInteractor
 
-class MainViewModel(private val configInteractor: ConfigInteractor): ViewModel() {
+class RootViewModel(private val configInteractor: ConfigInteractor): ViewModel() {
 
     fun loadTheme(){
         configInteractor.getTheme()
