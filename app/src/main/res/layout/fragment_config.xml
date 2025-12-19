@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainLayout"
+    style="@style/SettingActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.config.fragments.ConfigFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_56"
+        app:titleTextAppearance="@style/MaterialTitleColor"
+        app:title="@string/setting_title"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/itemThemeSwitcher"
+        style="@style/ItemSwitchMaterialColor"
+        android:text="@string/setting_mnu_theme"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemMenuShared"
+        style="@style/ItemMaterialTextViewColor"
+        android:drawableEnd="@drawable/ic_share_24"
+        android:text="@string/setting_mnu_shared"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemMenuSupport"
+        style="@style/ItemMaterialTextViewColor"
+        android:drawableEnd="@drawable/ic_support_24"
+        android:text="@string/setting_mnu_support"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/itemMenuAgree"
+        style="@style/ItemMaterialTextViewColor"
+        android:drawableEnd="@drawable/ic_arrow_forward_24"
+        android:text="@string/setting_mnu_agree"/>
+</LinearLayout>

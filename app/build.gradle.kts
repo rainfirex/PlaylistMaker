@@ -58,5 +58,7 @@ dependencies {
     implementation (libs.activity.ktx)
     implementation (libs.koin.android)
     implementation(libs.viewpager2)
-
+    implementation (libs.navigation.fragment.ktx)
+    implementation (libs.navigation.ui.ktx)
+    implementation (libs.fragment.ktx)
 }
