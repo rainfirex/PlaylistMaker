@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.ui.search.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -51,7 +50,7 @@ class SearchFragment: Fragment() {
         if (clickItemDebounce()) {
             showAudioPlayer(track)
         }
-    });
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -185,10 +184,6 @@ class SearchFragment: Fragment() {
     }
 
     private fun showAudioPlayer(track: Track){
-//        val intent = Intent(this, AudioPlayerActivity::class.java)
-//        intent.putExtra(AudioPlayerActivity.Companion.TRACK_KEY, track)
-//        startActivity(intent)
-
         findNavController()
             .navigate(R.id.action_searchFragment_to_audioPlayerFragment, AudioPlayerFragment.createArgs(track))
     }
@@ -214,7 +209,6 @@ class SearchFragment: Fragment() {
     }
 
     companion object{
-        const val TEXT_SEARCH_KEY = "SEARCH_KEY"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
