@@ -29,7 +29,8 @@ import kotlin.getValue
 
 class SearchFragment: Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: SearchViewModel by viewModel()
 
@@ -57,7 +58,7 @@ class SearchFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View?{
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -131,6 +132,10 @@ class SearchFragment: Fragment() {
 
         binding.rvHistory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHistory.adapter = historyAdaptor
+
+        if(searchAdaptor.data.count() > 0){
+            binding.rvTrack.isVisible = true
+        }
     }
 
     private fun renderSearchState(state: SearchState){
@@ -184,6 +189,7 @@ class SearchFragment: Fragment() {
     }
 
     private fun showAudioPlayer(track: Track){
+
         findNavController()
             .navigate(R.id.action_searchFragment_to_audioPlayerFragment, AudioPlayerFragment.createArgs(track))
     }
@@ -206,6 +212,7 @@ class SearchFragment: Fragment() {
         super.onDestroyView()
 
         textWatcher?.let { binding.editTextSearch.removeTextChangedListener(it) }
+        _binding = null;
     }
 
     companion object{

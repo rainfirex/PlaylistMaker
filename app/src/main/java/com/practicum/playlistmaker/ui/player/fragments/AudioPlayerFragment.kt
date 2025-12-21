@@ -24,7 +24,8 @@ import kotlin.getValue
 
 class AudioPlayerFragment: Fragment() {
 
-    private lateinit var binding: FragmentAudioPlayerBinding
+    private var _binding: FragmentAudioPlayerBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var url: String
     private var trackTimeMillis: Int = 0
@@ -38,7 +39,7 @@ class AudioPlayerFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View?{
-        binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
+        _binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -118,6 +119,11 @@ class AudioPlayerFragment: Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null;
     }
 
     companion object {

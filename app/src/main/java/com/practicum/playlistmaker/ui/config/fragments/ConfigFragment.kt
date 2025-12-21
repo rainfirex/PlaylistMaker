@@ -13,7 +13,8 @@ import kotlin.getValue
 
 class ConfigFragment: Fragment() {
 
-    private lateinit var binding: FragmentConfigBinding
+    private var _binding: FragmentConfigBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: ConfigViewModel  by viewModel()
 
@@ -22,7 +23,7 @@ class ConfigFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View?{
-        binding = FragmentConfigBinding.inflate(inflater, container, false)
+        _binding = FragmentConfigBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,12 +46,18 @@ class ConfigFragment: Fragment() {
             viewModel.openTerms(getString(R.string.url_offer))
         }
 
-        viewModel.observeIsDarkTheme().observe(this) {
+        viewModel.observeIsDarkTheme().observe(viewLifecycleOwner) {
             binding.itemThemeSwitcher.isChecked = it
         }
 
         binding.itemThemeSwitcher.setOnCheckedChangeListener{ _, isChecked ->
             viewModel.setTheme(isChecked)
         }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null;
     }
 }
