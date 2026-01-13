@@ -7,15 +7,15 @@
     style="@style/SearchActivity"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.search.fragments.SearchFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/btn_back"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_56"
         app:titleTextAppearance="@style/MaterialTitleColor"
-        app:title="@string/search_title"
-        app:navigationIcon="@drawable/ic_arrow_back_24"/>
+        app:title="@string/search_title"/>
 
     <FrameLayout
         android:layout_width="match_parent"

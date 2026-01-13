@@ -1,35 +1,36 @@
-package com.practicum.playlistmaker.ui.search.activity
+package com.practicum.playlistmaker.ui.search.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.ui.player.activity.AudioPlayerActivity
+import com.practicum.playlistmaker.ui.player.fragments.AudioPlayerFragment
 import com.practicum.playlistmaker.ui.search.TrackAdaptor
 import com.practicum.playlistmaker.ui.search.models.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.utils.Helper
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.getValue
 
-class SearchActivity: AppCompatActivity() {
+class SearchFragment: Fragment() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: SearchViewModel by viewModel()
 
@@ -50,62 +51,23 @@ class SearchActivity: AppCompatActivity() {
         if (clickItemDebounce()) {
             showAudioPlayer(track)
         }
-    });
+    })
 
-    private fun renderSearchState(state: SearchState){
-        when(state){
-            is SearchState.Loading -> stateLoading()
-            is SearchState.SearchResult -> stateData(state.tracks)
-            is SearchState.Error -> stateError(state.stringId, state.drawableId)
-            is SearchState.HistoryResult -> stateHistory(state.tracks)
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View?{
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    private fun stateLoading(){
-        binding.rvTrack.isVisible = false
-        binding.progressBar.isVisible = true
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    private fun stateData(tracks: List<Track>){
-        searchAdaptor.data.clear()
-        searchAdaptor.data.addAll(tracks)
-        searchAdaptor.notifyDataSetChanged()
-        binding.rvTrack.isVisible = true
-        binding.progressBar.isVisible = false
-    }
-
-    private fun stateError(stringId: Int, drawable: Int){
-        responseFailShow(stringId, drawable)
-        binding.progressBar.isVisible = false
-    }
-
-    private fun stateHistory(tracks: List<Track>){
-        if(tracks.isEmpty()){
-            binding.layoutHistory.isVisible = false
-        }
-        else{
-            historyAdaptor.data = tracks.toMutableList()
-            historyAdaptor.notifyDataSetChanged()
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
-        setContentView(binding.root)
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(top = statusBar.top)
-            insets
-        }
-
-        viewModel.observeState().observe(this){
+        viewModel.observeState().observe(viewLifecycleOwner){
             renderSearchState(it)
         }
-
-        binding.btnBack.setNavigationOnClickListener { finish() }
 
         binding.buttonClearSearch.setOnClickListener{
             Helper.Companion.visibleKeyboard(binding.buttonClearSearch, false)
@@ -146,6 +108,7 @@ class SearchActivity: AppCompatActivity() {
                 viewModel.searchTracksDebounce(textSearch)
             }
         }
+
         textWatcher?.let { binding.editTextSearch.addTextChangedListener(it) }
 
         binding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
@@ -154,46 +117,67 @@ class SearchActivity: AppCompatActivity() {
             }
             false
         }
+
         binding.editTextSearch.setOnFocusChangeListener{ view, hasFocus ->
             binding.layoutHistory.isVisible = (hasFocus && (view as EditText).text.isNullOrEmpty())
         }
+
         binding.editTextSearch.requestFocus()
         binding.editTextSearch.postDelayed({
             Helper.Companion.visibleKeyboard(binding.editTextSearch, true)
         }, 100)
 
-        binding.rvTrack.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvTrack.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvTrack.adapter = searchAdaptor
 
-        binding.rvHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvHistory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHistory.adapter = historyAdaptor
-    }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        if (textSearch.isNotEmpty()){
-            outState.putString(TEXT_SEARCH_KEY, textSearch)
+        if(searchAdaptor.data.count() > 0){
+            binding.rvTrack.isVisible = true
         }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val value = savedInstanceState.getString(TEXT_SEARCH_KEY)
-        if (!value.isNullOrEmpty()){
-            binding.editTextSearch.setText(value)
+    private fun renderSearchState(state: SearchState){
+        when(state){
+            is SearchState.Loading -> stateLoading()
+            is SearchState.SearchResult -> stateData(state.tracks)
+            is SearchState.Error -> stateError(state.stringId, state.drawableId)
+            is SearchState.HistoryResult -> stateHistory(state.tracks)
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.saveHistory()
+    private fun stateLoading(){
+        binding.rvTrack.isVisible = false
+        binding.progressBar.isVisible = true
+    }
+
+    private fun stateData(tracks: List<Track>){
+        searchAdaptor.data.clear()
+        searchAdaptor.data.addAll(tracks)
+        searchAdaptor.notifyDataSetChanged()
+        binding.rvTrack.isVisible = true
+        binding.progressBar.isVisible = false
+    }
+
+    private fun stateError(stringId: Int, drawable: Int){
+        responseFailShow(stringId, drawable)
+        binding.progressBar.isVisible = false
+    }
+
+    private fun stateHistory(tracks: List<Track>){
+        if(tracks.isEmpty()){
+            binding.layoutHistory.isVisible = false
+        }
+        else{
+            historyAdaptor.data = tracks.toMutableList()
+            historyAdaptor.notifyDataSetChanged()
+        }
     }
 
     private fun responseFailShow(stringId: Int, @DrawableRes resourceId: Int){
         binding.txtViewSearchFailMessage.text = getString(stringId)
-        Glide.with(applicationContext)
+        Glide.with(requireContext())
             .load(resourceId)
             .centerCrop()
             .into(binding.imgSearchFail)
@@ -205,9 +189,9 @@ class SearchActivity: AppCompatActivity() {
     }
 
     private fun showAudioPlayer(track: Track){
-        val intent = Intent(this, AudioPlayerActivity::class.java)
-        intent.putExtra(AudioPlayerActivity.Companion.TRACK_KEY, track)
-        startActivity(intent)
+
+        findNavController()
+            .navigate(R.id.action_searchFragment_to_audioPlayerFragment, AudioPlayerFragment.createArgs(track))
     }
 
     private fun clickItemDebounce(): Boolean{
@@ -219,13 +203,19 @@ class SearchActivity: AppCompatActivity() {
         return currentState
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveHistory()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
         textWatcher?.let { binding.editTextSearch.removeTextChangedListener(it) }
+        _binding = null;
     }
 
     companion object{
-        const val TEXT_SEARCH_KEY = "SEARCH_KEY"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

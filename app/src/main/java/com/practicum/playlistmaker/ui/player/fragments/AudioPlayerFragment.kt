@@ -1,17 +1,17 @@
-package com.practicum.playlistmaker.ui.player.activity
+package com.practicum.playlistmaker.ui.player.fragments
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
@@ -20,10 +20,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.getValue
 
-class AudioPlayerActivity: AppCompatActivity() {
+class AudioPlayerFragment: Fragment() {
 
-    private lateinit var binding: ActivityAudioPlayerBinding
+    private var _binding: FragmentAudioPlayerBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var url: String
     private var trackTimeMillis: Int = 0
@@ -32,25 +34,23 @@ class AudioPlayerActivity: AppCompatActivity() {
         parametersOf(url, trackTimeMillis)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?){
-        super.onCreate(savedInstanceState)
-        binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View?{
+        _binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(top = statusBar.top)
-            insets
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val intent: Intent = intent
-        val track = intent.getParcelableExtra<Track>(TRACK_KEY) as Track
-
+        val track = requireArguments().getParcelable<Track>(TRACK_KEY) as Track
         url = track.previewUrl.toString()
         trackTimeMillis = track.trackTimeMillis
 
-        viewModel.observeStateMediaPlayer().observe(this) {
+        viewModel.observeStateMediaPlayer().observe(viewLifecycleOwner) {
             binding.trackTimer.text = it.timerTrack
             when(it.state){
                 StateMediaPlayer.STATE_PREPARED -> {
@@ -78,7 +78,7 @@ class AudioPlayerActivity: AppCompatActivity() {
 
         binding.apply {
             btnPlay.setOnClickListener{ viewModel.playbackControl() }
-            btnBack.setNavigationOnClickListener { finish() }
+            btnBack.setNavigationOnClickListener { findNavController().navigateUp() }
         }
     }
 
@@ -88,8 +88,8 @@ class AudioPlayerActivity: AppCompatActivity() {
         binding.trackGenre.text = track.primaryGenreName
         binding.trackCountry.text = track.country
 
-        val roundedCorner = Helper.Companion.dpToPx(8f, applicationContext)
-        Glide.with(applicationContext)
+        val roundedCorner = Helper.Companion.dpToPx(8f, requireContext())
+        Glide.with(requireContext())
             .load(track.getCoverArtwork())
             .centerCrop()
             .transform(RoundedCorners(roundedCorner))
@@ -121,7 +121,16 @@ class AudioPlayerActivity: AppCompatActivity() {
         viewModel.pausePlayer()
     }
 
-    companion object{
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null;
+    }
+
+    companion object {
         const val TRACK_KEY = "track"
+
+        fun createArgs(track: Track): Bundle = bundleOf(
+            TRACK_KEY to track
+        )
     }
 }

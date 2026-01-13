@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.di
 
 import android.media.MediaPlayer
 import com.practicum.playlistmaker.ui.config.view_model.ConfigViewModel
-import com.practicum.playlistmaker.ui.main.view_model.MainViewModel
+import com.practicum.playlistmaker.ui.root.view_model.RootViewModel
 import com.practicum.playlistmaker.ui.media.view_model.FavoriteFragmentViewModel
 import com.practicum.playlistmaker.ui.media.view_model.PlaylistFragmentViewModel
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
@@ -28,7 +28,7 @@ val viewModelModule = module{
     }
 
     viewModel{
-        MainViewModel(get())
+        RootViewModel(get())
     }
 
     viewModel{

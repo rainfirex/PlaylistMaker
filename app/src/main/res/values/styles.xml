@@ -21,4 +21,32 @@
     <style name="MaterialTitleColor" parent="MaterialTitle">
         <item name="android:textColor">@color/dark</item>
     </style>
+
+    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="android:layout_width">@dimen/dp_0</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavigationViewTextActive</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationViewTextInactive</item>
+        <item name="itemActiveIndicatorStyle">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomNavigationViewColor" parent="BottomNavigationView">
+        <item name="itemTextColor">@color/nav_selector_light</item>
+        <item name="itemIconTint">@color/nav_selector_light</item>
+        <item name="itemBackground">@color/white</item>
+    </style>
+
+    <style name="BottomNavigationViewTextActive" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/dp_12</item>
+<!--        <item name="android:textStyle">normal</item>-->
+<!--        <item name="android:textFontWeight">500</item>-->
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="BottomNavigationViewTextInactive">
+        <item name="android:textSize">@dimen/dp_12</item>
+<!--        <item name="android:textStyle">normal</item>-->
+<!--        <item name="android:textFontWeight">500</item>-->
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
 </resources>

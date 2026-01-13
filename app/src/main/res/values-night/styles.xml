@@ -20,4 +20,11 @@
     <style name="MaterialTitleColor" parent="MaterialTitle">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="BottomNavigationViewColor" parent="BottomNavigationView">
+        <item name="itemTextColor">@color/nav_selector_night</item>
+        <item name="itemIconTint">@color/nav_selector_night</item>
+        <item name="itemBackground">@color/dark</item>
+    </style>
+
 </resources>

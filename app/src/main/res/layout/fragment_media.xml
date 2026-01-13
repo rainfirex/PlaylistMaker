@@ -1,16 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.media.fragments.MediaFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/btn_back"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_56"
         app:titleTextAppearance="@style/MaterialTitleColor"
-        app:title="@string/media_title"
-        app:navigationIcon="@drawable/ic_arrow_back_24"/>
+        app:title="@string/media_title"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
