@@ -1,14 +1,15 @@
 package com.practicum.playlistmaker.ui.player.view_model
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.models.DataStateMediaPlayer
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -17,17 +18,18 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
     private var stateMediaPlayer = MutableLiveData<DataStateMediaPlayer>( DataStateMediaPlayer(StateMediaPlayer.STATE_DEFAULT) )
     fun observeStateMediaPlayer(): LiveData<DataStateMediaPlayer> = stateMediaPlayer
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val timerTaskRunnable = timerTask()
-
     private var timerJob: Job? = null
 
     init {
         preparePlayer(url)
     }
 
+    private fun getCurrentPosition(timeMillis: Int): String{
+        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(timeMillis)
+    }
+
     private fun preparePlayer(url: String) {
-        val defaultTime = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+        val defaultTime = getCurrentPosition(trackTimeMillis)
 
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
@@ -35,23 +37,18 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
             stateMediaPlayer.postValue(DataStateMediaPlayer(StateMediaPlayer.STATE_PREPARED, defaultTime))
         }
         mediaPlayer.setOnCompletionListener {
-            handler.removeCallbacks(timerTaskRunnable)
-            stateMediaPlayer.postValue(DataStateMediaPlayer(StateMediaPlayer.STATE_PREPARED, defaultTime))
+            timerJob?.cancel()
+            stateMediaPlayer.postValue(DataStateMediaPlayer(StateMediaPlayer.STATE_PREPARED, "00:00"))
         }
     }
 
-    private fun timerTask(): Runnable {
-        return object: Runnable{
-            override fun run(){
-                val currentPosition = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
-                val currentState = stateMediaPlayer.value?.state
-                if(currentState != null){
-                    stateMediaPlayer.postValue(
-                        DataStateMediaPlayer(currentState, currentPosition)
-                    )
-                }
-
-                handler.postDelayed(this, DELAY)
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.isPlaying) {
+                delay(DELAY)
+                val currentPosition = getCurrentPosition(mediaPlayer.currentPosition)
+                val currentState = stateMediaPlayer.value!!.state
+                stateMediaPlayer.postValue(DataStateMediaPlayer(currentState, currentPosition))
             }
         }
     }
@@ -66,9 +63,9 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
 
     private fun startPlayer() {
         mediaPlayer.start()
-        stateMediaPlayer.postValue(DataStateMediaPlayer(StateMediaPlayer.STATE_PLAYING))
+        stateMediaPlayer.postValue(DataStateMediaPlayer(StateMediaPlayer.STATE_PLAYING, getCurrentPosition(mediaPlayer.currentPosition)))
 
-        handler.post(timerTaskRunnable)
+        startTimer()
     }
 
     fun pausePlayer() {
@@ -83,17 +80,14 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
                 currentTime
             )
         )
-
-        handler.removeCallbacks(timerTaskRunnable)
     }
 
     override fun onCleared() {
         super.onCleared()
         mediaPlayer.release()
-        handler.removeCallbacks(timerTaskRunnable)
     }
 
     companion object{
-        private const val DELAY = 500L
+        private const val DELAY = 300L
     }
 }
