@@ -1,8 +1,6 @@
 package com.practicum.playlistmaker.ui.search.fragments
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +11,7 @@ import android.widget.EditText
 import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -24,6 +23,7 @@ import com.practicum.playlistmaker.ui.search.TrackAdaptor
 import com.practicum.playlistmaker.ui.search.models.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.utils.Helper
+import com.practicum.playlistmaker.ui.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
@@ -34,23 +34,18 @@ class SearchFragment: Fragment() {
 
     private val viewModel: SearchViewModel by viewModel()
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var isClickAllow: Boolean = true
     private var textSearch: String = ""
 
     private var textWatcher: TextWatcher? = null
 
+    private lateinit var onClickTrackDebounce: (Pair<Track, Int>) -> Unit
+
     private val searchAdaptor = TrackAdaptor(onItemClick = { position, track ->
-        if (clickItemDebounce()) {
-            viewModel.addHistory(track, position)
-            showAudioPlayer(track)
-        }
+        onClickTrackDebounce(Pair(track, position))
     })
 
     private val historyAdaptor = TrackAdaptor(onItemClick = { position, track ->
-        if (clickItemDebounce()) {
-            showAudioPlayer(track)
-        }
+        onClickTrackDebounce(Pair(track, -1))
     })
 
     override fun onCreateView(
@@ -64,6 +59,13 @@ class SearchFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        onClickTrackDebounce = debounce<Pair<Track,Int>>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false){ pair ->
+            if(pair.second != -1){
+                viewModel.addHistory(pair.first, pair.second)
+            }
+            showAudioPlayer(pair.first)
+        }
 
         viewModel.observeState().observe(viewLifecycleOwner){
             renderSearchState(it)
@@ -189,18 +191,8 @@ class SearchFragment: Fragment() {
     }
 
     private fun showAudioPlayer(track: Track){
-
         findNavController()
             .navigate(R.id.action_searchFragment_to_audioPlayerFragment, AudioPlayerFragment.createArgs(track))
-    }
-
-    private fun clickItemDebounce(): Boolean{
-        val currentState = isClickAllow
-        if(isClickAllow){
-            isClickAllow = false
-            handler.postDelayed({ isClickAllow = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return currentState
     }
 
     override fun onPause() {
