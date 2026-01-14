@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.models.DataStateMediaPlayer
+import kotlinx.coroutines.Job
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -18,6 +19,8 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
 
     private val handler = Handler(Looper.getMainLooper())
     private val timerTaskRunnable = timerTask()
+
+    private var timerJob: Job? = null
 
     init {
         preparePlayer(url)
@@ -70,6 +73,8 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
 
     fun pausePlayer() {
         mediaPlayer.pause()
+
+        timerJob?.cancel()
 
         val currentTime = stateMediaPlayer.value?.timerTrack ?: ""
         stateMediaPlayer.postValue(

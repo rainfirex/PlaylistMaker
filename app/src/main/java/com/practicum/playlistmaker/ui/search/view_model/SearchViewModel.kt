@@ -1,26 +1,27 @@
 package com.practicum.playlistmaker.ui.search.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.domain.search.TracksHistoryInteractor
 import com.practicum.playlistmaker.domain.search.TracksSearchInteractor
-import com.practicum.playlistmaker.domain.search.consumer.TrackSearchResult
 import com.practicum.playlistmaker.ui.search.models.SearchState
+import com.practicum.playlistmaker.ui.utils.debounce
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchProvider: TracksSearchInteractor, private val historyProvider: TracksHistoryInteractor) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var searchTracksRunnable = Runnable { searchTracks() }
-
     private var searchText: String? = null
+
+    private val searchDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true){
+        searchText -> searchTracks(searchText)
+    }
 
     init {
         val tracks = historyProvider.loadTracks()
@@ -35,46 +36,41 @@ class SearchViewModel(private val searchProvider: TracksSearchInteractor, privat
         }
 
         this.searchText = searchText
-
-        handler.removeCallbacks(searchTracksRunnable)
-        handler.postDelayed(searchTracksRunnable, SEARCH_DEBOUNCE_DELAY)
+        searchDebounce(searchText)
     }
 
-    private fun searchTracks(){
+    private fun searchTracks(searchText: String?){
         if(searchText.isNullOrEmpty()) return
 
         renderState(SearchState.Loading)
 
-        searchProvider.searchTracks(searchText!!, object : TrackSearchResult<List<Track>>{
-            override fun consume(data: Result<List<Track>>) {
-                handler.post {
-                    when{
-                        data.isSuccess -> {
-                            val tracks = data.getOrNull()
-                            if(tracks?.isNotEmpty() == true){
-                                renderState(
-                                    SearchState.SearchResult(tracks)
-                                )
-                            }
-                            else{
-                                renderState(
-                                    SearchState.Error(
-                                        R.string.nothing_found,
-                                        R.drawable.ic_nothing_found_120
-                                    )
-                                )
-                            }
-                        }
-                        data.isFailure-> {
+        viewModelScope.launch {
+            searchProvider.searchTracks(searchText).collect { result ->
+                when{
+                    result.isSuccess -> {
+                        val tracks = result.getOrNull()
+                        if(tracks?.isNotEmpty() == true){
                             renderState(
-                                SearchState.Error(R.string.no_internet, R.drawable.ic_no_internet_120)
+                                SearchState.SearchResult(tracks)
+                            )
+                        }
+                        else{
+                            renderState(
+                                SearchState.Error(
+                                    R.string.nothing_found,
+                                    R.drawable.ic_nothing_found_120
+                                )
                             )
                         }
                     }
+                    result.isFailure-> {
+                        renderState(
+                            SearchState.Error(R.string.no_internet, R.drawable.ic_no_internet_120)
+                        )
+                    }
                 }
             }
-
-        })
+        }
     }
 
     private fun renderState(state: SearchState) {
@@ -83,7 +79,6 @@ class SearchViewModel(private val searchProvider: TracksSearchInteractor, privat
 
     override fun onCleared() {
         super.onCleared()
-        handler.removeCallbacks(searchTracksRunnable)
     }
 
     fun saveHistory() {
