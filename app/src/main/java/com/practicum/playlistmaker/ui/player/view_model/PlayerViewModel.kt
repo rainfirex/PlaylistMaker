@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.domain.media.MediaInteractor
+import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.models.DataStateMediaPlayer
 import kotlinx.coroutines.Job
@@ -13,7 +15,8 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val url: String, private val trackTimeMillis: Int, private var mediaPlayer: MediaPlayer): ViewModel() {
+class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
+                      private var mediaPlayer: MediaPlayer, private val mediaInteractor: MediaInteractor): ViewModel() {
 
     private var stateMediaPlayer = MutableLiveData<DataStateMediaPlayer>( DataStateMediaPlayer(StateMediaPlayer.STATE_DEFAULT) )
     fun observeStateMediaPlayer(): LiveData<DataStateMediaPlayer> = stateMediaPlayer
@@ -85,6 +88,18 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
     override fun onCleared() {
         super.onCleared()
         mediaPlayer.release()
+    }
+
+    fun addFavoriteTrack(track: Track){
+        viewModelScope.launch{
+            mediaInteractor.insertTrack(track)
+        }
+    }
+
+    fun unFavoriteTrack(track: Track){
+        viewModelScope.launch {
+            mediaInteractor.removeTrack(track)
+        }
     }
 
     companion object{

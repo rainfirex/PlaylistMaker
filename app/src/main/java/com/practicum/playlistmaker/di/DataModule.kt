@@ -2,10 +2,14 @@ package com.practicum.playlistmaker.di
 
 
 import android.content.Context
+import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker.data.config.ConfigStorage
 import com.practicum.playlistmaker.data.config.db.ConfigDataStorage
 import com.practicum.playlistmaker.data.config.impl.ConfigRepositoryImpl
+import com.practicum.playlistmaker.data.media.db.Database
+import com.practicum.playlistmaker.data.media.impl.MediaRepositoryImpl
+import com.practicum.playlistmaker.data.media.map.MediaMapper
 import com.practicum.playlistmaker.data.search.DataStorage
 import com.practicum.playlistmaker.data.search.NetworkClient
 import com.practicum.playlistmaker.data.search.db.TracksHistoryDataStorage
@@ -17,6 +21,7 @@ import com.practicum.playlistmaker.data.sharing.SharingNavigator
 import com.practicum.playlistmaker.data.sharing.impl.SharingRepositoryImpl
 import com.practicum.playlistmaker.data.sharing.navigator.ExternalSharingNavigator
 import com.practicum.playlistmaker.domain.config.ConfigRepository
+import com.practicum.playlistmaker.domain.media.MediaRepository
 import com.practicum.playlistmaker.domain.search.TracksHistoryRepository
 import com.practicum.playlistmaker.domain.search.TracksSearchRepository
 import com.practicum.playlistmaker.domain.sharing.SharingRepository
@@ -30,6 +35,12 @@ private const val HISTORY = "history_data"
 private const val CONFIG = "config"
 
 val dataModule = module{
+
+    factory { MediaMapper() }
+
+    single {
+        Room.databaseBuilder(androidContext(), Database::class.java, "database.db").build()
+    }
 
     single<TrackSearchApi>{
         Retrofit.Builder()
@@ -49,6 +60,10 @@ val dataModule = module{
     single(named(CONFIG)){
         androidContext()
             .getSharedPreferences(CONFIG, Context.MODE_PRIVATE)
+    }
+
+    single<MediaRepository> {
+        MediaRepositoryImpl(get(), get())
     }
 
     single<ConfigStorage> {
@@ -72,11 +87,11 @@ val dataModule = module{
     }
 
     single<TracksSearchRepository> {
-        TrackSearchRepositoryImpl(get())
+        TrackSearchRepositoryImpl(get(), get())
     }
 
     single<TracksHistoryRepository> {
-        TracksHistoryRepositoryImpl(get())
+        TracksHistoryRepositoryImpl(get(), get())
     }
 
     single<SharingRepository> {

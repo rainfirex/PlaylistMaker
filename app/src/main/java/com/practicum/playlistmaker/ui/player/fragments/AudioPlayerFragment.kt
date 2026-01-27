@@ -79,6 +79,8 @@ class AudioPlayerFragment: Fragment() {
         binding.apply {
             btnPlay.setOnClickListener{ viewModel.playbackControl() }
             btnBack.setNavigationOnClickListener { findNavController().navigateUp() }
+            btnFavourite.setOnClickListener { onFavoriteClicked(track) }
+            btnAdd.setOnClickListener {  }
         }
     }
 
@@ -87,6 +89,8 @@ class AudioPlayerFragment: Fragment() {
         binding.artistName.text = track.artistName
         binding.trackGenre.text = track.primaryGenreName
         binding.trackCountry.text = track.country
+
+        setFavoriteIco(track.isFavorite)
 
         val roundedCorner = Helper.Companion.dpToPx(8f, requireContext())
         Glide.with(requireContext())
@@ -124,6 +128,23 @@ class AudioPlayerFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null;
+    }
+
+    private fun onFavoriteClicked(track: Track){
+        track.isFavorite = !track.isFavorite
+        setFavoriteIco(track.isFavorite)
+
+        if(track.isFavorite){
+            viewModel.addFavoriteTrack(track)
+        }
+        else{
+            viewModel.unFavoriteTrack(track)
+        }
+    }
+
+    private fun setFavoriteIco(isFavorite: Boolean){
+        val image = if(isFavorite) R.drawable.ic_btn_favourite_like_51 else R.drawable.ic_btn_favourite_51
+        binding.btnFavourite.setImageResource(image)
     }
 
     companion object {
