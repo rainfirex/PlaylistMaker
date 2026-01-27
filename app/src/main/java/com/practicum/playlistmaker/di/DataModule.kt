@@ -15,6 +15,7 @@ import com.practicum.playlistmaker.data.search.NetworkClient
 import com.practicum.playlistmaker.data.search.db.TracksHistoryDataStorage
 import com.practicum.playlistmaker.data.search.impl.TrackSearchRepositoryImpl
 import com.practicum.playlistmaker.data.search.impl.TracksHistoryRepositoryImpl
+import com.practicum.playlistmaker.data.search.map.SearchMapper
 import com.practicum.playlistmaker.data.search.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.data.search.network.TrackSearchApi
 import com.practicum.playlistmaker.data.sharing.SharingNavigator
@@ -35,6 +36,8 @@ private const val HISTORY = "history_data"
 private const val CONFIG = "config"
 
 val dataModule = module{
+
+    factory { SearchMapper() }
 
     factory { MediaMapper() }
 
@@ -87,11 +90,11 @@ val dataModule = module{
     }
 
     single<TracksSearchRepository> {
-        TrackSearchRepositoryImpl(get(), get())
+        TrackSearchRepositoryImpl(get(), get(), get())
     }
 
     single<TracksHistoryRepository> {
-        TracksHistoryRepositoryImpl(get(), get())
+        TracksHistoryRepositoryImpl(get(), get(), get())
     }
 
     single<SharingRepository> {

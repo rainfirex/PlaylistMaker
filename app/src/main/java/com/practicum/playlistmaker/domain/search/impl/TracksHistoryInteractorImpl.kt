@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.domain.search.impl
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.domain.search.TracksHistoryInteractor
 import com.practicum.playlistmaker.domain.search.TracksHistoryRepository
+import kotlinx.coroutines.flow.Flow
 
 class TracksHistoryInteractorImpl(private val repository: TracksHistoryRepository): TracksHistoryInteractor {
 
@@ -23,9 +24,12 @@ class TracksHistoryInteractorImpl(private val repository: TracksHistoryRepositor
         tracks.add(indexInsert, track)
     }
 
-    override fun loadTracks(): MutableList<Track>{
-        tracks = repository.load()
-        return tracks
+    override fun setTracks(tracks: MutableList<Track>){
+        this.tracks = tracks
+    }
+
+    override fun loadTracks(): Flow<MutableList<Track>>{
+        return repository.load()
     }
 
     override fun getTracks(): MutableList<Track>{
