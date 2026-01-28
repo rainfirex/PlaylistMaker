@@ -65,7 +65,7 @@ class FavoriteFragment: Fragment() {
         adaptor.data.addAll(tracks)
         adaptor.notifyDataSetChanged()
 
-        if(adaptor.data.size > 0){
+        if(adaptor.data.isNotEmpty()){
             binding.layoutDefault.isVisible = false
             binding.rvTrack.isVisible = true
         }

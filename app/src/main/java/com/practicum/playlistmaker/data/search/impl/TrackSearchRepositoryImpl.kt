@@ -27,11 +27,13 @@ class TrackSearchRepositoryImpl(private val networkClient: NetworkClient, privat
     }
 
     private fun mapping(tracks: List<TrackDto>, ids: List<Int>): List<Track>{
-        return tracks.map { track ->
-            val existFavorite = (track.trackId in ids)
-            val t = mapper.map(track)
-            t.isFavorite = existFavorite
-            t
-        }
+        return tracks
+            .filter{ it.releaseDate != null && it.releaseDate.isNotEmpty()}
+            .map { track ->
+                val existFavorite = (track.trackId in ids)
+                val t = mapper.map(track)
+                t.isFavorite = existFavorite
+                t
+            }
     }
 }
