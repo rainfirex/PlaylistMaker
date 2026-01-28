@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.domain.models.Track
 
-class FavoriteTrackAdaptor : RecyclerView.Adapter<FavoriteTrackViewHolder>(){
+class FavoriteTrackAdaptor(private val onItemClick: ( (Int, Track) -> Unit)? = null) : RecyclerView.Adapter<FavoriteTrackViewHolder>(){
     var data = mutableListOf<Track>()
 
     override fun onCreateViewHolder(
@@ -19,6 +19,9 @@ class FavoriteTrackAdaptor : RecyclerView.Adapter<FavoriteTrackViewHolder>(){
         position: Int
     ) {
         holder.bind(data[position])
+        holder.itemView.setOnClickListener{
+            onItemClick?.invoke(position, data[position])
+        }
     }
 
     override fun getItemCount(): Int = data.size

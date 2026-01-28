@@ -19,7 +19,7 @@ interface TrackMediaDao {
     @Delete
     suspend fun remove(track: TrackMedia)
 
-    @Query("SELECT * FROM track ORDER BY id") //DESC
+    @Query("SELECT * FROM track ORDER BY created_at DESC")
     suspend fun getTracks(): List<TrackMedia>
 
     @Query("SELECT id FROM track")

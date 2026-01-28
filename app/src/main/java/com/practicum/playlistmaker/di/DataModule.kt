@@ -7,7 +7,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.data.config.ConfigStorage
 import com.practicum.playlistmaker.data.config.db.ConfigDataStorage
 import com.practicum.playlistmaker.data.config.impl.ConfigRepositoryImpl
-import com.practicum.playlistmaker.data.media.db.Database
+import com.practicum.playlistmaker.data.db.Database
 import com.practicum.playlistmaker.data.media.impl.MediaRepositoryImpl
 import com.practicum.playlistmaker.data.media.map.MediaMapper
 import com.practicum.playlistmaker.data.search.DataStorage
@@ -42,7 +42,10 @@ val dataModule = module{
     factory { MediaMapper() }
 
     single {
-        Room.databaseBuilder(androidContext(), Database::class.java, "database.db").build()
+        Room.databaseBuilder(androidContext(), Database::class.java, "database.db")
+//            .addMigrations(MIGRATION_1_2)
+//            .fallbackToDestructiveMigration()
+            .build()
     }
 
     single<TrackSearchApi>{

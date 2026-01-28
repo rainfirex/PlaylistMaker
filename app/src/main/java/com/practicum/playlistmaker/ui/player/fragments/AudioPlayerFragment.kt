@@ -50,8 +50,13 @@ class AudioPlayerFragment: Fragment() {
         url = track.previewUrl.toString()
         trackTimeMillis = track.trackTimeMillis
 
+        viewModel.observeStateFavoriteTrack().observe(viewLifecycleOwner) {
+            setFavoriteIco(it)
+        }
+
         viewModel.observeStateMediaPlayer().observe(viewLifecycleOwner) {
             binding.trackTimer.text = it.timerTrack
+
             when(it.state){
                 StateMediaPlayer.STATE_PREPARED -> {
                     binding.apply {
@@ -90,7 +95,7 @@ class AudioPlayerFragment: Fragment() {
         binding.trackGenre.text = track.primaryGenreName
         binding.trackCountry.text = track.country
 
-        setFavoriteIco(track.isFavorite)
+        viewModel.setFavoriteTrack(track.isFavorite)
 
         val roundedCorner = Helper.Companion.dpToPx(8f, requireContext())
         Glide.with(requireContext())
@@ -127,19 +132,11 @@ class AudioPlayerFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null;
+        _binding = null
     }
 
     private fun onFavoriteClicked(track: Track){
-        track.isFavorite = !track.isFavorite
-        setFavoriteIco(track.isFavorite)
-
-        if(track.isFavorite){
-            viewModel.addFavoriteTrack(track)
-        }
-        else{
-            viewModel.unFavoriteTrack(track)
-        }
+        viewModel.changeFavoriteTrack(track)
     }
 
     private fun setFavoriteIco(isFavorite: Boolean){

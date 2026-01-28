@@ -21,6 +21,9 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
     private var stateMediaPlayer = MutableLiveData<DataStateMediaPlayer>( DataStateMediaPlayer(StateMediaPlayer.STATE_DEFAULT) )
     fun observeStateMediaPlayer(): LiveData<DataStateMediaPlayer> = stateMediaPlayer
 
+    private var stateFavoriteTrack = MutableLiveData<Boolean>(false)
+    fun observeStateFavoriteTrack(): LiveData<Boolean> = stateFavoriteTrack
+
     private var timerJob: Job? = null
 
     init {
@@ -60,7 +63,8 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
         when(stateMediaPlayer.value?.state){
             StateMediaPlayer.STATE_PLAYING -> pausePlayer()
             StateMediaPlayer.STATE_PREPARED, StateMediaPlayer.STATE_PAUSED -> startPlayer()
-            StateMediaPlayer.STATE_DEFAULT, null -> {}
+            StateMediaPlayer.STATE_DEFAULT,
+            null -> {}
         }
     }
 
@@ -90,16 +94,25 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
         mediaPlayer.release()
     }
 
-    fun addFavoriteTrack(track: Track){
-        viewModelScope.launch{
-            mediaInteractor.insertTrack(track)
-        }
+    fun setFavoriteTrack(isFavorite: Boolean){
+        stateFavoriteTrack.postValue(isFavorite)
     }
 
-    fun unFavoriteTrack(track: Track){
-        viewModelScope.launch {
-            mediaInteractor.removeTrack(track)
+    fun changeFavoriteTrack(track: Track){
+        track.isFavorite = !track.isFavorite
+        when(track.isFavorite){
+            true -> {
+                viewModelScope.launch{
+                    mediaInteractor.insertTrack(track)
+                }
+            }
+            false -> {
+                viewModelScope.launch {
+                    mediaInteractor.removeTrack(track)
+                }
+            }
         }
+        setFavoriteTrack(track.isFavorite)
     }
 
     companion object{
