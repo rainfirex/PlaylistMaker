@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -62,4 +63,8 @@ dependencies {
     implementation (libs.navigation.ui.ktx)
     implementation (libs.fragment.ktx)
     implementation(libs.coroutines.android)
+
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
 }

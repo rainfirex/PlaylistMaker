@@ -50,7 +50,7 @@
         tools:text="The Beatles"/>
 
     <ImageView
-        android:id="@+id/imageAdd"
+        android:id="@+id/btn_add"
         style="@style/ImageAdd"
         android:contentDescription="@string/image_description"
         app:layout_constraintTop_toBottomOf="@id/artistName"
@@ -61,14 +61,14 @@
         android:contentDescription="@string/image_description"
         android:enabled="false"
         app:layout_constraintTop_toBottomOf="@id/artistName"
-        app:layout_constraintBottom_toBottomOf="@id/imageAdd"
-        app:layout_constraintEnd_toStartOf="@id/imageFavourite"
-        app:layout_constraintStart_toEndOf="@id/imageAdd" />
+        app:layout_constraintBottom_toBottomOf="@id/btn_add"
+        app:layout_constraintEnd_toStartOf="@id/btn_favourite"
+        app:layout_constraintStart_toEndOf="@id/btn_add" />
     <ImageView
-        android:id="@+id/imageFavourite"
+        android:id="@+id/btn_favourite"
         style="@style/ImageFavourite"
         android:contentDescription="@string/image_description"
-        app:layout_constraintBottom_toBottomOf="@id/imageAdd"
+        app:layout_constraintBottom_toBottomOf="@id/btn_add"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"/>
 
     <TextView
