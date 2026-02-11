@@ -32,8 +32,9 @@ class MediaRepositoryImpl(private val db :Database, private val mapper: MediaMap
         return tracks.map { track ->
             val existFavorite = (track.id in ids)
             val t = mapper.map(track)
-            t.isFavorite = existFavorite
-            t
+            t.copy(isFavorite = existFavorite)
+//            t.isFavorite = existFavorite
+//            t
         }
     }
 

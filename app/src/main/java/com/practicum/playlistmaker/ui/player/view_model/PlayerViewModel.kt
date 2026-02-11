@@ -99,20 +99,20 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
     }
 
     fun changeFavoriteTrack(track: Track){
-        track.isFavorite = !track.isFavorite
-        when(track.isFavorite){
+        val isFavorite = !track.isFavorite
+        when(isFavorite){
             true -> {
                 viewModelScope.launch{
                     mediaInteractor.insertTrack(track)
                 }
             }
             false -> {
-                viewModelScope.launch {
+                viewModelScope.launch{
                     mediaInteractor.removeTrack(track)
                 }
             }
         }
-        setFavoriteTrack(track.isFavorite)
+        setFavoriteTrack(isFavorite)
     }
 
     companion object{

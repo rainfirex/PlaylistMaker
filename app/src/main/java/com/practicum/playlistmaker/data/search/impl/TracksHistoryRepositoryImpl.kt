@@ -27,8 +27,9 @@ class TracksHistoryRepositoryImpl(private val dataStorage: DataStorage, private 
         return tracks.map { track ->
             val existFavorite = (track.trackId in ids)
             val t = mapper.map(track)
-            t.isFavorite = existFavorite
-            t
+            t.copy(isFavorite = existFavorite)
+//            t.isFavorite = existFavorite
+//            t
         } as MutableList<Track>
     }
 

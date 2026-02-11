@@ -32,8 +32,9 @@ class TrackSearchRepositoryImpl(private val networkClient: NetworkClient, privat
             .map { track ->
                 val existFavorite = (track.trackId in ids)
                 val t = mapper.map(track)
-                t.isFavorite = existFavorite
-                t
+                t.copy(isFavorite = existFavorite)
+//                t.isFavorite = existFavorite
+//                t
             }
     }
 }
