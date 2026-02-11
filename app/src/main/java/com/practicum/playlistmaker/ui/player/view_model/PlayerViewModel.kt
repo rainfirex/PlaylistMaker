@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.domain.media.MediaInteractor
+import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.models.DataStateMediaPlayer
 import kotlinx.coroutines.Job
@@ -13,10 +15,14 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val url: String, private val trackTimeMillis: Int, private var mediaPlayer: MediaPlayer): ViewModel() {
+class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
+                      private var mediaPlayer: MediaPlayer, private val mediaInteractor: MediaInteractor): ViewModel() {
 
     private var stateMediaPlayer = MutableLiveData<DataStateMediaPlayer>( DataStateMediaPlayer(StateMediaPlayer.STATE_DEFAULT) )
     fun observeStateMediaPlayer(): LiveData<DataStateMediaPlayer> = stateMediaPlayer
+
+    private var stateFavoriteTrack = MutableLiveData<Boolean>(false)
+    fun observeStateFavoriteTrack(): LiveData<Boolean> = stateFavoriteTrack
 
     private var timerJob: Job? = null
 
@@ -57,7 +63,8 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
         when(stateMediaPlayer.value?.state){
             StateMediaPlayer.STATE_PLAYING -> pausePlayer()
             StateMediaPlayer.STATE_PREPARED, StateMediaPlayer.STATE_PAUSED -> startPlayer()
-            StateMediaPlayer.STATE_DEFAULT, null -> {}
+            StateMediaPlayer.STATE_DEFAULT,
+            null -> {}
         }
     }
 
@@ -85,6 +92,27 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
     override fun onCleared() {
         super.onCleared()
         mediaPlayer.release()
+    }
+
+    fun setFavoriteTrack(isFavorite: Boolean){
+        stateFavoriteTrack.postValue(isFavorite)
+    }
+
+    fun changeFavoriteTrack(track: Track){
+        val isFavorite = !track.isFavorite
+        when(isFavorite){
+            true -> {
+                viewModelScope.launch{
+                    mediaInteractor.insertTrack(track)
+                }
+            }
+            false -> {
+                viewModelScope.launch{
+                    mediaInteractor.removeTrack(track)
+                }
+            }
+        }
+        setFavoriteTrack(isFavorite)
     }
 
     companion object{

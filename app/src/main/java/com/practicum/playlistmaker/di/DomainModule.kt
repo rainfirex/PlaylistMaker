@@ -2,6 +2,8 @@ package com.practicum.playlistmaker.di
 
 import com.practicum.playlistmaker.domain.config.ConfigInteractor
 import com.practicum.playlistmaker.domain.config.impl.ConfigInterImpl
+import com.practicum.playlistmaker.domain.media.MediaInteractor
+import com.practicum.playlistmaker.domain.media.impl.MediaInteractorImpl
 import com.practicum.playlistmaker.domain.search.TracksHistoryInteractor
 import com.practicum.playlistmaker.domain.search.TracksSearchInteractor
 import com.practicum.playlistmaker.domain.search.impl.TracksHistoryInteractorImpl
@@ -25,5 +27,9 @@ val domainModule = module{
 
     single<SharingInteractor> {
         SharingInteractorImpl(get())
+    }
+
+    single<MediaInteractor> {
+        MediaInteractorImpl(get())
     }
 }

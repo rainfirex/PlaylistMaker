@@ -20,7 +20,7 @@ val viewModelModule = module{
 
     }
     viewModel{(url: String, trackTimeMillis: Int) ->
-        PlayerViewModel(url, trackTimeMillis, get())
+        PlayerViewModel(url, trackTimeMillis, get(), get())
     }
 
     viewModel{
@@ -32,7 +32,7 @@ val viewModelModule = module{
     }
 
     viewModel{
-        FavoriteFragmentViewModel()
+        FavoriteFragmentViewModel(get())
     }
 
     viewModel{

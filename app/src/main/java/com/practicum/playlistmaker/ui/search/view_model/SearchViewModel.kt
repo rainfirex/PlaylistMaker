@@ -24,10 +24,14 @@ class SearchViewModel(private val searchProvider: TracksSearchInteractor, privat
     }
 
     init {
-        val tracks = historyProvider.loadTracks()
-        renderState(
-            SearchState.HistoryResult(tracks)
-        )
+        viewModelScope.launch {
+            historyProvider.loadTracks().collect { tracks ->
+                historyProvider.setTracks(tracks)
+                renderState(
+                    SearchState.HistoryResult(tracks)
+                )
+            }
+        }
     }
 
     fun searchTracksDebounce(searchText: String){
