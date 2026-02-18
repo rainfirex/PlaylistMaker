@@ -1,166 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/audio_player"
-    style="@style/AudioPlayerActivity"
-    tools:context=".ui.player.fragments.AudioPlayerFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/btn_back"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_56"
-        app:titleTextAppearance="@style/MaterialTitleColor"
-        app:navigationIcon="@drawable/ic_arrow_back_24"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent"
+        android:id="@+id/audio_player"
+        style="@style/AudioPlayerActivity"
+        tools:context=".ui.player.fragments.AudioPlayerFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/leftBorder"
-        style="@style/Guideline"
-        app:layout_constraintGuide_begin="@dimen/dp_24" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_56"
+            app:titleTextAppearance="@style/MaterialTitleColor"
+            app:navigationIcon="@drawable/ic_arrow_back_24"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/rightBorder"
-        style="@style/Guideline"
-        app:layout_constraintGuide_end="@dimen/dp_24" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftBorder"
+            style="@style/Guideline"
+            app:layout_constraintGuide_begin="@dimen/dp_24" />
 
-    <ImageView
-        android:id="@+id/imageTrack"
-        style="@style/ImageTrack"
-        android:contentDescription="@string/image_description"
-        app:layout_constraintTop_toBottomOf="@id/btn_back"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightBorder"
+            style="@style/Guideline"
+            app:layout_constraintGuide_end="@dimen/dp_24" />
 
-    <TextView
-        android:id="@+id/trackName"
-        style="@style/TextViewTrackNameColor"
-        app:layout_constraintTop_toBottomOf="@id/imageTrack"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        tools:text="Yesterday (2009)"/>
-    <TextView
-        android:id="@+id/artistName"
-        style="@style/TextViewArtistNameColor"
-        app:layout_constraintTop_toBottomOf="@id/trackName"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        tools:text="The Beatles"/>
+        <ImageView
+            android:id="@+id/imageTrack"
+            style="@style/ImageTrack"
+            android:contentDescription="@string/image_description"
+            app:layout_constraintTop_toBottomOf="@id/btn_back"
+            app:layout_constraintStart_toStartOf="@id/leftBorder"
+            app:layout_constraintEnd_toEndOf="@id/rightBorder"/>
 
-    <ImageView
-        android:id="@+id/btn_add"
-        style="@style/ImageAdd"
-        android:contentDescription="@string/image_description"
-        app:layout_constraintTop_toBottomOf="@id/artistName"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"/>
-    <ImageView
-        android:id="@+id/btn_play"
-        style="@style/ImagePlay"
-        android:contentDescription="@string/image_description"
-        android:enabled="false"
-        app:layout_constraintTop_toBottomOf="@id/artistName"
-        app:layout_constraintBottom_toBottomOf="@id/btn_add"
-        app:layout_constraintEnd_toStartOf="@id/btn_favourite"
-        app:layout_constraintStart_toEndOf="@id/btn_add" />
-    <ImageView
-        android:id="@+id/btn_favourite"
-        style="@style/ImageFavourite"
-        android:contentDescription="@string/image_description"
-        app:layout_constraintBottom_toBottomOf="@id/btn_add"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"/>
+        <TextView
+            android:id="@+id/trackName"
+            style="@style/TextViewTrackNameColor"
+            app:layout_constraintTop_toBottomOf="@id/imageTrack"
+            app:layout_constraintStart_toStartOf="@id/leftBorder"
+            app:layout_constraintEnd_toEndOf="@id/rightBorder"
+            tools:text="Yesterday (2009)"/>
+        <TextView
+            android:id="@+id/artistName"
+            style="@style/TextViewArtistNameColor"
+            app:layout_constraintTop_toBottomOf="@id/trackName"
+            app:layout_constraintStart_toStartOf="@id/leftBorder"
+            app:layout_constraintEnd_toEndOf="@id/rightBorder"
+            tools:text="The Beatles"/>
 
-    <TextView
-        android:id="@+id/track_timer"
-        style="@style/TextViewTrackTimerColor"
-        app:layout_constraintTag="textViewTrackTimer"
-        app:layout_constraintTop_toBottomOf="@id/btn_play"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        tools:text="0:30"/>
+        <ImageView
+            android:id="@+id/btn_add"
+            style="@style/ImageAdd"
+            android:contentDescription="@string/image_description"
+            app:layout_constraintTop_toBottomOf="@id/artistName"
+            app:layout_constraintStart_toStartOf="@id/leftBorder"/>
+        <ImageView
+            android:id="@+id/btn_play"
+            style="@style/ImagePlay"
+            android:contentDescription="@string/image_description"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@id/artistName"
+            app:layout_constraintBottom_toBottomOf="@id/btn_add"
+            app:layout_constraintEnd_toStartOf="@id/btn_favourite"
+            app:layout_constraintStart_toEndOf="@id/btn_add" />
+        <ImageView
+            android:id="@+id/btn_favourite"
+            style="@style/ImageFavourite"
+            android:contentDescription="@string/image_description"
+            app:layout_constraintBottom_toBottomOf="@id/btn_add"
+            app:layout_constraintEnd_toEndOf="@id/rightBorder"/>
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier"
-        style="@style/Barrier"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_tags="textViewTrackTimer"/>
+        <TextView
+            android:id="@+id/track_timer"
+            style="@style/TextViewTrackTimerColor"
+            app:layout_constraintTag="textViewTrackTimer"
+            app:layout_constraintTop_toBottomOf="@id/btn_play"
+            app:layout_constraintStart_toStartOf="@id/leftBorder"
+            app:layout_constraintEnd_toEndOf="@id/rightBorder"
+            tools:text="0:30"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/leftBorderBottom"
-        style="@style/Guideline"
-        app:layout_constraintGuide_begin="@dimen/dp_16" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            style="@style/Barrier"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_tags="textViewTrackTimer"/>
 
-    <TextView
-        android:id="@+id/textViewTrackDuration"
-        style="@style/TextViewTrackDurationColor"
-        android:text="@string/duration"
-        app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
-        app:layout_constraintTop_toBottomOf="@id/barrier"/>
-    <TextView
-        android:id="@+id/textViewTrackAlbumName"
-        style="@style/TextViewTrackAlbumNameColor"
-        android:text="@string/album"
-        app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackDuration"/>
-    <TextView
-        android:id="@+id/track_release_date"
-        style="@style/TextViewTrackReleaseDateColor"
-        android:text="@string/year"
-        app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackAlbumName"/>
-    <TextView
-        android:id="@+id/textViewTrackGenre"
-        style="@style/TextViewTrackGenreColor"
-        android:text="@string/genre"
-        app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
-        app:layout_constraintTop_toBottomOf="@id/track_release_date"/>
-    <TextView
-        android:id="@+id/textViewTrackCountry"
-        style="@style/TextViewTrackCountryColor"
-        android:text="@string/country"
-        app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
-        app:layout_constraintTop_toBottomOf="@id/textViewTrackGenre"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftBorderBottom"
+            style="@style/Guideline"
+            app:layout_constraintGuide_begin="@dimen/dp_16" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/rightBorderBottom"
-        style="@style/Guideline"
-        app:layout_constraintGuide_end="@dimen/dp_16" />
+        <TextView
+            android:id="@+id/textViewTrackDuration"
+            style="@style/TextViewTrackDurationColor"
+            android:text="@string/duration"
+            app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
+            app:layout_constraintTop_toBottomOf="@id/barrier"/>
+        <TextView
+            android:id="@+id/textViewTrackAlbumName"
+            style="@style/TextViewTrackAlbumNameColor"
+            android:text="@string/album"
+            app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
+            app:layout_constraintTop_toBottomOf="@id/textViewTrackDuration"/>
+        <TextView
+            android:id="@+id/track_release_date"
+            style="@style/TextViewTrackReleaseDateColor"
+            android:text="@string/year"
+            app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
+            app:layout_constraintTop_toBottomOf="@id/textViewTrackAlbumName"/>
+        <TextView
+            android:id="@+id/textViewTrackGenre"
+            style="@style/TextViewTrackGenreColor"
+            android:text="@string/genre"
+            app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
+            app:layout_constraintTop_toBottomOf="@id/track_release_date"/>
+        <TextView
+            android:id="@+id/textViewTrackCountry"
+            style="@style/TextViewTrackCountryColor"
+            android:text="@string/country"
+            app:layout_constraintStart_toStartOf="@id/leftBorderBottom"
+            app:layout_constraintTop_toBottomOf="@id/textViewTrackGenre"/>
 
-    <TextView
-        android:id="@+id/trackDuration"
-        style="@style/TextViewTrackDurationValueColor"
-        app:layout_constraintTop_toBottomOf="@id/barrier"
-        app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
-        app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackDuration"
-        tools:text="5:35"/>
-    <TextView
-        android:id="@+id/trackAlbum"
-        style="@style/TextViewTrackAlbumNameValueColor"
-        app:layout_constraintStart_toEndOf="@id/textViewTrackAlbumName"
-        app:layout_constraintTop_toBottomOf="@id/trackDuration"
-        app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
-        app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackAlbumName"
-        tools:text="Yesterday (Remastered) long title, long title, long title, long title, long title, long title, long title, "/>
-    <TextView
-        android:id="@+id/trackReleaseDateValue"
-        style="@style/TextViewTrackReleaseDateValueColor"
-        app:layout_constraintTop_toBottomOf="@id/trackAlbum"
-        app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
-        app:layout_constraintBaseline_toBaselineOf="@id/track_release_date"
-        tools:text="2009"/>
-    <TextView
-        android:id="@+id/trackGenre"
-        style="@style/TextViewTrackGenreValueColor"
-        app:layout_constraintTop_toBottomOf="@id/trackReleaseDateValue"
-        app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
-        app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackGenre"
-        tools:text="Rock"/>
-    <TextView
-        android:id="@+id/trackCountry"
-        style="@style/TextViewTrackCountryValueColor"
-        app:layout_constraintTop_toBottomOf="@id/trackGenre"
-        app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
-        app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackCountry"
-        tools:text="USA"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightBorderBottom"
+            style="@style/Guideline"
+            app:layout_constraintGuide_end="@dimen/dp_16" />
+
+        <TextView
+            android:id="@+id/trackDuration"
+            style="@style/TextViewTrackDurationValueColor"
+            app:layout_constraintTop_toBottomOf="@id/barrier"
+            app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
+            app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackDuration"
+            tools:text="5:35"/>
+        <TextView
+            android:id="@+id/trackAlbum"
+            style="@style/TextViewTrackAlbumNameValueColor"
+            app:layout_constraintStart_toEndOf="@id/textViewTrackAlbumName"
+            app:layout_constraintTop_toBottomOf="@id/trackDuration"
+            app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
+            app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackAlbumName"
+            tools:text="Yesterday (Remastered) long title, long title, long title, long title, long title, long title, long title, "/>
+        <TextView
+            android:id="@+id/trackReleaseDateValue"
+            style="@style/TextViewTrackReleaseDateValueColor"
+            app:layout_constraintTop_toBottomOf="@id/trackAlbum"
+            app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
+            app:layout_constraintBaseline_toBaselineOf="@id/track_release_date"
+            tools:text="2009"/>
+        <TextView
+            android:id="@+id/trackGenre"
+            style="@style/TextViewTrackGenreValueColor"
+            app:layout_constraintTop_toBottomOf="@id/trackReleaseDateValue"
+            app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
+            app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackGenre"
+            tools:text="Rock"/>
+        <TextView
+            android:id="@+id/trackCountry"
+            style="@style/TextViewTrackCountryValueColor"
+            app:layout_constraintTop_toBottomOf="@id/trackGenre"
+            app:layout_constraintEnd_toStartOf="@id/rightBorderBottom"
+            app:layout_constraintBaseline_toBaselineOf="@id/textViewTrackCountry"
+            tools:text="USA"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/overlay"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="@dimen/dp_505"
+        android:background="@drawable/shape_bottom_sheet"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View style="@style/ShapeButton" />
+
+        <TextView
+            style="@style/TextViewTitleColor"
+            android:text="@string/add_playlist"/>
+        <Button
+            android:id="@+id/btnNewPlaylist"
+            style="@style/ButtonNewPlaylistWithColor"
+            android:text="@string/btn_new_playlist"
+            android:layout_marginTop="@dimen/dp_28" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPlaylists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_24"/>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
