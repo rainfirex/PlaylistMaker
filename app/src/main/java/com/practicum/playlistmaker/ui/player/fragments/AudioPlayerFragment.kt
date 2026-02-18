@@ -4,15 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
+import com.practicum.playlistmaker.domain.models.Playlist
 import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.ui.common.models.PlaylistState
+import com.practicum.playlistmaker.ui.player.PlaylistAdaptor
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.practicum.playlistmaker.ui.utils.Helper
@@ -29,6 +35,11 @@ class AudioPlayerFragment: Fragment() {
 
     private lateinit var url: String
     private var trackTimeMillis: Int = 0
+    private lateinit var track: Track
+
+    private val adaptor = PlaylistAdaptor(onItemClick = { position, playlist ->
+        viewModel.addTrack(playlist, track)
+    })
 
     private val viewModel: PlayerViewModel by viewModel{
         parametersOf(url, trackTimeMillis)
@@ -46,7 +57,27 @@ class AudioPlayerFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val track = requireArguments().getParcelable<Track>(TRACK_KEY) as Track
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when(newState){
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        viewModel.getPlaylist()
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.isVisible = false
+                    }
+                    else -> { binding.overlay.isVisible = true }
+                }
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) { binding.overlay.alpha = slideOffset + 0.7f}
+        })
+
+        track = requireArguments().getParcelable<Track>(TRACK_KEY) as Track
         url = track.previewUrl.toString()
         trackTimeMillis = track.trackTimeMillis
 
@@ -79,13 +110,41 @@ class AudioPlayerFragment: Fragment() {
             }
         }
 
+        viewModel.observeStatePlaylists().observe(viewLifecycleOwner){
+            when(it){
+                is PlaylistState.Playlists -> initPlaylists(it.playLists)
+            }
+        }
+
+        viewModel.observeStateAddTrackToPlaylist().observe(viewLifecycleOwner) { result ->
+            val status = result.first
+            val playlistName = result.second
+            var message: String
+            if(status > 0){
+                message =getString(R.string.track_add_playlist_success, playlistName)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+            else{
+                message = getString(R.string.track_add_playlist_fail, playlistName)
+            }
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        }
+
         initTrack(track)
 
         binding.apply {
+            rvPlaylists.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            rvPlaylists.adapter = adaptor
+
             btnPlay.setOnClickListener{ viewModel.playbackControl() }
             btnBack.setNavigationOnClickListener { findNavController().navigateUp() }
             btnFavourite.setOnClickListener { onFavoriteClicked(track) }
-            btnAdd.setOnClickListener {  }
+            btnAdd.setOnClickListener {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+            btnNewPlaylist.setOnClickListener {
+                findNavController().navigate(R.id.action_audioPlayerFragment_to_createPlaylistFragment)
+            }
         }
     }
 
@@ -122,6 +181,19 @@ class AudioPlayerFragment: Fragment() {
         else{
             binding.trackReleaseDateValue.isVisible = false
             binding.trackReleaseDate.isVisible = false
+        }
+    }
+
+    private fun initPlaylists(playlist: List<Playlist>){
+        adaptor.data.clear()
+        adaptor.data.addAll(playlist)
+        adaptor.notifyDataSetChanged()
+
+        if(adaptor.data.isNotEmpty()){
+            binding.rvPlaylists.isVisible = true
+        }
+        else{
+            binding.rvPlaylists.isVisible = false
         }
     }
 

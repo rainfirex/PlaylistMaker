@@ -12,4 +12,21 @@
     <style name="TextViewNoDataWithColor" parent="TextViewNoData">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="EditTextNewPlaylistWithColor" parent="EditTextNewPlaylist">
+        <item name="android:background">@drawable/shape_border_edit_text_new_playlist_dark</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+    <style name="ButtonCreatePlaylistWithColor" parent="ButtonCreatePlaylist">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextViewGridNamePlaylistColor" parent="TextViewGridNamePlaylist">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextViewGridPlaylistCountColor" parent="TextViewGridPlaylistCount">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

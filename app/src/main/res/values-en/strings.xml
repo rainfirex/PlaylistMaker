@@ -29,10 +29,23 @@
     <string name="genre">Genre</string>
     <string name="country">Country</string>
     <string name="loading">Loading</string>
+    <string name="add_playlist">Add to playlist</string>
+    <string name="track_add_playlist_success">Added to playlist "%1$s"</string>
+    <string name="track_add_playlist_fail">The track has already been added to the playlist "%1$s"</string>
     <!--MediaActivity-->
     <string name="tab_favorite">Favorite tracks</string>
     <string name="tab_playlist">Playlists</string>
     <string name="btn_new_playlist">New playlist</string>
     <string name="text_view_no_data_media">Your media is empty</string>
     <string name="text_view_no_data_playlist">You no create playlist</string>
+    <!--CreatePlaylistFragment-->
+    <string name="new_playlist">New playlust</string>
+    <string name="edittext_title">Name *</string>
+    <string name="edittext_description">Description</string>
+    <string name="btn_create_playlist">Create</string>
+
+    <string name="alert_dialog_title">Finish creating a playlist?</string>
+    <string name="alert_dialog_message">All unsaved data will be lost</string>
+    <string name="alert_dialog_btn_cancel">Cancel</string>
+    <string name="alert_dialog_btn_positive">Finish</string>
 </resources>

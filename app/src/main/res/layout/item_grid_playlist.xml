@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp_16"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/dp_4">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_160"
+        android:orientation="vertical"
+        android:id="@+id/layout">
+
+        <ImageView
+            style="@style/ImageViewGridPlaylist"
+            android:id="@+id/imgPlaylist"
+            android:contentDescription="@string/image_description" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/TextViewGridNamePlaylistColor"
+        android:id="@+id/txtNamePlaylist"
+        tools:text="Best song 2021" />
+
+    <TextView
+        style="@style/TextViewGridPlaylistCountColor"
+        android:id="@+id/txtPlaylistCount"
+        tools:text="98 Tracks" />
+
+</LinearLayout>
