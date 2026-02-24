@@ -6,7 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.domain.media.MediaInteractor
+import com.practicum.playlistmaker.domain.media.PlaylistInteractor
+import com.practicum.playlistmaker.domain.models.Playlist
 import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.ui.common.models.PlaylistState
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.models.DataStateMediaPlayer
 import kotlinx.coroutines.Job
@@ -15,8 +18,12 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
-                      private var mediaPlayer: MediaPlayer, private val mediaInteractor: MediaInteractor): ViewModel() {
+class PlayerViewModel(
+    private val url: String,
+    private val trackTimeMillis: Int,
+    private var mediaPlayer: MediaPlayer,
+    private val mediaInteractor: MediaInteractor,
+    private val playlistInteractor: PlaylistInteractor): ViewModel() {
 
     private var stateMediaPlayer = MutableLiveData<DataStateMediaPlayer>( DataStateMediaPlayer(StateMediaPlayer.STATE_DEFAULT) )
     fun observeStateMediaPlayer(): LiveData<DataStateMediaPlayer> = stateMediaPlayer
@@ -24,10 +31,45 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
     private var stateFavoriteTrack = MutableLiveData<Boolean>(false)
     fun observeStateFavoriteTrack(): LiveData<Boolean> = stateFavoriteTrack
 
+    private var statePlaylists = MutableLiveData<PlaylistState>()
+    fun observeStatePlaylists(): LiveData<PlaylistState> = statePlaylists
+
+    private var stateAddTrackToPlaylist = MutableLiveData<Pair<Int, String>>()
+    fun observeStateAddTrackToPlaylist(): LiveData<Pair<Int, String>> = stateAddTrackToPlaylist
+
+
     private var timerJob: Job? = null
 
     init {
         preparePlayer(url)
+    }
+
+    fun addTrack(playlist: Playlist, track: Track){
+        if (playlist.tracks != null){
+            val ids = playlist.tracks.trim().split(DELIMITER)
+            val hasId = track.trackId.toString() in ids
+            if(hasId){
+                stateAddTrackToPlaylist.postValue(Pair(STATUS_FAIL_ADD_TRACK, playlist.namePlaylist))
+                return
+            }
+        }
+
+        viewModelScope.launch {
+            playlistInteractor.addTrack(track, playlist)
+            stateAddTrackToPlaylist.postValue(Pair(STATUS_SUCCESS_ADD_TRACK, playlist.namePlaylist))
+        }
+    }
+
+    fun getPlaylist(){
+        viewModelScope.launch {
+            playlistInteractor.getPlaylists().collect { playLists ->
+                renderState(PlaylistState.Playlists(playLists))
+            }
+        }
+    }
+
+    fun renderState(state: PlaylistState){
+        statePlaylists.postValue(state)
     }
 
     private fun getCurrentPosition(timeMillis: Int): String{
@@ -117,5 +159,8 @@ class PlayerViewModel(private val url: String, private val trackTimeMillis: Int,
 
     companion object{
         private const val DELAY = 300L
+        private const val STATUS_FAIL_ADD_TRACK = -1
+        private const val STATUS_SUCCESS_ADD_TRACK = 1
+        private const val DELIMITER = ";"
     }
 }
