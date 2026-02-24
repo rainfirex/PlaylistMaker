@@ -20,7 +20,7 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val imgPlaylist = view.findViewById<ImageView>(R.id.imgPlaylist)
     private val txtNamePlaylist = view.findViewById<TextView>(R.id.txtNamePlaylist)
     private val txtPlaylistCount = view.findViewById<TextView>(R.id.txtPlaylistCount)
-    private val roundedCorner = Helper.Companion.dpToPx(2f, layout.context)
+    private val roundedCorner = Helper.Companion.dpToPx(ROUNDED, layout.context)
 
     constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context).inflate(R.layout.item_list_playlist, parent, false))
 
@@ -28,7 +28,7 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
         if (playlist.namePlaylist.isEmpty()) return
 
         txtNamePlaylist.text = playlist.namePlaylist
-        txtPlaylistCount.text = "${playlist.count} треков"
+        txtPlaylistCount.text = txtPlaylistCount.resources.getQuantityString(R.plurals.plural_trackplural_track, playlist.count, playlist.count, playlist.count)
 
         Glide.with(layout)
             .load(playlist.pathImage)
@@ -38,5 +38,9 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
             ))
             .placeholder(R.drawable.ic_track_placeholder_45)
             .into(imgPlaylist)
+    }
+
+    companion object{
+        private const val ROUNDED = 2f
     }
 }

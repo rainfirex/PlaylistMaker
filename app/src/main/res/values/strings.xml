@@ -50,4 +50,9 @@
     <string name="alert_dialog_btn_cancel">Отмена</string>
     <string name="alert_dialog_btn_positive">Завершить</string>
 
+    <plurals name="plural_trackplural_track">
+        <item quantity="one">%d трек</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+    </plurals>
 </resources>

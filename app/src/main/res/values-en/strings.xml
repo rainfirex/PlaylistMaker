@@ -48,4 +48,10 @@
     <string name="alert_dialog_message">All unsaved data will be lost</string>
     <string name="alert_dialog_btn_cancel">Cancel</string>
     <string name="alert_dialog_btn_positive">Finish</string>
+
+    <plurals name="plural_trackplural_track">
+        <item quantity="one">%d track</item>
+        <item quantity="few">%d tracks</item>
+        <item quantity="many">%d tracks</item>
+    </plurals>
 </resources>
