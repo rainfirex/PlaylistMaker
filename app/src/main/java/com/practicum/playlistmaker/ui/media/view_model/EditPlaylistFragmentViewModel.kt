@@ -8,12 +8,12 @@ import com.practicum.playlistmaker.domain.models.Playlist
 import com.practicum.playlistmaker.ui.common.models.DataState
 import kotlinx.coroutines.launch
 
-class EditPlaylistFragmentViewModel(val playlistInteractor: PlaylistInteractor) : CreatePlaylistFragmentViewModel(playlistInteractor) {
+class EditPlaylistFragmentViewModel(private val playlistInteractor: PlaylistInteractor) : CreatePlaylistFragmentViewModel(playlistInteractor) {
 
     private val stateLiveData = MutableLiveData<DataState>()
     fun observeStatePlaylist(): LiveData<DataState> = stateLiveData
 
-    var currPlaylist: Playlist? = null
+    private var currPlaylist: Playlist? = null
 
     fun getPlaylist(playlistId: Int){
         viewModelScope.launch {

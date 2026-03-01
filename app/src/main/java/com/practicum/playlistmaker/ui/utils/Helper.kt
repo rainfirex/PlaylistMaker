@@ -49,23 +49,25 @@ class Helper {
             return fileName
         }
 
-        fun saveImage(context: Context, uri: Uri, albumName: String, filename: String): String{
+        fun saveImage(context: Context, uri: Uri, albumName: String, filename: String): String {
             val path = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), albumName)
 
-            if (!path.exists()){
+            if (!path.exists()) {
                 path.mkdirs()
             }
 
             val file = File(path, filename)
 
-            val uriStream = context.contentResolver.openInputStream(uri)
+            context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                FileOutputStream(file).use { outputStream ->
+                    val buffer = ByteArray(8192)
+                    var bytesRead: Int
 
-            val fileStream = FileOutputStream(file)
-
-            BitmapFactory
-                .decodeStream(uriStream)
-                .compress(Bitmap.CompressFormat.JPEG, 30, fileStream)
-
+                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
+                }
+            }
             return file.path
         }
     }

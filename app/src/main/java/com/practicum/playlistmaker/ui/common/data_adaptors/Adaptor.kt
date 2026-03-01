@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.domain.models.Track
 
-class TrackAdaptor(
+class Adaptor(
     private val onItemClick: ((Int, Track) -> Unit)? = null,
     private val onItemLongClick: ((Int, Track) -> Unit)? = null
 ) : RecyclerView.Adapter<TrackViewHolder>(){

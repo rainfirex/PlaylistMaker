@@ -1,15 +1,9 @@
 package com.practicum.playlistmaker.ui.media.fragments
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +20,6 @@ import com.practicum.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.practicum.playlistmaker.ui.media.view_model.CreatePlaylistFragmentViewModel
 import com.practicum.playlistmaker.ui.utils.Helper
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 open class CreatePlaylistFragment: Fragment() {
 

@@ -56,9 +56,8 @@
     </plurals>
 
     <plurals name="view_track_with_02d">
-        <item quantity="one">%02d трек</item>
-        <item quantity="few">%02d трека</item>
-        <item quantity="many">%02d треков</item>
+        <item quantity="one">%02d track</item>
+        <item quantity="other">%02d tracks</item>
     </plurals>
 
     <plurals name="view_time_with_d">

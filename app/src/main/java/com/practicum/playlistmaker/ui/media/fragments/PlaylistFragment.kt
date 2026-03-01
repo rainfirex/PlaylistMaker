@@ -22,7 +22,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistBinding
 import com.practicum.playlistmaker.domain.models.Playlist
 import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.ui.common.data_adaptors.TrackAdaptor
+import com.practicum.playlistmaker.ui.common.data_adaptors.Adaptor
 import com.practicum.playlistmaker.ui.common.models.DataState
 import com.practicum.playlistmaker.ui.media.view_model.PlaylistFragmentViewModel
 import com.practicum.playlistmaker.ui.player.fragments.AudioPlayerFragment
@@ -42,7 +42,7 @@ class PlaylistFragment: Fragment()  {
 
     private lateinit var onClickTrackDebounce: (Pair<Track, Int>) -> Unit
 
-    private val trackAdaptor = TrackAdaptor(
+    private val trackAdaptor = Adaptor(
         onItemClick = { position, track -> onClickTrackDebounce(Pair(track, position)) },
         onItemLongClick =  { position, track -> showRemoveTrackDialog(track) }
     )
@@ -204,14 +204,16 @@ class PlaylistFragment: Fragment()  {
 
         binding.txtTime.text = resources.getQuantityString(R.plurals.view_time_with_d, min, min,min, min)
 
+        trackAdaptor.data.clear()
+
         if(tracks.isNotEmpty()){
-            trackAdaptor.data.clear()
             trackAdaptor.data.addAll(tracks)
-            trackAdaptor.notifyDataSetChanged()
         }
         else{
             Toast.makeText(requireContext(), getString(R.string.toast_playlist_no_tracks2), Toast.LENGTH_SHORT).show()
         }
+
+        trackAdaptor.notifyDataSetChanged()
     }
 
     private fun sharedPlaylist(){
