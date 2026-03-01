@@ -29,4 +29,7 @@
     <style name="TextViewGridPlaylistCountColor" parent="TextViewGridPlaylistCount">
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name="TextViewBottomSheetMenuColor" parent="TextViewBottomSheetMenu">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

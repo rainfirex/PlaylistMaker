@@ -17,7 +17,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.domain.models.Playlist
 import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.ui.common.models.PlaylistState
+import com.practicum.playlistmaker.ui.common.models.PlaylistsState
 import com.practicum.playlistmaker.ui.player.PlaylistAdaptor
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
@@ -112,7 +112,7 @@ class AudioPlayerFragment: Fragment() {
 
         viewModel.observeStatePlaylists().observe(viewLifecycleOwner){
             when(it){
-                is PlaylistState.Playlists -> initPlaylists(it.playLists)
+                is PlaylistsState.Playlists -> initPlaylists(it.playLists)
             }
         }
 

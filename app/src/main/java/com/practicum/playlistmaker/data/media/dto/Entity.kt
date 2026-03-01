@@ -15,5 +15,7 @@ data class Entity(
     @ColumnInfo(name = "tracks") val tracks: String?,
     @ColumnInfo(name = "count_tracks", defaultValue = "0") val count: Int,
     @ColumnInfo(name = "created_at", defaultValue = "CURRENT_TIMESTAMP")
-    var created: Date? = null
+    var created: Date? = null,
+    @ColumnInfo(name = "updated_at", defaultValue = "CURRENT_TIMESTAMP")
+    var updated: Date? = null,
 )

@@ -24,20 +24,21 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.practicum.playlistmaker.ui.media.view_model.CreatePlaylistFragmentViewModel
+import com.practicum.playlistmaker.ui.utils.Helper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class CreatePlaylistFragment: Fragment() {
+open class CreatePlaylistFragment: Fragment() {
 
     private var _binding: FragmentCreatePlaylistBinding? = null
-    private val binding get() = _binding!!
+    open val binding get() = _binding!!
 
-    private val viewModel: CreatePlaylistFragmentViewModel by viewModel()
+    open val viewModel: CreatePlaylistFragmentViewModel by viewModel()
 
     private var textWatcher: TextWatcher? = null
 
-    private var uri: Uri? = null
+    var uri: Uri? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         _binding = FragmentCreatePlaylistBinding.inflate(inflater, container, false)
@@ -59,7 +60,7 @@ class CreatePlaylistFragment: Fragment() {
             val namePlaylist = binding.edtTitle.text.trim().toString()
             val description = binding.edtDescription.text.trim().toString()
 
-            Toast.makeText(context, "Плейлист \"${ namePlaylist }\" создан", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, getString(R.string.playlist_created, namePlaylist), Toast.LENGTH_LONG).show()
             savePlaylist(namePlaylist, description);
             findNavController().navigateUp()
         }
@@ -86,8 +87,6 @@ class CreatePlaylistFragment: Fragment() {
                     .placeholder(R.drawable.ic_album_image_placeholder_312)
                     .into(binding.imageView)
                 this.uri = uri
-            } else {
-                Log.d("PhotoPicker", "No media selected")
             }
         }
 
@@ -111,52 +110,17 @@ class CreatePlaylistFragment: Fragment() {
     }
 
     private fun savePlaylist(namePlaylist: String, description: String){
-        var path: String? = null
-        if(uri != null){
-            val filename = getFileNameFromUri(requireContext(), uri!!) ?: ""
-            path = saveImage(uri!!, namePlaylist, filename)
-        }
-
+        var path: String? = saveImage(namePlaylist)
         viewModel.createPlaylist(namePlaylist, description, path)
     }
 
-    private fun getFileNameFromUri(context: Context, uri: Uri): String? {
-        var fileName: String? = null
-        val cursor = context.contentResolver.query(uri, null, null, null, null)
-
-        cursor?.use {
-            if (it.moveToFirst()) {
-                // Пробуем разные возможные имена столбцов
-                val nameIndex = it.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)
-                if (nameIndex >= 0) {
-                    fileName = it.getString(nameIndex)
-                }
-            }
+    fun saveImage(namePlaylist: String): String?{
+        var path: String? = null
+        if(uri != null){
+            val filename = Helper.getFileNameFromUri(requireContext(), uri!!) ?: ""
+            path = Helper.saveImage(requireActivity(), uri!!, namePlaylist, filename)
         }
-        return fileName
-    }
-
-    private fun saveImage(uri: Uri, albumName: String, filename: String): String{
-
-        val fr = requireActivity()
-
-        val path = File(fr.getExternalFilesDir(Environment.DIRECTORY_PICTURES), albumName)
-
-        if (!path.exists()){
-            path.mkdirs()
-        }
-
-        val file = File(path, filename)
-
-        val uriStream = fr.contentResolver.openInputStream(uri)
-
-        val fileStream = FileOutputStream(file)
-
-        BitmapFactory
-            .decodeStream(uriStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, fileStream)
-
-        return file.path
+        return path
     }
 
     override fun onDestroyView() {
