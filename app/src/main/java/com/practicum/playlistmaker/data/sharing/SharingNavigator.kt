@@ -6,4 +6,5 @@ interface SharingNavigator {
     fun shareLink(url: String)
     fun openLink(url: String)
     fun openEmail(dto: EmailDataDto)
+    fun sharePlaylist(text: String)
 }

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.search
+package com.practicum.playlistmaker.ui.common.data_adaptors
 
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,7 @@ import com.practicum.playlistmaker.ui.utils.Helper
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class SearchTrackViewHolder(view: View): RecyclerView.ViewHolder(view) {
+class TrackViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     private val layout = view.findViewById<LinearLayout>(R.id.layout)
     private val imgCover = view.findViewById<ImageView>(R.id.ImageCover)

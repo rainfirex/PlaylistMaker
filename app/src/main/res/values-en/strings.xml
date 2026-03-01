@@ -43,15 +43,41 @@
     <string name="edittext_title">Name *</string>
     <string name="edittext_description">Description</string>
     <string name="btn_create_playlist">Create</string>
+    <string name="playlist_created">"Playlist \"%s\" created"</string>
 
     <string name="alert_dialog_title">Finish creating a playlist?</string>
     <string name="alert_dialog_message">All unsaved data will be lost</string>
     <string name="alert_dialog_btn_cancel">Cancel</string>
     <string name="alert_dialog_btn_positive">Finish</string>
 
-    <plurals name="plural_trackplural_track">
+    <plurals name="view_track_with_d">
         <item quantity="one">%d track</item>
-        <item quantity="few">%d tracks</item>
-        <item quantity="many">%d tracks</item>
+        <item quantity="other">%d tracks</item>
     </plurals>
+
+    <plurals name="view_track_with_02d">
+        <item quantity="one">%02d трек</item>
+        <item quantity="few">%02d трека</item>
+        <item quantity="many">%02d треков</item>
+    </plurals>
+
+    <plurals name="view_time_with_d">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
+    <!-- PlaylistFragment-->
+    <string name="alert_dialog_track_remove_title">Do you want to delete a track?</string>
+    <string name="alert_dialog_playlist_remove_title">Delete a playlist</string>
+    <string name="alert_dialog_playlist_remove_body">Do you want to delete a playlist "%s"?</string>
+    <string name="alert_dialog_remove_btn_positive">Yes</string>
+    <string name="alert_dialog_remove_btn_negative">No</string>
+    <string name="txt_shared">To share</string>
+    <string name="txt_edit_playlist">Edit Information</string>
+    <string name="txt_remove_playlist">Delete a playlist</string>
+    <string name="toast_playlist_no_tracks">This playlist does not have a track list that can be shared</string>
+    <string name="toast_playlist_no_tracks2">This playlist does not have a track list</string>
+    <!--EditPlaylistFragment-->
+    <string name="edit_playlist">Edit</string>
+    <string name="btn_edit_playlist">Save</string>
 </resources>

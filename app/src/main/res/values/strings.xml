@@ -44,15 +44,45 @@
     <string name="edittext_title">Название *</string>
     <string name="edittext_description">Описание</string>
     <string name="btn_create_playlist">Создать</string>
+    <string name="playlist_created">"Плейлист \"%s\" создан"</string>
 
     <string name="alert_dialog_title">Завершить создание плейлиста?</string>
     <string name="alert_dialog_message">Все несохраненные данные будут потеряны</string>
     <string name="alert_dialog_btn_cancel">Отмена</string>
     <string name="alert_dialog_btn_positive">Завершить</string>
 
-    <plurals name="plural_trackplural_track">
+    <plurals name="view_track_with_d">
         <item quantity="one">%d трек</item>
         <item quantity="few">%d трека</item>
         <item quantity="many">%d треков</item>
     </plurals>
+
+    <plurals name="view_track_with_02d">
+        <item quantity="one">%02d трек</item>
+        <item quantity="few">%02d трека</item>
+        <item quantity="many">%02d треков</item>
+    </plurals>
+
+    <plurals name="view_time_with_d">
+        <item quantity="zero">%d минут</item>
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+    </plurals>
+
+    <!--PlaylistFragment-->
+    <string name="alert_dialog_track_remove_title">Хотите удалить трек?</string>
+    <string name="alert_dialog_playlist_remove_title">Удалить плейлист</string>
+    <string name="alert_dialog_playlist_remove_body">Хотите удалить плейлист \"%s\"?</string>
+    <string name="alert_dialog_remove_btn_positive">Да</string>
+    <string name="alert_dialog_remove_btn_negative">Нет</string>
+    <string name="txt_shared">Поделиться</string>
+    <string name="txt_edit_playlist">Редактировать информацию</string>
+    <string name="txt_remove_playlist">Удалить плейлист</string>
+    <string name="toast_playlist_no_tracks">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="toast_playlist_no_tracks2">В плейлисте нет треков</string>
+
+    <!--EditPlaylistFragment-->
+    <string name="edit_playlist">Редактировать</string>
+    <string name="btn_edit_playlist">Сохранить</string>
 </resources>

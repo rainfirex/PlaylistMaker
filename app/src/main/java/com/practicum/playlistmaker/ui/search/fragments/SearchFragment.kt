@@ -19,7 +19,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.ui.player.fragments.AudioPlayerFragment
-import com.practicum.playlistmaker.ui.search.TrackAdaptor
+import com.practicum.playlistmaker.ui.common.data_adaptors.TrackAdaptor
 import com.practicum.playlistmaker.ui.search.models.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.utils.Helper

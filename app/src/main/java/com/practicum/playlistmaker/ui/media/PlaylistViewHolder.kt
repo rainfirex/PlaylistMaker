@@ -31,7 +31,7 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
         if (playlist.namePlaylist.isEmpty()) return
 
         txtNamePlaylist.text = playlist.namePlaylist
-        txtPlaylistCount.text = txtPlaylistCount.resources.getQuantityString(R.plurals.plural_trackplural_track, playlist.count, playlist.count, playlist.count)
+        txtPlaylistCount.text = txtPlaylistCount.resources.getQuantityString(R.plurals.view_track_with_d, playlist.count, playlist.count, playlist.count)
 
         Glide.with(layout)
             .load(playlist.pathImage)
