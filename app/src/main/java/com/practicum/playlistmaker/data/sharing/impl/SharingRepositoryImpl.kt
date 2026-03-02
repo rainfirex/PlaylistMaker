@@ -16,4 +16,8 @@ class SharingRepositoryImpl(private val navigator: SharingNavigator): SharingRep
     override fun openEmail(subject: String, message: String) {
         navigator.openEmail(EmailDataDto(subject, message))
     }
+
+    override fun sharePlaylist(text: String) {
+        navigator.sharePlaylist(text)
+    }
 }

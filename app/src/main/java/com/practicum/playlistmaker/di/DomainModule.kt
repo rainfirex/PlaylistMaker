@@ -28,7 +28,7 @@ val domainModule = module{
     }
 
     single<SharingInteractor> {
-        SharingInteractorImpl(get())
+        SharingInteractorImpl(get(), get())
     }
 
     single<MediaInteractor> {

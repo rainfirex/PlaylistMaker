@@ -122,4 +122,51 @@
     <style name="TextViewGridPlaylistCountColor" parent="TextViewGridPlaylistCount">
         <item name="android:textColor">@color/dark</item>
     </style>
+
+    <style name="MaterialAlertDialog" >
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
+<!--        <item name="colorOnSurface">@color/dark</item>-->
+        <!-- Стиль для заголовка -->
+        <item name="materialAlertDialogTitleTextStyle">@style/MyDialogTitleText</item>
+        <!-- Стиль для сообщения -->
+        <item name="materialAlertDialogBodyTextStyle">@style/MyDialogBodyText</item>
+    </style>
+    <style name="MyDialogTitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">@dimen/sp_13</item>
+<!--        <item name="android:textStyle">bold</item>-->
+    </style>
+
+    <style name="MyDialogBodyText" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">@dimen/sp_13</item>
+    </style>
+    <style name="PositiveButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+    <style name="NegativeButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+    <style name="NeutralButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <!--fragment_playlist-->
+    <style name="TextViewBottomSheetMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingVertical">@dimen/dp_21</item>
+        <item name="android:layout_marginStart">@dimen/dp_16</item>
+        <item name="android:layout_marginEnd">@dimen/dp_44</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+    <style name="TextViewBottomSheetMenuColor" parent="TextViewBottomSheetMenu">
+        <item name="android:textColor">@color/dark</item>
+    </style>
 </resources>

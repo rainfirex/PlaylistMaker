@@ -33,4 +33,15 @@ class ExternalSharingNavigator(private val ctx: Context): SharingNavigator {
 
         ctx.startActivity(intentSupport)
     }
+
+    override fun sharePlaylist(text: String) {
+        val intentShared = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+
+        ctx.startActivity(Intent.createChooser(intentShared, ctx.getString(R.string.shared_title))
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
 }

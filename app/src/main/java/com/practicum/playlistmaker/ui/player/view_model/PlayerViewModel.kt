@@ -9,7 +9,7 @@ import com.practicum.playlistmaker.domain.media.MediaInteractor
 import com.practicum.playlistmaker.domain.media.PlaylistInteractor
 import com.practicum.playlistmaker.domain.models.Playlist
 import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.ui.common.models.PlaylistState
+import com.practicum.playlistmaker.ui.common.models.PlaylistsState
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.models.DataStateMediaPlayer
 import kotlinx.coroutines.Job
@@ -31,8 +31,8 @@ class PlayerViewModel(
     private var stateFavoriteTrack = MutableLiveData<Boolean>(false)
     fun observeStateFavoriteTrack(): LiveData<Boolean> = stateFavoriteTrack
 
-    private var statePlaylists = MutableLiveData<PlaylistState>()
-    fun observeStatePlaylists(): LiveData<PlaylistState> = statePlaylists
+    private var statePlaylists = MutableLiveData<PlaylistsState>()
+    fun observeStatePlaylists(): LiveData<PlaylistsState> = statePlaylists
 
     private var stateAddTrackToPlaylist = MutableLiveData<Pair<Int, String>>()
     fun observeStateAddTrackToPlaylist(): LiveData<Pair<Int, String>> = stateAddTrackToPlaylist
@@ -63,12 +63,12 @@ class PlayerViewModel(
     fun getPlaylist(){
         viewModelScope.launch {
             playlistInteractor.getPlaylists().collect { playLists ->
-                renderState(PlaylistState.Playlists(playLists))
+                renderState(PlaylistsState.Playlists(playLists))
             }
         }
     }
 
-    fun renderState(state: PlaylistState){
+    fun renderState(state: PlaylistsState){
         statePlaylists.postValue(state)
     }
 

@@ -3,9 +3,11 @@ package com.practicum.playlistmaker.di
 import android.media.MediaPlayer
 import com.practicum.playlistmaker.ui.config.view_model.ConfigViewModel
 import com.practicum.playlistmaker.ui.media.view_model.CreatePlaylistFragmentViewModel
+import com.practicum.playlistmaker.ui.media.view_model.EditPlaylistFragmentViewModel
 import com.practicum.playlistmaker.ui.root.view_model.RootViewModel
 import com.practicum.playlistmaker.ui.media.view_model.FavoriteFragmentViewModel
 import com.practicum.playlistmaker.ui.media.view_model.PlaylistFragmentViewModel
+import com.practicum.playlistmaker.ui.media.view_model.PlaylistsFragmentViewModel
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -37,10 +39,18 @@ val viewModelModule = module{
     }
 
     viewModel{
-        PlaylistFragmentViewModel(get())
+        PlaylistsFragmentViewModel(get())
     }
 
     viewModel{
         CreatePlaylistFragmentViewModel(get())
+    }
+
+    viewModel{
+        PlaylistFragmentViewModel(get(), get())
+    }
+
+    viewModel{
+        EditPlaylistFragmentViewModel(get())
     }
 }

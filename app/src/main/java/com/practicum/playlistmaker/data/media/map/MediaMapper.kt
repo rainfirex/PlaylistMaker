@@ -60,7 +60,7 @@ class MediaMapper {
         )
     }
 
-    fun mapTrackPlaylist(track :Track): TrackPlaylist{
+    fun trackToTrackPlaylist(track :Track): TrackPlaylist{
         return TrackPlaylist(
             track.trackId,
             track.trackName,
@@ -72,6 +72,21 @@ class MediaMapper {
             track.previewUrl,
             track.primaryGenreName,
             track.country,
+        )
+    }
+
+    fun trackPlaylistToTrack(track: TrackPlaylist) : Track{
+        return Track(
+            track.id,
+            track.trackName,
+            track.artistName,
+            track.trackTimeMillis,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.country,
+            track.previewUrl
         )
     }
 }

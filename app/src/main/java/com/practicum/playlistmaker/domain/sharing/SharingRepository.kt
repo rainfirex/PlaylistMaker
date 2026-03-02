@@ -4,4 +4,5 @@ interface SharingRepository {
     fun shareLink(string: String)
     fun openLink(string: String)
     fun openEmail(subject: String, message: String)
+    fun sharePlaylist(text: String)
 }
