@@ -92,18 +92,19 @@ class AudioPlayerFragment: Fragment() {
                 StateMediaPlayer.STATE_PREPARED -> {
                     binding.apply {
                         btnPlay.isEnabled = true
-                        btnPlay.setImageResource(R.drawable.ic_play_83)
+                        btnPlay.setPlaybackState(false)
                     }
                 }
                 StateMediaPlayer.STATE_PAUSED -> {
-                    binding.btnPlay.setImageResource(R.drawable.ic_play_83)
+                    binding.btnPlay.setPlaybackState(false)
                 }
                 StateMediaPlayer.STATE_PLAYING -> {
-                    binding.btnPlay.setImageResource(R.drawable.ic_pause_83)
+                    binding.btnPlay.setPlaybackState(true)
                 }
                 StateMediaPlayer.STATE_DEFAULT -> {
                     binding.apply {
                         btnPlay.isEnabled = false
+                        btnPlay.setPlaybackState(false)
                         trackTimer.text = getString(R.string.loading)
                     }
                 }
@@ -214,6 +215,7 @@ class AudioPlayerFragment: Fragment() {
     private fun setFavoriteIco(isFavorite: Boolean){
         val image = if(isFavorite) R.drawable.ic_btn_favourite_like_51 else R.drawable.ic_btn_favourite_51
         binding.btnFavourite.setImageResource(image)
+        track = track.copy(isFavorite = isFavorite)
     }
 
     companion object {
