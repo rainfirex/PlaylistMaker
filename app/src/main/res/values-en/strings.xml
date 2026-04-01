@@ -12,6 +12,7 @@
     <string name="setting_title">Settings</string>
     <string name="search_title">Search</string>
     <string name="media_title">Media</string>
+    <string name="no_connect_internet">There is no internet connection</string>
     <string name="support_subject">Message to the developers and developers of the Playlist Maker app</string>
     <string name="support_message">Thanks to the developers and developers for the cool app!</string>
     <string name="hint_edit_search">Search</string>

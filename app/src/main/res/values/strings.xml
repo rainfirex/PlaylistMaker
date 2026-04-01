@@ -13,6 +13,7 @@
     <string name="support_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="shared_title">Поделиться через</string>
+    <string name="no_connect_internet">Отсутствует подключение к интернету</string>
     <string name="url_android_dev">https://practicum.yandex.ru/android-developer</string>
     <string name="url_offer">https://yandex.ru/legal/practicum_offer</string>
     <!--SearchActivity-->

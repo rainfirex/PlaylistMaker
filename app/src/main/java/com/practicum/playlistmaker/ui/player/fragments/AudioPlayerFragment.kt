@@ -1,10 +1,12 @@
 package com.practicum.playlistmaker.ui.player.fragments
 
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -21,6 +23,7 @@ import com.practicum.playlistmaker.ui.common.models.PlaylistsState
 import com.practicum.playlistmaker.ui.player.PlaylistAdaptor
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
+import com.practicum.playlistmaker.ui.utils.ChangeInternetBroadcastReceiver
 import com.practicum.playlistmaker.ui.utils.Helper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -44,6 +47,8 @@ class AudioPlayerFragment: Fragment() {
     private val viewModel: PlayerViewModel by viewModel{
         parametersOf(url, trackTimeMillis)
     }
+
+    private val internetBroadcastReceiver = ChangeInternetBroadcastReceiver()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,18 +97,19 @@ class AudioPlayerFragment: Fragment() {
                 StateMediaPlayer.STATE_PREPARED -> {
                     binding.apply {
                         btnPlay.isEnabled = true
-                        btnPlay.setImageResource(R.drawable.ic_play_83)
+                        btnPlay.setPlaybackState(false)
                     }
                 }
                 StateMediaPlayer.STATE_PAUSED -> {
-                    binding.btnPlay.setImageResource(R.drawable.ic_play_83)
+                    binding.btnPlay.setPlaybackState(false)
                 }
                 StateMediaPlayer.STATE_PLAYING -> {
-                    binding.btnPlay.setImageResource(R.drawable.ic_pause_83)
+                    binding.btnPlay.setPlaybackState(true)
                 }
                 StateMediaPlayer.STATE_DEFAULT -> {
                     binding.apply {
                         btnPlay.isEnabled = false
+                        btnPlay.setPlaybackState(false)
                         trackTimer.text = getString(R.string.loading)
                     }
                 }
@@ -200,6 +206,17 @@ class AudioPlayerFragment: Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer()
+        requireContext().unregisterReceiver(internetBroadcastReceiver)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ContextCompat.registerReceiver(
+            requireContext(),
+            internetBroadcastReceiver,
+            IntentFilter(ACTION_CONNECTIVITY_CHANGE),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     override fun onDestroyView() {
@@ -214,9 +231,11 @@ class AudioPlayerFragment: Fragment() {
     private fun setFavoriteIco(isFavorite: Boolean){
         val image = if(isFavorite) R.drawable.ic_btn_favourite_like_51 else R.drawable.ic_btn_favourite_51
         binding.btnFavourite.setImageResource(image)
+        track = track.copy(isFavorite = isFavorite)
     }
 
     companion object {
+        private const val ACTION_CONNECTIVITY_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE"
         const val TRACK_KEY = "track"
 
         fun createArgs(track: Track): Bundle = bundleOf(

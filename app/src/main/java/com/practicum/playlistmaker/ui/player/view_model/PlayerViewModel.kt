@@ -154,6 +154,7 @@ class PlayerViewModel(
                 }
             }
         }
+
         setFavoriteTrack(isFavorite)
     }
 
