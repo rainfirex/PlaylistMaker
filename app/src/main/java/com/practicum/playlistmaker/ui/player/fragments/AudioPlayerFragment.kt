@@ -1,11 +1,20 @@
 package com.practicum.playlistmaker.ui.player.fragments
 
+import android.Manifest
+import android.content.ComponentName
+import android.content.Context.BIND_AUTO_CREATE
+import android.content.Intent
 import android.content.IntentFilter
+import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
+import android.telecom.ConnectionService
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -19,6 +28,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.practicum.playlistmaker.domain.models.Playlist
 import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.services.PlayMusicService
 import com.practicum.playlistmaker.ui.common.models.PlaylistsState
 import com.practicum.playlistmaker.ui.player.PlaylistAdaptor
 import com.practicum.playlistmaker.ui.player.enums.StateMediaPlayer
@@ -142,7 +152,7 @@ class AudioPlayerFragment: Fragment() {
             rvPlaylists.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             rvPlaylists.adapter = adaptor
 
-            btnPlay.setOnClickListener{ viewModel.playbackControl() }
+//            btnPlay.setOnClickListener{ viewModel.playbackControl() }
             btnBack.setNavigationOnClickListener { findNavController().navigateUp() }
             btnFavourite.setOnClickListener { onFavoriteClicked(track) }
             btnAdd.setOnClickListener {
@@ -152,6 +162,11 @@ class AudioPlayerFragment: Fragment() {
                 findNavController().navigate(R.id.action_audioPlayerFragment_to_createPlaylistFragment)
             }
         }
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+        else{ bindMusicService() }
     }
 
     private fun initTrack(track: Track){
@@ -220,6 +235,7 @@ class AudioPlayerFragment: Fragment() {
     }
 
     override fun onDestroyView() {
+        unbindMusicService()
         super.onDestroyView()
         _binding = null
     }
@@ -234,9 +250,42 @@ class AudioPlayerFragment: Fragment() {
         track = track.copy(isFavorite = isFavorite)
     }
 
+    ///region PlayMusicService
+
+    private var playMusicService: PlayMusicService? = null
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as PlayMusicService.PlayMusicServiceBinder
+            playMusicService = binder.getService()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            playMusicService = null
+        }
+    }
+
+    private fun bindMusicService() {
+        val intent = Intent(context, PlayMusicService::class.java)
+        intent.putExtra(SONG_URL, url)
+        requireContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE)
+    }
+
+    private fun unbindMusicService() {
+        requireContext().unbindService(serviceConnection)
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) { bindMusicService() }
+        else { Toast.makeText(requireContext(), "Can't bind service!", Toast.LENGTH_LONG).show() }
+    }
+
+    ///endregion
+
     companion object {
         private const val ACTION_CONNECTIVITY_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE"
         const val TRACK_KEY = "track"
+        const val SONG_URL = "song_url"
 
         fun createArgs(track: Track): Bundle = bundleOf(
             TRACK_KEY to track
