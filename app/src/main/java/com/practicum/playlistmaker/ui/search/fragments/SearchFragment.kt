@@ -1,5 +1,8 @@
 package com.practicum.playlistmaker.ui.search.fragments
 
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.Network
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +12,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +26,7 @@ import com.practicum.playlistmaker.ui.player.fragments.AudioPlayerFragment
 import com.practicum.playlistmaker.ui.common.data_adaptors.Adaptor
 import com.practicum.playlistmaker.ui.search.models.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
+import com.practicum.playlistmaker.ui.utils.ChangeInternetBroadcastReceiver
 import com.practicum.playlistmaker.ui.utils.Helper
 import com.practicum.playlistmaker.ui.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -47,6 +52,8 @@ class SearchFragment: Fragment() {
     private val historyAdaptor = Adaptor(onItemClick = { position, track ->
         onClickTrackDebounce(Pair(track, -1))
     })
+
+    private val internetBroadcastReceiver = ChangeInternetBroadcastReceiver()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -198,6 +205,17 @@ class SearchFragment: Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.saveHistory()
+        requireContext().unregisterReceiver(internetBroadcastReceiver)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ContextCompat.registerReceiver(
+            requireContext(),
+            internetBroadcastReceiver,
+            IntentFilter(ACTION_CONNECTIVITY_CHANGE),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     override fun onDestroyView() {
@@ -208,6 +226,7 @@ class SearchFragment: Fragment() {
     }
 
     companion object{
+        private const val ACTION_CONNECTIVITY_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

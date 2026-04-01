@@ -1,14 +1,14 @@
 package com.practicum.playlistmaker.ui.player
 
 import android.content.Context
-import android.graphics.Bitmap
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.graphics.drawable.toBitmap
 import com.practicum.playlistmaker.R
 
 class PlaybackButtonView @JvmOverloads constructor(
@@ -25,26 +25,24 @@ class PlaybackButtonView @JvmOverloads constructor(
 
     private var isEnabled = true
 
-    private var playBitmap: Bitmap? = null
-    private var pauseBitmap: Bitmap? = null
+    private var playDrawable: Drawable? = null
+    private var pauseDrawable: Drawable? = null
 
     private var imageRect = RectF(0f, 0f, 0f, 0f)
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.PlaybackButtonView, 0, 0)
-            .apply{
-                try {
-                    val playDrawable = getDrawable(R.styleable.PlaybackButtonView_playDrawable)
-                    val pauseDrawable = getDrawable(R.styleable.PlaybackButtonView_pauseDrawable)
-
-                    playBitmap = playDrawable?.toBitmap()
-                    pauseBitmap = pauseDrawable?.toBitmap()
+        var obtain: TypedArray? = null;
+        try {
+            obtain = context.theme.obtainStyledAttributes(attrs, R.styleable.PlaybackButtonView, 0, 0)
+                .apply{
+                    playDrawable = getDrawable(R.styleable.PlaybackButtonView_playDrawable)
+                    pauseDrawable = getDrawable(R.styleable.PlaybackButtonView_pauseDrawable)
                 }
-                finally {
-                    recycle()
-                }
-            }
+        }
+        finally {
+            obtain?.recycle()
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -56,13 +54,18 @@ class PlaybackButtonView @JvmOverloads constructor(
         super.onDraw(canvas)
 
         val bitmap = when (currentState) {
-            PlaybackState.PLAY -> playBitmap
-            PlaybackState.PAUSE -> pauseBitmap
+            PlaybackState.PLAY -> playDrawable
+            PlaybackState.PAUSE -> pauseDrawable
         }
 
-        bitmap?.let {
-            canvas.drawBitmap(bitmap, null, imageRect, paint)
+        bitmap?.let { drawable ->
+            drawable.setBounds(0, 0, width, height)
+            drawable.draw(canvas)
         }
+
+//        bitmap?.let {
+//            canvas.drawBitmap(bitmap.toBitmap(), null, imageRect, paint)
+//        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
