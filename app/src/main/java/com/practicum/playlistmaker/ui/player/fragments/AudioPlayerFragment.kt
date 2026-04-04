@@ -9,7 +9,6 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.telecom.ConnectionService
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,8 +36,6 @@ import com.practicum.playlistmaker.ui.utils.ChangeInternetBroadcastReceiver
 import com.practicum.playlistmaker.ui.utils.Helper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.getValue
 
 class AudioPlayerFragment: Fragment() {
@@ -60,11 +57,7 @@ class AudioPlayerFragment: Fragment() {
 
     private val internetBroadcastReceiver = ChangeInternetBroadcastReceiver()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View?{
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         _binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -108,6 +101,7 @@ class AudioPlayerFragment: Fragment() {
                     binding.apply {
                         btnPlay.isEnabled = true
                         btnPlay.setPlaybackState(false)
+                        trackTimer.text = SONG_TIME_DEFAULT
                     }
                 }
                 StateMediaPlayer.STATE_PAUSED -> {
@@ -137,7 +131,7 @@ class AudioPlayerFragment: Fragment() {
             val playlistName = result.second
             var message: String
             if(status > 0){
-                message =getString(R.string.track_add_playlist_success, playlistName)
+                message = getString(R.string.track_add_playlist_success, playlistName)
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
             else{
@@ -152,7 +146,7 @@ class AudioPlayerFragment: Fragment() {
             rvPlaylists.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             rvPlaylists.adapter = adaptor
 
-//            btnPlay.setOnClickListener{ viewModel.playbackControl() }
+            btnPlay.setOnClickListener{ viewModel.playbackControl() }
             btnBack.setNavigationOnClickListener { findNavController().navigateUp() }
             btnFavourite.setOnClickListener { onFavoriteClicked(track) }
             btnAdd.setOnClickListener {
@@ -184,8 +178,6 @@ class AudioPlayerFragment: Fragment() {
             .transform(RoundedCorners(roundedCorner))
             .placeholder(R.drawable.ic_album_image_placeholder_312)
             .into(binding.imageTrack)
-
-        binding.trackDuration.text = SimpleDateFormat("m:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
         if(track.collectionName.isNotEmpty()){
             binding.trackAlbum.text = track.collectionName
@@ -220,8 +212,10 @@ class AudioPlayerFragment: Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.pausePlayer()
+//        viewModel.pausePlayer()
         requireContext().unregisterReceiver(internetBroadcastReceiver)
+
+        viewModel.showNotificationService()
     }
 
     override fun onResume() {
@@ -232,6 +226,8 @@ class AudioPlayerFragment: Fragment() {
             IntentFilter(ACTION_CONNECTIVITY_CHANGE),
             ContextCompat.RECEIVER_NOT_EXPORTED
         )
+
+        viewModel.stopNotificationService()
     }
 
     override fun onDestroyView() {
@@ -252,22 +248,23 @@ class AudioPlayerFragment: Fragment() {
 
     ///region PlayMusicService
 
-    private var playMusicService: PlayMusicService? = null
-
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as PlayMusicService.PlayMusicServiceBinder
-            playMusicService = binder.getService()
+            val playMusicService = binder.getService()
+            viewModel.setPlayMusicService(playMusicService)
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            playMusicService = null
+            viewModel.removePlayMusicService()
         }
     }
 
     private fun bindMusicService() {
         val intent = Intent(context, PlayMusicService::class.java)
         intent.putExtra(SONG_URL, url)
+        intent.putExtra(SONG_TITLE, track.trackName)
+        intent.putExtra(SONG_ARTIST, track.artistName)
         requireContext().bindService(intent, serviceConnection, BIND_AUTO_CREATE)
     }
 
@@ -277,7 +274,7 @@ class AudioPlayerFragment: Fragment() {
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) { bindMusicService() }
-        else { Toast.makeText(requireContext(), "Can't bind service!", Toast.LENGTH_LONG).show() }
+        else { Toast.makeText(requireContext(), SERVICE_NOT_BIND, Toast.LENGTH_LONG).show() }
     }
 
     ///endregion
@@ -286,6 +283,10 @@ class AudioPlayerFragment: Fragment() {
         private const val ACTION_CONNECTIVITY_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE"
         const val TRACK_KEY = "track"
         const val SONG_URL = "song_url"
+        const val SONG_TITLE = "song_title"
+        const val SONG_ARTIST = "song_artist"
+        const val SONG_TIME_DEFAULT = "00:00"
+        const val SERVICE_NOT_BIND = "Can't bind service!"
 
         fun createArgs(track: Track): Bundle = bundleOf(
             TRACK_KEY to track
