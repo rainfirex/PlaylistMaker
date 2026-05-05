@@ -21,6 +21,9 @@ class TrackSearchRepositoryImpl(private val networkClient: NetworkClient, privat
             val listDto = (response as TracksSearchResponse).results
             emit(Result.success(mapping(listDto, ids)))
         }
+        else if(response.resultCode == -1){
+            emit(Result.failure(exception = Exception(response.message)))
+        }
         else{
             emit(Result.success(listOf()))
         }
@@ -33,8 +36,6 @@ class TrackSearchRepositoryImpl(private val networkClient: NetworkClient, privat
                 val existFavorite = (track.trackId in ids)
                 val t = mapper.map(track)
                 t.copy(isFavorite = existFavorite)
-//                t.isFavorite = existFavorite
-//                t
             }
     }
 }

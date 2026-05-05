@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.ui.search.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,29 +18,20 @@ class SearchViewModel(private val searchProvider: TracksSearchInteractor, privat
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
-    private var searchText: String? = null
+
+    private val stateText = MutableLiveData<String>()
+    fun observeStateText(): LiveData<String> = stateText
 
     private val searchDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true){
         searchText -> searchTracks(searchText)
     }
 
     init {
-        viewModelScope.launch {
-            historyProvider.loadTracks().collect { tracks ->
-                historyProvider.setTracks(tracks)
-                renderState(
-                    SearchState.HistoryResult(tracks)
-                )
-            }
-        }
+        loadHistory()
     }
 
     fun searchTracksDebounce(searchText: String){
-        if (this.searchText == searchText) {
-            return
-        }
-
-        this.searchText = searchText
+        stateText.value = searchText
         searchDebounce(searchText)
     }
 
@@ -77,6 +69,21 @@ class SearchViewModel(private val searchProvider: TracksSearchInteractor, privat
         }
     }
 
+    fun loadHistory(){
+        viewModelScope.launch {
+            historyProvider.loadTracks().collect { tracks ->
+                historyProvider.setTracks(tracks)
+                renderState(
+                    SearchState.HistoryResult(tracks)
+                )
+            }
+        }
+    }
+
+    fun clearText(){
+        stateText.value = ""
+    }
+
     private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
     }
@@ -91,13 +98,12 @@ class SearchViewModel(private val searchProvider: TracksSearchInteractor, privat
 
     fun addHistory(track: Track, i: Int) {
         historyProvider.addTrack(track, i)
-        renderState(
-            SearchState.HistoryResult(historyProvider.getTracks())
-        )
     }
 
     fun clearHistory(){
         historyProvider.clear()
+        historyProvider.save()
+        stateLiveData.value = null
     }
 
     companion object{

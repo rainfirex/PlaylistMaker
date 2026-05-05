@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.di
 
 import android.media.MediaPlayer
+import com.practicum.playlistmaker.ui.common.view_model.ThemeViewModel
 import com.practicum.playlistmaker.ui.config.view_model.ConfigViewModel
 import com.practicum.playlistmaker.ui.media.view_model.CreatePlaylistFragmentViewModel
 import com.practicum.playlistmaker.ui.media.view_model.EditPlaylistFragmentViewModel
@@ -52,5 +53,9 @@ val viewModelModule = module{
 
     viewModel{
         EditPlaylistFragmentViewModel(get())
+    }
+
+    viewModel{
+        ThemeViewModel(get())
     }
 }
