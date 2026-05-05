@@ -67,7 +67,7 @@ fun TrackItem(isDarkTheme: Boolean, track: Track, onClick: () -> Unit){
             )
             Row(){
                 Text(
-                    text = "${track.artistName} треков",
+                    text = track.artistName,
                     color = textColorTrackInfo,
                     fontSize = 11.sp,
                     fontFamily =  FontFamily(Font(R.font.ys_display_regular))

@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.ui.common.view_model.ThemeViewModel
 import com.practicum.playlistmaker.ui.common.compose_ui.TrackItem
 import com.practicum.playlistmaker.ui.media.models.FavoriteState
 import com.practicum.playlistmaker.ui.media.view_model.FavoriteFragmentViewModel

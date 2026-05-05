@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
-import com.practicum.playlistmaker.ui.common.view_model.ThemeViewModel
 import com.practicum.playlistmaker.ui.media.view_model.PlaylistsFragmentViewModel
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.models.Playlist

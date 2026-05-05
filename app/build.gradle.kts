@@ -69,20 +69,16 @@ dependencies {
     implementation (libs.navigation.ui.ktx)
     implementation (libs.fragment.ktx)
     implementation(libs.coroutines.android)
-
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     debugImplementation(libs.androidx.ui.tooling)
     kapt(libs.room.compiler)
-
-    implementation("androidx.compose.material3:material3:1.4.0")
-    implementation("androidx.fragment:fragment-compose:1.8.9")
-    implementation("androidx.compose.material:material-icons-extended:1.7.8")
-    implementation("androidx.compose.runtime:runtime-livedata:1.7.8")
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
-
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.compose.foundation:foundation:1.7.8")
-
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.fragment)
+    implementation(libs.com.github.bumptech.glide)
+    implementation(libs.androidx.navigation)
 
 }

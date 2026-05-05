@@ -54,7 +54,7 @@ import com.practicum.playlistmaker.ui.search.models.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.common.view_model.ThemeViewModel
 import com.practicum.playlistmaker.ui.common.compose_ui.TrackItem
-import com.practicum.playlistmaker.ui.utils.rememberKeyboardVisibility
+import com.practicum.playlistmaker.ui.common.compose_ui.rememberKeyboardVisibility
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
