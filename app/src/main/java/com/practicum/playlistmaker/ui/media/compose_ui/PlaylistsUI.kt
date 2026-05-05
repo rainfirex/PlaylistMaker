@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,12 +34,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.placeholder
 import com.practicum.playlistmaker.ui.media.view_model.PlaylistsFragmentViewModel
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.models.Playlist
 import com.practicum.playlistmaker.ui.common.models.PlaylistsState
+import androidx.compose.ui.platform.LocalResources
+import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -160,14 +159,15 @@ private fun PlaylistItem(isDarkTheme: Boolean, playlist: Playlist, onClick: () -
             .size(160.dp)
         )
         {
-            GlideImage(
+            AsyncImage(
                 model = playlist.pathImage,
                 contentDescription = stringResource(R.string.image_description),
                 modifier = Modifier
+                    .size(160.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
-                loading = placeholder(R.drawable.ic_track_placeholder_45),
-                failure = placeholder(R.drawable.ic_track_placeholder_45)
+                error = painterResource(R.drawable.ic_album_image_placeholder_312),
+                placeholder = painterResource(R.drawable.ic_album_image_placeholder_312)
             )
         }
 
@@ -182,7 +182,7 @@ private fun PlaylistItem(isDarkTheme: Boolean, playlist: Playlist, onClick: () -
             color = textColor
         )
 
-        val resources = LocalContext.current.resources
+        val resources = LocalResources.current
         val trackCountText = resources.getQuantityString(
             R.plurals.view_track_with_d,
             playlist.count,

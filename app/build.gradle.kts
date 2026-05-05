@@ -80,5 +80,5 @@ dependencies {
     implementation(libs.androidx.fragment)
     implementation(libs.com.github.bumptech.glide)
     implementation(libs.androidx.navigation)
-
+    implementation(libs.io.coil.kt)
 }

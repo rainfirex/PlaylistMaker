@@ -34,6 +34,7 @@ runtime-livedata = "1.7.8"
 fragment-compose = "1.8.9"
 glide-compose = "1.0.0-beta01"
 navigation-compose = "2.7.7"
+coil-compose = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -70,6 +71,7 @@ androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime
 androidx-fragment = { group = "androidx.fragment", name = "fragment-compose", version.ref= "fragment-compose" }
 com-github-bumptech-glide = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide-compose" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+io-coil-kt = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
