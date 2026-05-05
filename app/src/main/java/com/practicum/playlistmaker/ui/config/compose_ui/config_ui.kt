@@ -74,10 +74,8 @@ fun ConfigUi(viewModel: ConfigViewModel){
         }
     )
     { innerPadding ->
-        // Содержимое экрана
         Column(modifier = Modifier.fillMaxSize().padding(innerPadding))
         {
-            // Переключатель темы
             SettingSwitchItem(
                 text = stringResource(R.string.setting_mnu_theme),
                 checked = isDarkTheme,
@@ -86,7 +84,6 @@ fun ConfigUi(viewModel: ConfigViewModel){
                 textColor = textColor,
             )
 
-            // Пункт меню "Поделиться"
             val shareUrl = stringResource(R.string.url_android_dev)
             SettingMenuItem(
                 text = stringResource(R.string.setting_mnu_shared),
@@ -96,7 +93,6 @@ fun ConfigUi(viewModel: ConfigViewModel){
                 iconColor = iconColor
             )
 
-            // Пункт меню "Поддержка"
             val subject = stringResource(R.string.support_subject)
             val message = stringResource(R.string.support_message)
             SettingMenuItem(
@@ -107,7 +103,6 @@ fun ConfigUi(viewModel: ConfigViewModel){
                 iconColor = iconColor
             )
 
-            // Пункт меню "Соглашение"
             val agree = stringResource(R.string.url_offer)
             SettingMenuItem(
                 text = stringResource(R.string.setting_mnu_agree),

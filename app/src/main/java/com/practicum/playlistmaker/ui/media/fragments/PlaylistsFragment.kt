@@ -13,22 +13,21 @@ import com.practicum.playlistmaker.ui.media.view_model.PlaylistsFragmentViewMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment: Fragment() {
-    private val viewModel: PlaylistsFragmentViewModel by viewModel()
-    private val viewModelTheme: ThemeViewModel by viewModel()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = content {
-        PlaylistsUi(viewModel, viewModelTheme,
-            onNavigateToPlaylist = { playlist ->
-                findNavController()
-                    .navigate(
-                        R.id.action_mediaFragment_to_playlistFragment,
-                        PlaylistFragment.createArgs(playlist.id)
-                    )
-            },
-            onNavigateToCreatePlaylist = {
-                findNavController().navigate(R.id.action_mediaFragment_to_createPlaylistFragment)
-            })
-    }
+//    private val viewModel: PlaylistsFragmentViewModel by viewModel()
+//
+//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = content {
+//        PlaylistsUi(false, viewModel,
+//            onNavigateToPlaylist = { playlist ->
+//                findNavController()
+//                    .navigate(
+//                        R.id.action_mediaFragment_to_playlistFragment,
+//                        PlaylistFragment.createArgs(playlist.id)
+//                    )
+//            },
+//            onNavigateToCreatePlaylist = {
+//                findNavController().navigate(R.id.action_mediaFragment_to_createPlaylistFragment)
+//            })
+//    }
 
     companion object {
         fun newInstance() = PlaylistsFragment()

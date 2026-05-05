@@ -33,18 +33,10 @@ import com.practicum.playlistmaker.ui.media.view_model.FavoriteFragmentViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoriteUi(viewModel: FavoriteFragmentViewModel, viewModelTheme: ThemeViewModel, onNavigateToAudioPlayer: (Track) -> Unit){
-    val isDarkTheme by viewModelTheme.observeIsDarkTheme().observeAsState(initial = false)
+fun FavoriteUi(isDarkTheme: Boolean, viewModel: FavoriteFragmentViewModel, onNavigateToAudioPlayer: (Track) -> Unit){
     val tracksState by viewModel.observeState().observeAsState(initial = null)
 
     val textColor = if (isDarkTheme) colorResource(R.color.white) else colorResource(R.color.black)
-//    val backgroundColor by animateColorAsState(
-//        targetValue = if (isDarkTheme) colorResource(R.color.dark) else colorResource(R.color.white),
-//        animationSpec = tween(durationMillis = 200),
-//        label = "AllColor"
-//    )
-
-    viewModelTheme.loadTheme()
 
     viewModel.getTracks()
 

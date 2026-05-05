@@ -45,12 +45,9 @@ import com.practicum.playlistmaker.ui.common.models.PlaylistsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlaylistsUi(viewModel: PlaylistsFragmentViewModel, viewModelTheme: ThemeViewModel, onNavigateToPlaylist: (Playlist) -> Unit, onNavigateToCreatePlaylist: () -> Unit){
-    val isDarkTheme by viewModelTheme.observeIsDarkTheme().observeAsState(initial = false)
+fun PlaylistsUi(isDarkTheme: Boolean, viewModel: PlaylistsFragmentViewModel, onNavigateToPlaylist: (Playlist) -> Unit, onNavigateToCreatePlaylist: () -> Unit){
     val plsState by viewModel.observeState().observeAsState(initial = null)
 
-
-    viewModelTheme.loadTheme()
     viewModel.getPlaylists()
 
     Column()
