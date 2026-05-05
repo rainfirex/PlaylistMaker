@@ -81,7 +81,7 @@ fun TrackItem(isDarkTheme: Boolean, track: Track, onClick: () -> Unit){
                         .align(Alignment.CenterVertically)
                 )
                 Text(
-                    text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis),
+                    text = track.timeTrack(),
                     color = textColorTrackInfo,
                     fontSize = 11.sp,
                     fontFamily =  FontFamily(Font(R.font.ys_display_regular))

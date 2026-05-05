@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalView
 
 @Composable
-fun rememberKeyboardVisibility(): (Boolean) -> Unit {
+fun keyboardVisibility(): (Boolean) -> Unit {
     val view = LocalView.current
 
     return { isShow: Boolean ->

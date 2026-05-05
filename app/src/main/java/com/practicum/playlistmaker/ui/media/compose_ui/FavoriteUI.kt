@@ -76,7 +76,11 @@ private fun StateTrackList(isDarkTheme: Boolean, tracks: List<Track>, onNavigate
         modifier = Modifier.fillMaxSize()
     )
     {
-        items(tracks) { track ->
+        items(
+            tracks,
+            key = { track -> track.trackId },
+            contentType = { "track" }
+        ) { track ->
             TrackItem(
                 isDarkTheme = isDarkTheme,
                 track = track,

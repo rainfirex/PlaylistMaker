@@ -36,6 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,7 +56,6 @@ import com.practicum.playlistmaker.ui.search.models.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.common.view_model.ThemeViewModel
 import com.practicum.playlistmaker.ui.common.compose_ui.TrackItem
-import com.practicum.playlistmaker.ui.common.compose_ui.rememberKeyboardVisibility
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,8 +63,10 @@ fun SearchUi(viewModel: SearchViewModel, viewModelTheme: ThemeViewModel, onNavig
 
     val text by viewModel.observeStateText().observeAsState(initial = "")
     val tracksState by viewModel.observeState().observeAsState(initial = null)
-    val toggleKeyboard = rememberKeyboardVisibility()
     val isDarkTheme by viewModelTheme.observeIsDarkTheme().observeAsState(initial = false)
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     val backgroundColor by animateColorAsState(
         targetValue = if (isDarkTheme) colorResource(R.color.dark) else colorResource(R.color.white),
@@ -111,7 +114,7 @@ fun SearchUi(viewModel: SearchViewModel, viewModelTheme: ThemeViewModel, onNavig
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 2.dp)
+                        .padding(horizontal = 16.dp)
                     // Если делать по макету, то текст схлопываеться.
                     // .padding(horizontal = 16.dp, vertical = 8.dp)
                     // .height(36.dp)
@@ -138,7 +141,9 @@ fun SearchUi(viewModel: SearchViewModel, viewModelTheme: ThemeViewModel, onNavig
                                     .clickable{
                                         viewModel.clearText()
                                         viewModel.loadHistory()
-                                        toggleKeyboard(false)
+//                                        toggleKeyboard(false)
+                                        keyboardController?.hide()
+                                        focusManager.clearFocus()
                                     }
                             )
                         }
@@ -280,6 +285,7 @@ private fun StateTrackList(isDarkTheme: Boolean, tracks: List<Track>, onSaveHist
 
 @Composable
 private fun StateLayoutHistory(isDarkTheme: Boolean, tracks: List<Track>, onClickClearHistory: () -> Unit, onNavigateToAudioPlayer: (Track) -> Unit){
+    val textColor = if (isDarkTheme) colorResource(R.color.white) else colorResource(R.color.black)
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
@@ -291,7 +297,7 @@ private fun StateLayoutHistory(isDarkTheme: Boolean, tracks: List<Track>, onClic
             style = TextStyle(
                 fontFamily = FontFamily(Font(R.font.ys_display_medium)),
                 fontSize = 19.sp,
-                color = colorResource(R.color.dark)
+                color = textColor
             )
         )
     }
@@ -301,6 +307,9 @@ private fun StateLayoutHistory(isDarkTheme: Boolean, tracks: List<Track>, onClic
 
 @Composable
 private fun HistoryList(isDarkTheme: Boolean, historyItems: List<Track>, onClickClearHistory: () -> Unit, onNavigateToAudioPlayer: (Track) -> Unit) {
+    val btnContainerColor = if (isDarkTheme) colorResource(R.color.white) else colorResource(R.color.black)
+    val btnContentColor = if (isDarkTheme) colorResource(R.color.black) else colorResource(R.color.white)
+
     Column(modifier = Modifier.fillMaxSize()){
         LazyColumn(
             modifier = Modifier
@@ -323,8 +332,10 @@ private fun HistoryList(isDarkTheme: Boolean, historyItems: List<Track>, onClick
                     shape = RoundedCornerShape(54.dp),
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).height(36.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.dark),
-                        contentColor = colorResource(R.color.white)
+
+                        containerColor = btnContainerColor,
+                        contentColor = btnContentColor
+
                     )
                 )
                 {
