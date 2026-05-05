@@ -23,7 +23,7 @@ val viewModelModule = module{
 
     }
     viewModel{(url: String, trackTimeMillis: Int) ->
-        PlayerViewModel(url, trackTimeMillis, get(), get(), get())
+        PlayerViewModel(get(), get())
     }
 
     viewModel{
