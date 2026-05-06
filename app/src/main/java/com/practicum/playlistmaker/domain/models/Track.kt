@@ -25,4 +25,8 @@ data class Track (
         }
         return null
     }
+
+    fun timeTrack(): String{
+        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+    }
 }

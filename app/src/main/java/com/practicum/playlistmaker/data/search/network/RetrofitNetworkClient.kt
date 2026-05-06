@@ -15,7 +15,10 @@ class RetrofitNetworkClient(private val serviceSearchApi: TrackSearchApi): Netwo
                 return response.apply { resultCode = 200 }
             }
             catch (ex: Exception){
-                return Response().apply { resultCode = -1 }
+                return Response().apply {
+                    resultCode = -1
+                    message = ex.message.toString()
+                }
             }
         }
         else{

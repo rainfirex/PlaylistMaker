@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
     id ("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.ui.tooling.preview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,8 +69,16 @@ dependencies {
     implementation (libs.navigation.ui.ktx)
     implementation (libs.fragment.ktx)
     implementation(libs.coroutines.android)
-
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
+    debugImplementation(libs.androidx.ui.tooling)
     kapt(libs.room.compiler)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.fragment)
+    implementation(libs.com.github.bumptech.glide)
+    implementation(libs.androidx.navigation)
+    implementation(libs.io.coil.kt)
 }
